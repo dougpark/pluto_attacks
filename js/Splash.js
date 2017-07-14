@@ -27,13 +27,15 @@ Splash.prototype = {
 
     //Fonts
     //game.load.script('WebFont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
-    game.load.script('WebFont', 'phaser/webfontloader.js');
+    game.load.script('WebFont', 'lib/webfontloader.js');
   },
 
   loadBgm: function () {
     // thanks Kevin Macleod at http://incompetech.com/
     game.load.audio('dangerous', 'assets/audio/Dangerous.mp3');
     game.load.audio('exit', 'assets/audio/Exit the Premises.mp3');
+    game.load.audio('riser', 'assets/audio/Kevin_MacLeod_-_Early_Riser.mp3');
+    
   },
 
   // varios freebies found from google image search
@@ -60,6 +62,7 @@ Splash.prototype = {
          game.load.spritesheet('buttonHome', 'assets/buttons/button_home.png',50,50);
          game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
          game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
+         game.load.spritesheet('buttonMusic', 'assets/buttons/button_musicOn.png',50,50);
          
  
 
@@ -125,10 +128,10 @@ Splash.prototype = {
   },
 
   addGameMusic: function () {
-    var music;
-    music = game.add.audio('exit');
-    music.loop = true;
-    music.play();
+   
+    bgMusic = game.add.audio('riser');
+    bgMusic.loop = true;
+    bgMusic.play();
   },
 
   create: function() {
@@ -138,6 +141,6 @@ Splash.prototype = {
 
     setTimeout(function () {
       game.state.start("MainMenu");
-    }, 3000);
+    }, 2000);  
   }
 };

@@ -34,6 +34,7 @@ PlutoAttacks.Game = function () {
     var buttonHome;
     var buttonSpeaker;
     var buttonPause;
+    var buttonMusic;
 
     var gameSpeed; // set based on gameMode
     var gameSpeedTxt;
@@ -42,6 +43,7 @@ PlutoAttacks.Game = function () {
     this.setvel;
 
     var buttonNorm;
+    
 
 };
 
@@ -50,7 +52,7 @@ PlutoAttacks.Game.prototype = {
     init: function (gameMode) {
 
         this.gameMode = gameMode;
-
+    
     },
 
     create: function () {
@@ -164,15 +166,19 @@ PlutoAttacks.Game.prototype = {
         this.background.anchor.setTo(0.5, 0.5);
         this.background.scale.setTo(.50, .50);
      
-        this.buttonHome = game.add.button(20, 20, 'buttonPause', this.actionOnClickHome, this, 2, 1, 0);
+        this.buttonHome = game.add.button(20, 20, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
         this.buttonHome.scale.setTo(.5, .5);
 
+        this.buttonMusic = game.add.button((game.world.centerX*2)-20, 20, 'buttonMusic', this.actionOnClickMusic, this, 2, 1, 0);
+        this.buttonMusic.anchor.setTo(0.5, 0.5);
+        this.buttonMusic.scale.setTo(.4, .4);
+
+
         // Game Speed
-        //this.gameSpeedText = game.add.text(game.world.centerX - this.gameSpeedTxt.length/2, 50, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });
-        this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });
-        
+        this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.gameSpeedText.setTextBounds(0, 45, 800, 50);
+
         // Audio
         this.explosionSfx = game.add.audio('explosionSfx');
         this.swordSfx = game.add.audio('swordSfx');
@@ -189,13 +195,20 @@ PlutoAttacks.Game.prototype = {
     // temporary
     actionOnClickEnergy: function () {
 
-
     },
 
     // Action when click on the home button
     actionOnClickHome: function () {
 
         this.state.start('MainMenu');
+    },
+
+    // Action when click on the music button
+    actionOnClickMusic: function () {
+
+        if (bgMusic.isPlaying == true) {bgMusic.pause();}
+        else {bgMusic.resume();};
+    
     },
 
     // test action based on clicking a button
@@ -312,6 +325,8 @@ PlutoAttacks.Game.prototype = {
                 // Right thumb move to the right
                 if (game.input.pointer1.x > touchRight3 &&
                     game.input.pointer1.x < touchRight4) { this.player.body.velocity.x = this.setvel;}
+                
+                // Just put the player whereever they touch
                 this.player.x = game.input.pointer1.x;  
             }
 
