@@ -296,6 +296,8 @@ PlutoAttacks.Game.prototype = {
         //  Scroll the background
         this.starfield.tilePosition.y += 2;
 
+        var levelSpeed = this.level * 10;
+
         if (this.player.alive) {
             //  Reset the player, then check for movement keys
             this.player.body.velocity.setTo(0, 0);
@@ -303,10 +305,10 @@ PlutoAttacks.Game.prototype = {
             //this.player.x = game.input.x;
 
             if (this.cursors.left.isDown) {
-                this.player.body.velocity.x = -this.setvel;
+                this.player.body.velocity.x = -this.setvel-levelSpeed;
             }
             else if (this.cursors.right.isDown) {
-                this.player.body.velocity.x = this.setvel;
+                this.player.body.velocity.x = this.setvel+levelSpeed;
             }
 
             // Touch Interface
