@@ -47,6 +47,7 @@ PlutoAttacks.Game = function () {
 
 };
 
+
 PlutoAttacks.Game.prototype = {
 
     init: function (gameMode) {
@@ -55,11 +56,14 @@ PlutoAttacks.Game.prototype = {
     
     },
 
+// **************************************************************************************
+// Create
+// **************************************************************************************
     create: function () {
 
         //  The scrolling starfield background
       
-        this.starfield = game.add.tileSprite(0,0,800,600, 'starfield');
+        this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
       
        
         
@@ -104,6 +108,7 @@ PlutoAttacks.Game.prototype = {
         this.player.anchor.setTo(0.5, 0.5);
         this.player.scale.setTo(.8, .8);
         game.physics.enable(this.player, Phaser.Physics.ARCADE);
+        this.player.body.collideWorldBounds = true;
 
         // BlinkingPanels
         this.blinkingPanels = game.add.group();
@@ -143,7 +148,7 @@ PlutoAttacks.Game.prototype = {
 
         //  An explosion pool
         this.explosions = game.add.group();
-        this.explosions.createMultiple(60, 'kaboom'); //stephen
+        this.explosions.createMultiple(60, 'kaboom');
         this.explosions.forEach(this.setupInvader, this);
 
         //  And some controls to play the game with
@@ -177,7 +182,7 @@ PlutoAttacks.Game.prototype = {
 
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
-        this.gameSpeedText.setTextBounds(0, 45, 800, 50);
+        this.gameSpeedText.setTextBounds(0, 45, this.game.world.width, 50);
 
         // Audio
         this.explosionSfx = game.add.audio('explosionSfx');
@@ -215,7 +220,7 @@ PlutoAttacks.Game.prototype = {
     actionOnClickNorm: function () {
         var txtCaption = "+ Hi Stephen";
 
-        var txtAddition = game.add.text(400, 400, txtCaption, { font: '12px Arial', fill: '#fff' });
+        var txtAddition = game.add.text(400, 400, txtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
         game.time.events.add(100, function () {
             game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
         }, this);
@@ -281,6 +286,10 @@ PlutoAttacks.Game.prototype = {
 
     },
 
+// **************************************************************************************
+// Update
+// **************************************************************************************
+   
     // main game loop
     update: function () {
 
@@ -327,7 +336,15 @@ PlutoAttacks.Game.prototype = {
                     game.input.pointer1.x < touchRight4) { this.player.body.velocity.x = this.setvel;}
                 
                 // Just put the player whereever they touch
-                this.player.x = game.input.pointer1.x;  
+                // If they touch in the bottom half of the screen
+                if (game.input.pointer1.y > game.world.centerY) {
+                    this.player.x = game.input.pointer1.x;
+                    if (game.input.pointer1.y < game.world.centerY) {
+                        this.player.y = game.world.centerY;
+                    }  else {
+                        this.player.y = game.input.pointer1.y-20;
+                    }
+                }
             }
 
             /*
@@ -357,33 +374,35 @@ PlutoAttacks.Game.prototype = {
             }
             */
 
-            //  Firing?
+            // Fire
             if (this.fireButton.isDown) {
                 this.fireBullet(false);
 
             }
 
-            //  Firing?
-            if (this.fireButtonNow.isDown) {
+            // Firing now no matter what!
+            // A second touch on the screen fires now no matter what!
+            if (this.fireButtonNow.isDown || game.input.pointer2.isDown) {
                 this.fireBullet(true);
 
             }
             
 
             // Touch
-            if (game.input.pointer1.isDown || game.input.pointer2.isDown) {
+            if ((game.input.pointer1.isDown || game.input.pointer2.isDown) && 
+                (game.input.pointer1.y > game.world.centerY)) {
                 this.fireBullet(false);
 
             }
 
 
-
+            // Time for the enemy to fire
             if (game.time.now > this.firingTimer) {
                 this.enemyFires();
             }
 
             //  Run collision
-            game.physics.arcade.overlap(this.bullets, this.aliens, this.collisionHandler, null, this);
+            game.physics.arcade.overlap(this.bullets, this.aliens, this.playerHitsEnemy, null, this);
             game.physics.arcade.overlap(this.enemyBullets, this.player, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(this.bullets, this.enemyBullets, this.bulletHitsBullet, null, this);
         }
@@ -402,6 +421,7 @@ PlutoAttacks.Game.prototype = {
 
     },
 
+    // Player bullet hits an enemy bullet
     bulletHitsBullet: function (bullet, enemyBullet) {
         //  When a bullet hits an alien bullet we kill them both
         bullet.kill();
@@ -417,8 +437,8 @@ PlutoAttacks.Game.prototype = {
 
     },
 
-
-    collisionHandler: function (bullet, alien) {
+    // Player bullet hits the enemny
+    playerHitsEnemy: function (bullet, alien) {
 
         //  When a bullet hits an alien we kill them both
         bullet.kill();
@@ -446,7 +466,7 @@ PlutoAttacks.Game.prototype = {
 
             this.txtCaption = "Level " + this.level;
 
-            var txtAddition = game.add.text(game.world.centerX - 50, game.world.centerY, this.txtCaption, { font: '36px Arial', fill: '#fff' });
+            var txtAddition = game.add.text(game.world.centerX - 50, game.world.centerY, this.txtCaption, { font: '36px HappyKiller', fill: '#0099ff' });
             game.time.events.add(100, function () {
                 game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
             }, this);
@@ -463,6 +483,7 @@ PlutoAttacks.Game.prototype = {
 
     },
 
+    // Enemny bullet hits the player
     enemyHitsPlayer: function (player, bullet) {
 
         bullet.kill();
@@ -484,7 +505,7 @@ PlutoAttacks.Game.prototype = {
         // animate some cool text up the screen
         this.txtCaption = "AAAHHHH";
 
-        var txtAddition = game.add.text(this.player.body.x, this.player.body.y, this.txtCaption, { font: '12px Arial', fill: '#fff' });
+        var txtAddition = game.add.text(this.player.body.x, this.player.body.y, this.txtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
         game.time.events.add(100, function () {
             game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
         }, this);
@@ -515,7 +536,11 @@ PlutoAttacks.Game.prototype = {
 
     },
 
+    // Enemy Fires
     enemyFires: function () {
+
+        // Increase speed based on level
+        var levelSpeed = this.level * 10;
 
         //  Grab the first bullet we can from the pool
         this.enemyBullet = this.enemyBullets.getFirstExists(false);
@@ -539,14 +564,18 @@ PlutoAttacks.Game.prototype = {
             // And fire the bullet from this enemy
             this.enemyBullet.reset(shooter.body.x + 20, shooter.body.y + 20);
 
-            game.physics.arcade.moveToObject(this.enemyBullet, this.player, 120);
-            this.firingTimer = game.time.now + this.gameSpeed * 2; //stephen
+            game.physics.arcade.moveToObject(this.enemyBullet, this.player, 120+levelSpeed);
+            this.firingTimer = game.time.now + (this.gameSpeed * 2)-(levelSpeed/2); //stephen
         }
     },
 
-    fireBullet: function (when) {
+    // Player Fires
+    fireBullet: function (now) {
+        // Increase speed based on level
+        var levelSpeed = this.level * 10;
+
         //  To avoid them being allowed to fire too fast we set a time limit
-        if ((game.time.now > this.bulletTime) || (when)) {
+        if ((game.time.now > this.bulletTime) || (now)) {
             // play bullet sound effects
             this.blasterSfx.play();
 
@@ -555,10 +584,9 @@ PlutoAttacks.Game.prototype = {
 
             if (this.bullet) {
                 //  And fire it
-
-                this.bullet.reset(this.player.x, this.player.y + 8);
-                this.bullet.body.velocity.y = -400;
-                this.bulletTime = game.time.now + this.gameSpeed; //stephen
+                this.bullet.reset(this.player.x, this.player.y - 8);
+                this.bullet.body.velocity.y = -400 - levelSpeed;
+                this.bulletTime = game.time.now + this.gameSpeed - (levelSpeed/2);
             }
         }
 
