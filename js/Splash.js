@@ -53,6 +53,9 @@ Splash.prototype = {
         game.load.spritesheet('invader', 'assets/images/invader32x32x4.png', 32, 32);
         game.load.image('ship', 'assets/images/player.png');
         game.load.spritesheet('kaboom', 'assets/images/explodeblue.png', 128, 128);
+        game.load.spritesheet('ship_kaboom', 'assets/images/explode_ice_nova.png',256,128);
+        game.load.spritesheet('bullet_kaboom', 'assets/images/explode_Blue.png',66,66);
+    
         game.load.image('starfield', 'assets/images/starfield1.png');
         game.load.image('background', 'assets/images/hud_1.png');
         game.load.spritesheet('shipleft', 'assets/images/ship_1_left_strip10.png',138,150);

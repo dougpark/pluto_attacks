@@ -13,6 +13,8 @@ PlutoAttacks.Game = function () {
     var fireButton;
     var fireButtonNow;
     var explosions;
+    var ship_explosions;
+    var bullet_explosions;
     var starfield;
     var background;
     this.score = 0;
@@ -155,6 +157,17 @@ PlutoAttacks.Game.prototype = {
         this.explosions.createMultiple(60, 'kaboom');
         this.explosions.forEach(this.setupInvader, this);
 
+        //  Player ship explosion pool
+        this.ship_explosions = game.add.group();
+        this.ship_explosions.createMultiple(20, 'ship_kaboom');
+        this.ship_explosions.forEach(this.setupShip, this);
+
+        //  Bullet ship explosion pool
+        this.bullet_explosions = game.add.group();
+        this.bullet_explosions.createMultiple(60, 'bullet_kaboom');
+        this.bullet_explosions.forEach(this.setupBullet, this);
+       
+
         //  And some controls to play the game with
         this.cursors = game.input.keyboard.createCursorKeys();
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
@@ -189,8 +202,8 @@ PlutoAttacks.Game.prototype = {
         this.gameSpeedText.setTextBounds(0, 45, this.game.world.width, 50);
 
         // Audio
-        this.explosionSfx = game.add.audio('explosionSfx');
-        this.swordSfx = game.add.audio('swordSfx');
+        this.explosionSfx = game.add.audio('explosionSfx',0.8);
+        this.swordSfx = game.add.audio('swordSfx',0.8);
         this.blasterSfx = game.add.audio('blasterSfx', 0.3);
         this.wilhelmSfx = game.add.audio('wilhelmSfx');
 
@@ -271,6 +284,24 @@ PlutoAttacks.Game.prototype = {
 
         //  When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
+
+    },
+
+    setupBullet: function (bullet) {
+
+        bullet.anchor.x = 0.5;
+        bullet.anchor.y = 0.5;
+        bullet.animations.add('bullet_kaboom');
+
+
+    },
+
+    setupShip: function (ship) {
+
+        ship.anchor.x = 0.5;
+        ship.anchor.y = 0.5;
+        ship.animations.add('ship_kaboom');
+
 
     },
 
@@ -444,9 +475,9 @@ PlutoAttacks.Game.prototype = {
 
         //  And create an explosion :)
         this.swordSfx.play();
-        var explosion = this.explosions.getFirstExists(false);
+        var explosion = this.bullet_explosions.getFirstExists(false);
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
-        explosion.play('kaboom', 30, false, true);
+        explosion.play('bullet_kaboom', 30, false, true);
 
 
     },
@@ -512,9 +543,9 @@ PlutoAttacks.Game.prototype = {
         this.explosionSfx.play();
 
         //  And create an animated explosion :)
-        var explosion = this.explosions.getFirstExists(false);
+        var explosion = this.ship_explosions.getFirstExists(false);
         explosion.reset(player.body.x, player.body.y);
-        explosion.play('kaboom', 30, false, true);
+        explosion.play('ship_kaboom', 30, false, true);
 
         // animate some cool text up the screen
         this.txtCaption = "AAAHHHH";
