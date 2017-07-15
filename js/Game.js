@@ -104,11 +104,15 @@ PlutoAttacks.Game.prototype = {
         this.enemyBullets.setAll('checkWorldBounds', true);
 
         //  The hero!
-        this.player = game.add.sprite(game.world.centerX, game.world.centerY + 250, 'ship');
+        this.player = game.add.sprite(game.world.centerX, game.world.centerY + 250, 'shipLR');
         this.player.anchor.setTo(0.5, 0.5);
-        this.player.scale.setTo(.8, .8);
+        this.player.scale.setTo(.3, .3);
         game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;
+        this.player.animations.add('fly1', [0,1,2,1,0,11,12,11], 10, true);
+        //this.player.animations.add('fly', [0, 1, 2, 3,4,5,6,7,8,9,8,7,6,5,4,3,2,1,0,10,11,12,13,14,15,16,17,18,19,18,17,16,15,14,13,12,11,10], 20, true);
+        
+        this.player.play('fly1');
 
         // BlinkingPanels
         this.blinkingPanels = game.add.group();
@@ -212,7 +216,7 @@ PlutoAttacks.Game.prototype = {
     actionOnClickMusic: function () {
 
         if (bgMusic.isPlaying == true) {bgMusic.pause();}
-        else {bgMusic.resume();};
+        else {bgMusic.play();};
     
     },
 
@@ -306,10 +310,18 @@ PlutoAttacks.Game.prototype = {
 
             if (this.cursors.left.isDown) {
                 this.player.body.velocity.x = -this.setvel-levelSpeed;
+                this.player.animations.add('flyL', [3,4,3], 20, true);
+                this.player.play('flyL');
+
             }
             else if (this.cursors.right.isDown) {
                 this.player.body.velocity.x = this.setvel+levelSpeed;
+                this.player.animations.add('flyR', [11,12,11], 20, true);
+                this.player.play('flyR');
+            } else {
+                this.player.play('fly1');
             }
+
 
             // Touch Interface
             var touchRight =(game.world.centerX*2); // full width of display
@@ -344,7 +356,7 @@ PlutoAttacks.Game.prototype = {
                     if (game.input.pointer1.y < game.world.centerY) {
                         this.player.y = game.world.centerY;
                     }  else {
-                        this.player.y = game.input.pointer1.y-20;
+                        this.player.y = game.input.pointer1.y - 20;
                     }
                 }
             }

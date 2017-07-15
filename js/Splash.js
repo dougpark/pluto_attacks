@@ -55,6 +55,10 @@ Splash.prototype = {
         game.load.spritesheet('kaboom', 'assets/images/explodeblue.png', 128, 128);
         game.load.image('starfield', 'assets/images/starfield1.png');
         game.load.image('background', 'assets/images/hud_1.png');
+        game.load.spritesheet('shipleft', 'assets/images/ship_1_left_strip10.png',138,150);
+        game.load.spritesheet('shipright', 'assets/images/ship_1_right_strip10.png',138,150);
+        game.load.spritesheet('shipLR', 'assets/images/ship_1_strip20.png',138,150);
+        
         
 
         // Top Status Bars
@@ -131,7 +135,7 @@ Splash.prototype = {
    
     bgMusic = game.add.audio('riser');
     bgMusic.loop = true;
-    bgMusic.play();
+    //bgMusic.play();
   },
 
   create: function() {
