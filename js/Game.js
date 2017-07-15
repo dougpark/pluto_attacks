@@ -138,7 +138,7 @@ PlutoAttacks.Game.prototype = {
         game.add.text(game.world.width - 100, 50, 'Energy', { font: '20px HappyKiller', fill: '#0099ff' });
 
         //  Text
-        this.stateText = game.add.text(game.world.centerX, game.world.centerY, 'T', { font: '30px HappyKiller', fill: '#0099ff' });
+        this.stateText = game.add.text(game.world.centerX, game.world.centerY+75, '', { font: '30px HappyKiller', fill: '#0099ff' });
         this.stateText.anchor.setTo(0.5, 0.5);
         this.stateText.visible = false;
 
@@ -535,7 +535,7 @@ PlutoAttacks.Game.prototype = {
             this.player.kill();
             this.enemyBullets.callAll('kill');
 
-            this.stateText.text = "\n      GAME OVER \n Tap to Restart";
+            this.stateText.text = "\n   Pluto Wins Again \n Tap to Save Earth";
             this.stateText.visible = true;
 
             // reset score and level
