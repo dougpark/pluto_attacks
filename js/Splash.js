@@ -75,6 +75,7 @@ Splash.prototype = {
 
         // Sound Effects
         game.load.audio('explosionSfx', 'assets/audio/pusher.wav');
+        game.load.audio('ship_explosionSfx', 'assets/audio/pusher.wav');
         game.load.audio('swordSfx', 'assets/audio/alien_death1.wav');
         game.load.audio('blasterSfx', 'assets/audio/pistol.wav');
         game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3');

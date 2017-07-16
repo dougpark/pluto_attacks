@@ -27,6 +27,7 @@ PlutoAttacks.Game = function () {
     var stateText;
     this.livingEnemies = [];
     var explosionSfx;
+    var ship_explosionSfx;
     var swordSfx;
     var blasterSfx;
     var wilhelmSfx;
@@ -203,6 +204,7 @@ PlutoAttacks.Game.prototype = {
 
         // Audio
         this.explosionSfx = game.add.audio('explosionSfx',0.8);
+        this.ship_explosionSfx = game.add.audio('ship_explosionSfx',0.8);
         this.swordSfx = game.add.audio('swordSfx',0.8);
         this.blasterSfx = game.add.audio('blasterSfx', 0.3);
         this.wilhelmSfx = game.add.audio('wilhelmSfx');
@@ -210,7 +212,7 @@ PlutoAttacks.Game.prototype = {
         //  Being mp3 files these take time to decode, so we can't play them instantly
         //  Using setDecodedCallback we can be notified when they're ALL ready for use.
         //  The audio files could decode in ANY order, we can never be sure which it'll be.
-        game.sound.setDecodedCallback([this.explosionSfx, this.swordSfx, this.blasterSfx, this.wilhelmSfx], this.update, this);
+        game.sound.setDecodedCallback([this.ship_explosionSfx, this.explosionSfx, this.swordSfx, this.blasterSfx, this.wilhelmSfx], this.update, this);
 
     }, // end create
 
@@ -301,6 +303,7 @@ PlutoAttacks.Game.prototype = {
         ship.anchor.x = 0.5;
         ship.anchor.y = 0.5;
         ship.animations.add('ship_kaboom');
+        ship.scale.setTo(0.5,1);
 
 
     },
@@ -387,7 +390,7 @@ PlutoAttacks.Game.prototype = {
                     if (game.input.pointer1.y < game.world.centerY) {
                         this.player.y = game.world.centerY;
                     }  else {
-                        this.player.y = game.input.pointer1.y - 20;
+                        this.player.y = game.input.pointer1.y - 70;
                     }
                 }
             }
@@ -540,7 +543,7 @@ PlutoAttacks.Game.prototype = {
         }
 
         // play cool explosion sound effect 
-        this.explosionSfx.play();
+        this.ship_explosionSfx.play();
 
         //  And create an animated explosion :)
         var explosion = this.ship_explosions.getFirstExists(false);
