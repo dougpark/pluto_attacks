@@ -8,6 +8,9 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'PlutoAttacks'), Main = functi
 var bgMusic;
 var bgMusicTxt = "Stephen";
 
+var Main = function (game) {
+};
+
 Main.prototype = {
 
   preload: function () {

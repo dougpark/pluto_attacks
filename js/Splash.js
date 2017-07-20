@@ -47,6 +47,13 @@ Splash.prototype = {
         game.load.spritesheet('buttonFun', 'assets/buttons/button_fun.png', 227, 100);
         game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
 
+        game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 385,384);
+        game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 385,384);
+        game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 385,384);
+        game.load.image('training_level', 'assets/buttons/training_level.png');
+        
+        
+
         // Game Images
         game.load.image('bullet', 'assets/images/bullet.png');
         game.load.image('enemyBullet', 'assets/images/enemy-bullet.png');

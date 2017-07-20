@@ -5,6 +5,8 @@
 
 PlutoAttacks.Game = function () {
 
+    this.trainingLevel;
+    this.txtFPS;
     this.player;
     this.aliens;
     var bullets;
@@ -18,7 +20,7 @@ PlutoAttacks.Game = function () {
     var starfield;
     var background;
     this.score = 0;
-    this.level = 1;
+    this.level;
     var scoreString = '';
     var scoreText;
     var lives;
@@ -53,9 +55,11 @@ PlutoAttacks.Game = function () {
 
 PlutoAttacks.Game.prototype = {
 
-    init: function (gameMode) {
+    init: function (gameMode, trainingLevel) {
 
         this.gameMode = gameMode;
+        this.trainingLevel = trainingLevel;
+        this.level = this.trainingLevel;
     
     },
 
@@ -68,7 +72,8 @@ PlutoAttacks.Game.prototype = {
       
         this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
       
-       
+        // FPS
+       //game.time.advancedTiming = true;
         
         // Game Speed mode 1=insane, 100=fun, 300=normal, 500=slow
         //this.gameMode = getURLParameter('gameMode');
@@ -109,7 +114,7 @@ PlutoAttacks.Game.prototype = {
         //  The hero!
         this.player = game.add.sprite(game.world.centerX, game.world.centerY + 250, 'shipLR');
         this.player.anchor.setTo(0.5, 0.5);
-        this.player.scale.setTo(.3, .3);
+        this.player.scale.setTo(.3, .3); 
         game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;
         this.player.animations.add('fly1', [0,1,2,1,0,11,12,11], 10, true);
@@ -202,6 +207,12 @@ PlutoAttacks.Game.prototype = {
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.gameSpeedText.setTextBounds(0, 45, this.game.world.width, 50);
 
+        // FPS
+        //this.txtFPS1 = "FPS: " + game.time.fps;
+        //this.txtFPS = game.add.text(16, 332, this.txtFPS1, { font: '12px HappyKiller', fill: '#00ffff' });
+     
+        //2) game.time.fps returns the current FPS (after the first 1s of your game). 
+        // You can draw it in your state's update method.
         // Audio
         this.explosionSfx = game.add.audio('explosionSfx',0.8);
         this.ship_explosionSfx = game.add.audio('ship_explosionSfx',0.8);
@@ -331,6 +342,9 @@ PlutoAttacks.Game.prototype = {
     // main game loop
     update: function () {
 
+        // FPS
+        //this.txtFPS.text = "FPS: " + game.time.fps;
+
         //  Scroll the background
         this.starfield.tilePosition.y += 2;
 
@@ -340,7 +354,7 @@ PlutoAttacks.Game.prototype = {
             //  Reset the player, then check for movement keys
             this.player.body.velocity.setTo(0, 0);
 
-            //this.player.x = game.input.x;
+            
 
             if (this.cursors.left.isDown) {
                 this.player.body.velocity.x = -this.setvel-levelSpeed;
@@ -356,7 +370,11 @@ PlutoAttacks.Game.prototype = {
                 this.player.play('fly1');
             }
 
-
+            // Mouse Pointer
+            //if (game.input.activePointer.leftButton.isDown) {
+            //    this.player.x = game.input.activePointer.x;
+            //}
+          
             // Touch Interface
             var touchRight =(game.world.centerX*2); // full width of display
             var touchSize = touchRight*.20; // 20% of screen size
@@ -393,7 +411,9 @@ PlutoAttacks.Game.prototype = {
                         this.player.y = game.input.pointer1.y - 70;
                     }
                 }
-            }
+
+               }
+
 
             /*
             // Touch
@@ -455,17 +475,20 @@ PlutoAttacks.Game.prototype = {
             game.physics.arcade.overlap(this.bullets, this.enemyBullets, this.bulletHitsBullet, null, this);
         }
 
+      
+
 
     }, // end update
 
     render: function () {
 
-        // for (var i = 0; i < this.aliens.length; i++)
-        // {
-        //     this.debug.body(this.aliens.children[i]);
-        // }
+        //for (var i = 0; i < this.aliens.length; i++)
+       // {
+       //      this.debug.body(this.aliens.children[i]);
+       // }
+        //game.debug.spriteInfo(this.player, 32, 32);
 
-        //this.debug.inputInfo(16, 16);
+        //game.debug.text('this.trainingLevel ' + this.trainingLevel,16, 400);
 
     },
 
@@ -574,7 +597,7 @@ PlutoAttacks.Game.prototype = {
 
             // reset score and level
             this.score = 0;
-            this.level = 1;
+            //this.level = this.trainingLevel;
 
             //the "Tap to restart" handler
             this.fireButton.onDown.addOnce(this.restart, this);
