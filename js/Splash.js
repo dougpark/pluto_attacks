@@ -3,7 +3,6 @@
 // **************************************************************************************
 "use strict";
 
-var PlutoAttacks = {};
 var WebFontConfig;
 
 var Splash = function () {};
@@ -14,7 +13,8 @@ Splash.prototype = {
    
     //game.load.script('Preloader',"js/Preloader.js");
     game.load.script('MainMenu',"js/MainMenu.js");
-    game.load.script('Game',    "js/Game.js");
+    game.load.script('Options',"js/Options.js");
+    game.load.script('PlutoGame',    "js/Game.js");
     game.load.script('Util',    "js/Util.js");
 
     //game.load.script('style',   'lib/style.js');
@@ -28,6 +28,7 @@ Splash.prototype = {
     //Fonts
     //game.load.script('WebFont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
     game.load.script('WebFont', 'lib/webfontloader.js');
+      
   },
 
   loadBgm: function () {
@@ -42,14 +43,15 @@ Splash.prototype = {
   loadImages: function () {
         // MainMenu Images
         game.load.image('title', 'assets/buttons/title.png');
+        game.load.image('options', 'assets/buttons/options.png');
         game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
         game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal.png', 227, 100);
         game.load.spritesheet('buttonFun', 'assets/buttons/button_fun.png', 227, 100);
         game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
 
-        game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 385,384);
-        game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 385,384);
-        game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 385,384);
+        game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 100,100);
+        game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 100,100);
+        game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 100,100);
         game.load.image('training_level', 'assets/buttons/training_level.png');
         
         
@@ -76,7 +78,9 @@ Splash.prototype = {
          game.load.spritesheet('buttonHome', 'assets/buttons/button_home.png',50,50);
          game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
          game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
-         game.load.spritesheet('buttonMusic', 'assets/buttons/button_musicOn.png',50,50);
+         game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',166,166);
+         game.load.spritesheet('buttonBack', 'assets/buttons/button_back.png',100,100);
+         game.load.spritesheet('buttonOptions', 'assets/buttons/button_gear.png',100,100);
          
  
 
@@ -125,7 +129,7 @@ Splash.prototype = {
     game.add.existing(this.status);
     this.load.setPreloadSprite(this.loadingBar);
 
-    this.loadScripts();
+    //this.loadScripts();
     this.loadImages();
     this.loadFonts();
     this.loadBgm();
@@ -135,11 +139,12 @@ Splash.prototype = {
   addGameStates: function () {
 
     //game.state.add('PlutoAttacks.Preloader', PlutoAttacks.Preloader);
-    game.state.add('MainMenu', PlutoAttacks.MainMenu);
-    game.state.add('Game', PlutoAttacks.Game);
+    game.state.add('MainMenu', MainMenu);
+    game.state.add('Options', Options);
+    game.state.add('PlutoGame', PlutoGame);
     //game.state.add("GameOver",GameOver);
     //game.state.add("Credits",Credits);
-    //game.state.add("Options",Options);
+    
   },
 
   addGameMusic: function () {

@@ -3,23 +3,27 @@
 // **************************************************************************************
 "use strict";
 
-PlutoAttacks.MainMenu = function () {
+var MainMenu = function () {
 
     var levelSelect;
     var title;
     var buttonNormal;
     var buttonFun;
     var buttonInsane;
-    this.gameMode;
-    this.trainingLevel;
+    var buttonOptions;
+    
 };
 
+  
+MainMenu.prototype = {
 
-PlutoAttacks.MainMenu.prototype = {
+   
+
+    init: function() {
+
+    },
 
     create: function () {
-
-        this.trainingLevel = 1;
 
         // background image
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
@@ -54,20 +58,13 @@ PlutoAttacks.MainMenu.prototype = {
         this.buttonFun = game.add.button(game.world.centerX - 113, 295, 'buttonFun', this.actionOnClickFun, this, 2, 1, 0);
         this.buttonInsane = game.add.button(game.world.centerX - 113, 400, 'buttonInsane', this.actionOnClickInsane, this, 2, 1, 0);
 
-        // Training Level menu title image
-        this.training_level = game.add.sprite(game.world.centerX+300, game.world.centerY-50, 'training_level');
-        this.training_level.anchor.setTo(0.5, 0.5);
-        this.training_level.scale.setTo(0.2, 0.2);
+        
+        // Options Button
+        this.buttonOptions = game.add.button(75, game.world.centerY+200, 'buttonOptions', this.actionOnClickOption, this, 2, 1, 0);
+        this.buttonOptions.anchor.setTo(0.5, 0.5);
+        this.buttonOptions.scale.setTo(1,1);
 
-        this.buttonLevel_1 = game.add.button(game.world.centerX + 300, game.world.centerY-0, 'buttonLevel_1', this.actionOnClickTrainingLevel_1, this, 2, 1, 0);
-        this.buttonLevel_1.anchor.setTo(0.5, 0.5);
-        this.buttonLevel_1.scale.setTo(0.1,0.1);
-        this.buttonLevel_9 = game.add.button(game.world.centerX + 300, game.world.centerY+50, 'buttonLevel_9', this.actionOnClickTrainingLevel_9, this, 2, 1, 0);
-        this.buttonLevel_9.anchor.setTo(0.5, 0.5); 
-        this.buttonLevel_9.scale.setTo(0.1,0.1);
-        this.buttonLevel_27 = game.add.button(game.world.centerX + 300, game.world.centerY+100, 'buttonLevel_27', this.actionOnClickTrainingLevel_27, this, 2, 1, 0);
-        this.buttonLevel_27.anchor.setTo(0.5, 0.5);
-        this.buttonLevel_27.scale.setTo(0.1,0.1);
+
     },
 
     createBlinkingPanels: function () {
@@ -85,26 +82,18 @@ PlutoAttacks.MainMenu.prototype = {
 
     },
 
-    // Start Level 1
-    actionOnClickTrainingLevel_1: function () {
-        this.trainingLevel = 1;
-    },
+    // Action when click on the music button
+    actionOnClickOption: function () {
 
-    // Start Level 9
-    actionOnClickTrainingLevel_9: function () {
-        this.trainingLevel = 9;
-    },
-
-    // Start Level 27
-    actionOnClickTrainingLevel_27: function () {
-        this.trainingLevel = 27;
+     this.state.start('Options', true, false, povin);   
+    
     },
 
 
     // buttonNormal
     actionOnClickNormal: function () {
 
-        this.gameMode = "1";
+        povin.gameMode = 1;
         this.nextState();
 
     },
@@ -112,21 +101,33 @@ PlutoAttacks.MainMenu.prototype = {
     // buttonFun
     actionOnClickFun: function () {
 
-        this.gameMode = "2";
+        povin.gameMode = 2;
         this.nextState();
     },
 
     // buttonInsane
     actionOnClickInsane: function () {
 
-        this.gameMode = "3";
+        povin.gameMode = 3;
         this.nextState();
     },
 
+    render: function() {
+    
+      var debug = this.game.debug;
+      debug.text('height ' + game.world.height,10,120);
+      debug.text('trainingLevel '+ povin.trainingLevel,10,140);
+      debug.text('povin '+ povin,10,160);
+      debug.text('bgMusicTxt '+ bgMusicTxt,10,180);
+
+      debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
+    
+    },
 
     nextState: function () {
 
-        this.state.start('Game', true, false, this.gameMode, this.trainingLevel);
+        this.state.start('PlutoGame', true, false, povin.gameMode, povin.trainingLevel);
+        
 
     }
 

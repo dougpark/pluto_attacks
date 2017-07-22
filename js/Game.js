@@ -3,7 +3,7 @@
 // **************************************************************************************
 "use strict";
 
-PlutoAttacks.Game = function () {
+var PlutoGame = function () {
 
     this.trainingLevel;
     this.txtFPS;
@@ -39,7 +39,6 @@ PlutoAttacks.Game = function () {
     var buttonHome;
     var buttonSpeaker;
     var buttonPause;
-    var buttonMusic;
 
     var gameSpeed; // set based on gameMode
     var gameSpeedTxt;
@@ -52,14 +51,16 @@ PlutoAttacks.Game = function () {
 
 };
 
-
-PlutoAttacks.Game.prototype = {
+PlutoGame.prototype = {
 
     init: function (gameMode, trainingLevel) {
 
+        if (gameMode === undefined) { gameMode = 1; }
+        if (trainingLevel === undefined) { trainingLevel = 1; }
         this.gameMode = gameMode;
         this.trainingLevel = trainingLevel;
         this.level = this.trainingLevel;
+        
     
     },
 
@@ -78,13 +79,13 @@ PlutoAttacks.Game.prototype = {
         // Game Speed mode 1=insane, 100=fun, 300=normal, 500=slow
         //this.gameMode = getURLParameter('gameMode');
         switch (this.gameMode) {
-            case "1":
+            case 1:
                 { this.gameSpeed = 300; this.setvel = 200; this.gameSpeedTxt = "Normal"; } // Normal
                 break;
-            case "2":
+            case 2:
                 { this.gameSpeed = 100; this.setvel = 300;this.gameSpeedTxt = "Fun"; } // Fun
                 break;
-            case "3":
+            case 3:
                 { this.gameSpeed = 1; this.setvel = 500; this.gameSpeedTxt = "Insane"; } // Insane
                 break;
             default:
@@ -198,11 +199,7 @@ PlutoAttacks.Game.prototype = {
         this.buttonHome.anchor.setTo(0.5, 0.5);
         this.buttonHome.scale.setTo(.5, .5);
 
-        this.buttonMusic = game.add.button((game.world.centerX*2)-20, 20, 'buttonMusic', this.actionOnClickMusic, this, 2, 1, 0);
-        this.buttonMusic.anchor.setTo(0.5, 0.5);
-        this.buttonMusic.scale.setTo(.4, .4);
-
-
+        
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.gameSpeedText.setTextBounds(0, 45, this.game.world.width, 50);
@@ -236,14 +233,6 @@ PlutoAttacks.Game.prototype = {
     actionOnClickHome: function () {
 
         this.state.start('MainMenu');
-    },
-
-    // Action when click on the music button
-    actionOnClickMusic: function () {
-
-        if (bgMusic.isPlaying == true) {bgMusic.pause();}
-        else {bgMusic.play();};
-    
     },
 
     // test action based on clicking a button
@@ -489,6 +478,9 @@ PlutoAttacks.Game.prototype = {
         //game.debug.spriteInfo(this.player, 32, 32);
 
         //game.debug.text('this.trainingLevel ' + this.trainingLevel,16, 400);
+      //var debug = this.game.debug;
+      //debug.text('povin.triningLevel ' + povin.trainingLevel,10,120);
+      //debug.text('povin ' + povin,10,140);
 
     },
 
@@ -497,7 +489,6 @@ PlutoAttacks.Game.prototype = {
         //  When a bullet hits an alien bullet we kill them both
         bullet.kill();
         enemyBullet.kill();
-
 
         //  And create an explosion :)
         this.swordSfx.play();
