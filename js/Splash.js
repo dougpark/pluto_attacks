@@ -10,12 +10,10 @@ var Splash = function () {};
 Splash.prototype = {
 
   loadScripts: function () {
-   
-    //game.load.script('Preloader',"js/Preloader.js");
-    game.load.script('MainMenu',"js/MainMenu.js");
-    game.load.script('Options',"js/Options.js");
-    game.load.script('PlutoGame',    "js/Game.js");
-    game.load.script('Util',    "js/Util.js");
+    game.load.script('MainMenu',  "js/MainMenu.js");
+    game.load.script('Options',   "js/Options.js");
+    game.load.script('PlutoGame', "js/Game.js");
+    game.load.script('Util',      "js/Util.js");
 
     //game.load.script('style',   'lib/style.js');
     //game.load.script('mixins',  'lib/mixins.js');
@@ -26,88 +24,79 @@ Splash.prototype = {
     //game.load.script('options', 'states/Options.js');
 
     //Fonts
-    //game.load.script('WebFont', 'https://ajax.googleapis.com/ajax/libs/webfont/1.6.26/webfont.js');
     game.load.script('WebFont', 'lib/webfontloader.js');
-      
   },
 
   loadBgm: function () {
     // thanks Kevin Macleod at http://incompetech.com/
-    //game.load.audio('dangerous', 'assets/audio/Dangerous.mp3');
-    //game.load.audio('exit', 'assets/audio/Exit the Premises.mp3');
-    game.load.audio('riser', 'assets/audio/Kevin_MacLeod_-_Early_Riser.mp3');
-    
+    //game.load.audio('bgm', 'assets/audio/Dangerous.mp3');
+    game.load.audio('bgm', 'assets/audio/Exit the Premises.mp3');
+    //game.load.audio('bgm', 'assets/audio/Kevin_MacLeod_-_Early_Riser.mp3');
   },
 
   // varios freebies found from google image search
   loadImages: function () {
-        // MainMenu Images
-        game.load.image('title', 'assets/buttons/title.png');
-        game.load.image('options', 'assets/buttons/options.png');
-        game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
-        game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal.png', 227, 100);
-        game.load.spritesheet('buttonFun', 'assets/buttons/button_fun.png', 227, 100);
-        game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
+    // MainMenu Images
+    game.load.image('title', 'assets/buttons/title.png');
+    game.load.image('options', 'assets/buttons/options.png');
+    game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
+    game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal.png', 227, 100);
+    game.load.spritesheet('buttonFun', 'assets/buttons/button_fun.png', 227, 100);
+    game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
 
-        game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 100,100);
-        game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 100,100);
-        game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 100,100);
-        game.load.image('training_level', 'assets/buttons/training_level.png');
-        
-        
+    // Options Images
+    game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 100,100);
+    game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 100,100);
+    game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 100,100);
+    game.load.image('training_level', 'assets/buttons/training_level.png');
 
-        // Game Images
-        game.load.image('bullet', 'assets/images/bullet.png');
-        game.load.image('enemyBullet', 'assets/images/enemy-bullet.png');
-        game.load.spritesheet('invader', 'assets/images/invader32x32x4.png', 32, 32);
-        game.load.image('ship', 'assets/images/player.png');
-        game.load.spritesheet('kaboom', 'assets/images/explodeblue.png', 128, 128);
-        game.load.spritesheet('ship_kaboom', 'assets/images/explode_ice_nova.png',256,128);
-        game.load.spritesheet('bullet_kaboom', 'assets/images/explode_Blue.png',66,66);
-    
-        game.load.image('starfield', 'assets/images/starfield1.png');
-        game.load.image('background', 'assets/images/hud_1.png');
-        game.load.spritesheet('shipleft', 'assets/images/ship_1_left_strip10.png',138,150);
-        game.load.spritesheet('shipright', 'assets/images/ship_1_right_strip10.png',138,150);
-        game.load.spritesheet('shipLR', 'assets/images/ship_1_strip20.png',138,150);
-        
-        
+    // Game Images
+    game.load.image('bullet', 'assets/images/bullet.png');
+    game.load.image('enemyBullet', 'assets/images/enemy-bullet.png');
+    game.load.spritesheet('invader', 'assets/images/invader32x32x4.png', 32, 32);
+    game.load.image('ship', 'assets/images/player.png');
+    game.load.spritesheet('kaboom', 'assets/images/explodeblue.png', 128, 128);
+    game.load.spritesheet('ship_kaboom', 'assets/images/explode_ice_nova.png',256,128);
+    game.load.spritesheet('bullet_kaboom', 'assets/images/explode_Blue.png',66,66);
 
-        // Top Status Bars
-         game.load.spritesheet('playerEnergy', 'assets/buttons/player_energy.png');
-         game.load.spritesheet('buttonHome', 'assets/buttons/button_home.png',50,50);
-         game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
-         game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
-         game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',166,166);
-         game.load.spritesheet('buttonBack', 'assets/buttons/button_back.png',100,100);
-         game.load.spritesheet('buttonOptions', 'assets/buttons/button_gear.png',100,100);
-         
- 
+    game.load.image('starfield', 'assets/images/starfield1.png');
+    game.load.image('background', 'assets/images/hud_1.png');
+    game.load.spritesheet('shipleft', 'assets/images/ship_1_left_strip10.png',138,150);
+    game.load.spritesheet('shipright', 'assets/images/ship_1_right_strip10.png',138,150);
+    game.load.spritesheet('shipLR', 'assets/images/ship_1_strip20.png',138,150);
 
-        // Sound Effects
-        game.load.audio('explosionSfx', 'assets/audio/pusher.wav');
-        game.load.audio('ship_explosionSfx', 'assets/audio/pusher.wav');
-        game.load.audio('swordSfx', 'assets/audio/alien_death1.wav');
-        game.load.audio('blasterSfx', 'assets/audio/pistol.wav');
-        game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3');
+    // Top Status Bars
+    game.load.spritesheet('playerEnergy', 'assets/buttons/player_energy.png');
+    game.load.spritesheet('buttonHome', 'assets/buttons/button_home.png',50,50);
+    game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
+    game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
+    game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',166,166);
+    game.load.spritesheet('buttonBack', 'assets/buttons/button_back.png',100,100);
+    game.load.spritesheet('buttonOptions', 'assets/buttons/button_gear.png',100,100);
 
-        game.load.spritesheet('buttonNorm', 'assets/buttons/Panel2ButtonSpritex71.png', 161, 71);
-        game.load.spritesheet('buttonNormGo', 'assets/buttons/Panel2ButtonSpritex71Go.png', 161, 71);
+    // Sound Effects
+    game.load.audio('explosionSfx', 'assets/audio/pusher.wav');
+    game.load.audio('ship_explosionSfx', 'assets/audio/pusher.wav');
+    game.load.audio('swordSfx', 'assets/audio/alien_death1.wav');
+    game.load.audio('blasterSfx', 'assets/audio/pistol.wav');
+    game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3');
+
+    // Test buttons
+    game.load.spritesheet('buttonNorm', 'assets/buttons/Panel2ButtonSpritex71.png', 161, 71);
+    game.load.spritesheet('buttonNormGo', 'assets/buttons/Panel2ButtonSpritex71Go.png', 161, 71);
   },
 
+  // Load and process web fonts
   loadFonts: function () {
-
     WebFontConfig = {
       custom: {
         families: ['HappyKiller'],
         urls: ['style/HappyKiller.css']
       }
     }
-    
   },
 
   init: function () {
-
     this.physics.startSystem(Phaser.Physics.ARCADE);
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     this.scale.setMinMax(400, 300, 1200, 900);
@@ -119,11 +108,9 @@ Splash.prototype = {
     this.logo.anchor.setTo(0.5,0.5);
     this.status     = game.make.text(game.world.centerX, 380, 'Loading...', { font: '20px HappyKiller', fill: '#0099ff' });
     this.status.anchor.setTo(0.5,0.5);
-    //utils.centerGameObjects([this.logo, this.status]);
   },
 
   preload: function () {
-    //game.add.sprite(0, 0, 'stars');
     game.add.existing(this.logo).scale.setTo(0.5);
     game.add.existing(this.loadingBar);
     game.add.existing(this.status);
@@ -133,25 +120,20 @@ Splash.prototype = {
     this.loadImages();
     this.loadFonts();
     this.loadBgm();
-
   },
 
   addGameStates: function () {
-
-    //game.state.add('PlutoAttacks.Preloader', PlutoAttacks.Preloader);
     game.state.add('MainMenu', MainMenu);
     game.state.add('Options', Options);
     game.state.add('PlutoGame', PlutoGame);
     //game.state.add("GameOver",GameOver);
     //game.state.add("Credits",Credits);
-    
   },
 
   addGameMusic: function () {
-   
-    bgMusic = game.add.audio('riser');
-    bgMusic.loop = true;
-    //bgMusic.play();
+    povin.bgMusic = game.add.audio('bgm');
+    povin.bgMusic.loop = true;
+    //povin.bgMusic.play(); // autostart music
   },
 
   create: function() {
@@ -160,7 +142,7 @@ Splash.prototype = {
     this.addGameMusic();
 
     setTimeout(function () {
-      game.state.start("MainMenu");
+      game.state.start("MainMenu"); // wait on splash screen for 2 seconds then go to main menu
     }, 2000);  
   }
 };

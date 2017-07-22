@@ -4,25 +4,20 @@
 "use strict";
 
 var Options = function () {
-
     var levelSelect;
     var title;
     var buttonNormal;
     var buttonFun;
     var buttonInsane;
     var buttonMusic;
-    
 };
 
-
 Options.prototype = {
- 
 
     init: function() {
     },
 
     create: function () {
-
         // background image
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
 
@@ -40,7 +35,6 @@ Options.prototype = {
         var levelTween = game.add.tween(this.levelSelect.scale).to({ x: 1.05, y: 1.05 }, 2000, Phaser.Easing.Linear.None, true);
         levelTween.yoyo(true, 0);
         levelTween.repeat(-1);
-
      
         // Training Level menu title image
         this.training_level = game.add.sprite(game.world.centerX, game.world.centerY-50, 'training_level');
@@ -68,31 +62,24 @@ Options.prototype = {
         this.buttonBack = game.add.button(75, game.world.centerY+200, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
         this.buttonBack.anchor.setTo(0.5, 0.5);
         this.buttonBack.scale.setTo(1,1);
-
-
     },
 
+    // Test to animate blinking panels
     createBlinkingPanels: function () {
-
         var blinkingPanel = this.blinkingPanels.create(1, 1, 'buttonNorm');
         //blinkingPanel.anchor.setTo(0.5,0.5);
         blinkingPanel.animations.add('fly', [0, 1], 2, true);
         blinkingPanel.play('fly');
         blinkingPanel.body.moves = false;
-
         this.blinkingPanels.x = 50;
         this.blinkingPanels.y = 300;
-
         //var tween = game.add.tween(this.blinkingPanels).to( { x: 50 }, 20, Phaser.Easing.Linear.None, true, 0, 1000, true);
-
     },
 
     // Action when click on the music button
     actionOnClickMusic: function () {
-
-        if (bgMusic.isPlaying == true) {bgMusic.pause();}
-        else {bgMusic.play();};
-    
+        if (povin.bgMusic.isPlaying == true) {povin.bgMusic.pause();}
+        else {povin.bgMusic.play();};
     },
 
     // Start Level 1
@@ -110,32 +97,22 @@ Options.prototype = {
         povin.trainingLevel = 27;
     },
 
-
-    // buttonBack
+    // button Back
     actionOnClickBack: function () {
-
         this.nextState();
-
     },
 
-
     render: function() {
-    
-      var debug = this.game.debug;
-      debug.text('height ' + game.world.height,10,120);
-      debug.text('trainingLevel '+ povin.trainingLevel,10,140);
-      debug.text('povin '+ povin,10,160);
-      debug.text('Options Menu',10,180);
-      debug.text('bgMusicTxt'+bgMusicTxt,10,200);
+        var debug = this.game.debug;
+        debug.text('height ' + game.world.height,10,120);
+        debug.text('trainingLevel '+ povin.trainingLevel,10,140);
+        debug.text('povin '+ povin,10,160);
+        debug.text('Options Menu',10,180);
 
-      debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
-    
+        debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
     },
 
     nextState: function () {
-
         this.state.start('MainMenu', true, false, povin);
-
     }
-
 };

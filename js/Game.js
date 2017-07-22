@@ -47,21 +47,16 @@ var PlutoGame = function () {
     this.setvel;
 
     var buttonNorm;
-    
-
 };
 
 PlutoGame.prototype = {
 
     init: function (gameMode, trainingLevel) {
-
         if (gameMode === undefined) { gameMode = 1; }
         if (trainingLevel === undefined) { trainingLevel = 1; }
         this.gameMode = gameMode;
         this.trainingLevel = trainingLevel;
         this.level = this.trainingLevel;
-        
-    
     },
 
 // **************************************************************************************
@@ -70,14 +65,12 @@ PlutoGame.prototype = {
     create: function () {
 
         //  The scrolling starfield background
-      
         this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
       
-        // FPS
+        // Turn on if want to show debug FPS
        //game.time.advancedTiming = true;
         
-        // Game Speed mode 1=insane, 100=fun, 300=normal, 500=slow
-        //this.gameMode = getURLParameter('gameMode');
+        // GameMode 1=insane, 100=fun, 300=normal, 500=slow
         switch (this.gameMode) {
             case 1:
                 { this.gameSpeed = 300; this.setvel = 200; this.gameSpeedTxt = "Normal"; } // Normal
@@ -119,15 +112,12 @@ PlutoGame.prototype = {
         game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;
         this.player.animations.add('fly1', [0,1,2,1,0,11,12,11], 10, true);
-        //this.player.animations.add('fly', [0, 1, 2, 3,4,5,6,7,8,9,8,7,6,5,4,3,2,1,0,10,11,12,13,14,15,16,17,18,19,18,17,16,15,14,13,12,11,10], 20, true);
-        
         this.player.play('fly1');
 
         // BlinkingPanels
         this.blinkingPanels = game.add.group();
         this.blinkingPanels.enableBody = true;
         this.blinkingPanels.physicsBodyType = Phaser.Physics.ARCADE;
-
         //this.createBlinkingPanels();
 
         //  The baddies!
@@ -136,7 +126,6 @@ PlutoGame.prototype = {
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
 
         this.createAliens();
-
         
         //  The score
         this.scoreString = 'Score ';
@@ -173,32 +162,29 @@ PlutoGame.prototype = {
         this.bullet_explosions = game.add.group();
         this.bullet_explosions.createMultiple(60, 'bullet_kaboom');
         this.bullet_explosions.forEach(this.setupBullet, this);
-       
 
         //  And some controls to play the game with
         this.cursors = game.input.keyboard.createCursorKeys();
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.fireButtonNow = game.input.keyboard.addKey(Phaser.Keyboard.F);
 
-        // buttons
+        // test button
         //this.buttonNorm = game.add.button(game.world.centerX - 161, 400, 'buttonNormGo', this.actionOnClickNorm, this, 2, 1, 0);
 
         // Top Bar
-
         //this.playerEnergy = game.add.sprite(game.world.centerX + 275, 25, 'playerEnergy');
         //this.playerEnergy.anchor.setTo(0.5, 0.5);
         //this.playerEnergy.scale.setTo(.20, .20);
-
        
         // HUD
         this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background')
         this.background.anchor.setTo(0.5, 0.5);
         this.background.scale.setTo(.50, .50);
      
+        // Home button to return to the main menu
         this.buttonHome = game.add.button(20, 20, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
         this.buttonHome.scale.setTo(.5, .5);
-
         
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
@@ -207,9 +193,9 @@ PlutoGame.prototype = {
         // FPS
         //this.txtFPS1 = "FPS: " + game.time.fps;
         //this.txtFPS = game.add.text(16, 332, this.txtFPS1, { font: '12px HappyKiller', fill: '#00ffff' });
-     
         //2) game.time.fps returns the current FPS (after the first 1s of your game). 
         // You can draw it in your state's update method.
+
         // Audio
         this.explosionSfx = game.add.audio('explosionSfx',0.8);
         this.ship_explosionSfx = game.add.audio('ship_explosionSfx',0.8);
@@ -221,29 +207,26 @@ PlutoGame.prototype = {
         //  Using setDecodedCallback we can be notified when they're ALL ready for use.
         //  The audio files could decode in ANY order, we can never be sure which it'll be.
         game.sound.setDecodedCallback([this.ship_explosionSfx, this.explosionSfx, this.swordSfx, this.blasterSfx, this.wilhelmSfx], this.update, this);
+        // don't put anything past here, it will be skipped by the audio callback
 
     }, // end create
 
     // temporary
     actionOnClickEnergy: function () {
-
     },
 
     // Action when click on the home button
     actionOnClickHome: function () {
-
         this.state.start('MainMenu');
     },
 
     // test action based on clicking a button
     actionOnClickNorm: function () {
         var txtCaption = "+ Hi Stephen";
-
         var txtAddition = game.add.text(400, 400, txtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
         game.time.events.add(100, function () {
             game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
         }, this);
-
         game.time.events.add(6000, function () {
             txtAddition.destroy();
         }, this);
@@ -251,23 +234,18 @@ PlutoGame.prototype = {
 
     // test panel to show an aminmation
     createBlinkingPanels: function () {
-
         var blinkingPanel = this.blinkingPanels.create(1, 1, 'buttonNorm');
         //blinkingPanel.anchor.setTo(0.5,0.5);
         blinkingPanel.animations.add('fly', [0, 1], 2, true);
         blinkingPanel.play('fly');
         blinkingPanel.body.moves = false;
-
         this.blinkingPanels.x = 50;
         this.blinkingPanels.y = 300;
-
         //var tween = game.add.tween(this.blinkingPanels).to( { x: 50 }, 20, Phaser.Easing.Linear.None, true, 0, 1000, true);
-
     },
 
     // create the aliens
     createAliens: function () {
-
         for (var y = 0; y < 4; y++) {
             for (var x = 0; x < 10; x++) {
                 var alien = this.aliens.create(x * 48, y * 50, 'invader');
@@ -277,7 +255,6 @@ PlutoGame.prototype = {
                 alien.body.moves = false;
             }
         }
-
         this.aliens.x = 160;
         this.aliens.y = 150;
 
@@ -286,42 +263,30 @@ PlutoGame.prototype = {
 
         //  When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
-
     },
 
     setupBullet: function (bullet) {
-
         bullet.anchor.x = 0.5;
         bullet.anchor.y = 0.5;
         bullet.animations.add('bullet_kaboom');
-
-
     },
 
     setupShip: function (ship) {
-
         ship.anchor.x = 0.5;
         ship.anchor.y = 0.5;
         ship.animations.add('ship_kaboom');
         ship.scale.setTo(0.5,1);
-
-
     },
 
     setupInvader: function (invader) {
-
         invader.anchor.x = 0.5;
         invader.anchor.y = 0.5;
         invader.animations.add('kaboom');
-
-
     },
 
     // not working, supposed to move the aliens down after each pass
     descend: function () {
-
         this.aliens.y += 100;
-
     },
 
 // **************************************************************************************
@@ -330,26 +295,23 @@ PlutoGame.prototype = {
    
     // main game loop
     update: function () {
-
         // FPS
         //this.txtFPS.text = "FPS: " + game.time.fps;
 
         //  Scroll the background
         this.starfield.tilePosition.y += 2;
 
+        // crazy way to determine the speed at this level
         var levelSpeed = this.level * 10;
 
         if (this.player.alive) {
             //  Reset the player, then check for movement keys
             this.player.body.velocity.setTo(0, 0);
 
-            
-
             if (this.cursors.left.isDown) {
                 this.player.body.velocity.x = -this.setvel-levelSpeed;
                 this.player.animations.add('flyL', [3,4,3], 20, true);
                 this.player.play('flyL');
-
             }
             else if (this.cursors.right.isDown) {
                 this.player.body.velocity.x = this.setvel+levelSpeed;
@@ -365,18 +327,21 @@ PlutoGame.prototype = {
             //}
           
             // Touch Interface
-            var touchRight =(game.world.centerX*2); // full width of display
-            var touchSize = touchRight*.20; // 20% of screen size
-            var touchLeft1 = 0;
-            var touchLeft2 = touchSize;
-            var touchRight1 = touchSize;
-            var touchRight2 = touchSize*2;
-            var touchLeft3 = touchRight-(touchSize*2);
-            var touchLeft4 = touchRight-(touchSize);
-            var touchRight3 = touchRight-(touchSize);
-            var touchRight4 = touchRight;
+            //var touchRight =(game.world.centerX*2); // full width of display
+            //var touchSize = touchRight*.20; // 20% of screen size
+            //var touchLeft1 = 0;
+            //var touchLeft2 = touchSize;
+            //var touchRight1 = touchSize;
+            //var touchRight2 = touchSize*2;
+            //var touchLeft3 = touchRight-(touchSize*2);
+            //var touchLeft4 = touchRight-(touchSize);
+            //var touchRight3 = touchRight-(touchSize);
+            //var touchRight4 = touchRight;
 
+            
             if (game.input.pointer1.isDown) {
+
+                /*
                 // Left thumb move to the left
                 if (game.input.pointer1.x > touchLeft1 &&
                     game.input.pointer1.x < touchLeft2) { this.player.body.velocity.x = -this.setvel;}
@@ -389,8 +354,9 @@ PlutoGame.prototype = {
                 // Right thumb move to the right
                 if (game.input.pointer1.x > touchRight3 &&
                     game.input.pointer1.x < touchRight4) { this.player.body.velocity.x = this.setvel;}
-                
-                // Just put the player whereever they touch
+                */
+
+                // Just put the player where ever they touch
                 // If they touch in the bottom half of the screen
                 if (game.input.pointer1.y > game.world.centerY) {
                     this.player.x = game.input.pointer1.x;
@@ -400,58 +366,24 @@ PlutoGame.prototype = {
                         this.player.y = game.input.pointer1.y - 70;
                     }
                 }
-
                }
-
-
-            /*
-            // Touch
-            // Left
-            if (game.input.pointer1.isDown &&
-                ((game.input.pointer1.x > game.world.centerX) &&
-                    (game.input.pointer1.x < game.world.centerX + game.world.centerX * .75))) {
-                this.player.body.velocity.x = -this.setvel;
-            }
-            if (game.input.pointer1.isDown &&
-                (game.input.pointer1.x < game.world.centerX - game.world.centerX * .75)) {
-                this.player.body.velocity.x = -this.setvel;
-            }
-
-            // Right
-            if (game.input.pointer1.isDown &&
-                ((game.input.pointer1.x > game.world.centerX - game.world.centerX * .75) &&
-                    (game.input.pointer1.x < game.world.centerX))
-            ) {
-                this.player.body.velocity.x = this.setvel;
-            }
-
-            if (game.input.pointer1.isDown &&
-                game.input.pointer1.x > game.world.centerX + game.world.centerX * .75) {
-                this.player.body.velocity.x = this.setvel;
-            }
-            */
 
             // Fire
             if (this.fireButton.isDown) {
                 this.fireBullet(false);
-
             }
 
             // Firing now no matter what!
             // A second touch on the screen fires now no matter what!
             if (this.fireButtonNow.isDown || game.input.pointer2.isDown) {
                 this.fireBullet(true);
-
             }
-            
 
             // Touch
             if ((game.input.pointer1.isDown || game.input.pointer2.isDown) && 
                 (game.input.pointer1.y > game.world.centerY)) {
                 this.fireBullet(false);
-
             }
-
 
             // Time for the enemy to fire
             if (game.time.now > this.firingTimer) {
@@ -463,25 +395,20 @@ PlutoGame.prototype = {
             game.physics.arcade.overlap(this.enemyBullets, this.player, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(this.bullets, this.enemyBullets, this.bulletHitsBullet, null, this);
         }
-
-      
-
-
     }, // end update
 
     render: function () {
 
         //for (var i = 0; i < this.aliens.length; i++)
-       // {
-       //      this.debug.body(this.aliens.children[i]);
-       // }
+        // {
+        //      this.debug.body(this.aliens.children[i]);
+        // }
         //game.debug.spriteInfo(this.player, 32, 32);
 
         //game.debug.text('this.trainingLevel ' + this.trainingLevel,16, 400);
-      //var debug = this.game.debug;
-      //debug.text('povin.triningLevel ' + povin.trainingLevel,10,120);
-      //debug.text('povin ' + povin,10,140);
-
+        //var debug = this.game.debug;
+        //debug.text('povin.triningLevel ' + povin.trainingLevel,10,120);
+        //debug.text('povin ' + povin,10,140);
     },
 
     // Player bullet hits an enemy bullet
@@ -495,13 +422,10 @@ PlutoGame.prototype = {
         var explosion = this.bullet_explosions.getFirstExists(false);
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
         explosion.play('bullet_kaboom', 30, false, true);
-
-
     },
 
     // Player bullet hits the enemny
     playerHitsEnemy: function (bullet, alien) {
-
         //  When a bullet hits an alien we kill them both
         bullet.kill();
         alien.kill();
@@ -516,6 +440,7 @@ PlutoGame.prototype = {
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
 
+        // End of the level (all the enemies are killed)
         if (this.aliens.countLiving() == 0) {
             this.score += 1000;
             this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
@@ -523,26 +448,20 @@ PlutoGame.prototype = {
             this.level += 1;
 
             this.enemyBullets.callAll('kill', this);
-            //this.stateText.text = " Level " + this.level;
-            //this.stateText.visible = true;
 
+            // show a Level text floating up the screen
             this.txtCaption = "Level " + this.level;
-
             var txtAddition = game.add.text(game.world.centerX - 50, game.world.centerY, this.txtCaption, { font: '36px HappyKiller', fill: '#0099ff' });
             game.time.events.add(100, function () {
                 game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
             }, this);
-
             game.time.events.add(2000, function () {
                 txtAddition.destroy();
             }, this);
 
-            //the "Tap to restart" handler
-            //game.input.onTap.addOnce(restart,this);
+            // Immediatly start the next level
             this.restart();
         }
-
-
     },
 
     // Enemny bullet hits the player
@@ -550,8 +469,8 @@ PlutoGame.prototype = {
 
         bullet.kill();
 
+        // remove a player life
         this.live = this.lives.getFirstAlive();
-
         if (this.live) {
             this.live.kill();
         }
@@ -566,18 +485,18 @@ PlutoGame.prototype = {
 
         // animate some cool text up the screen
         this.txtCaption = "AAAHHHH";
-
         var txtAddition = game.add.text(this.player.body.x, this.player.body.y, this.txtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
         game.time.events.add(100, function () {
             game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
         }, this);
-
         game.time.events.add(2000, function () {
             txtAddition.destroy();
         }, this);
 
         // When the player dies
         if (this.lives.countLiving() < 1) {
+
+            // play scream
             this.wilhelmSfx.play();
 
             this.player.kill();
@@ -588,14 +507,14 @@ PlutoGame.prototype = {
 
             // reset score and level
             this.score = 0;
+
+            // if in training mode then stay on current level, otherwise reset the level
             //this.level = this.trainingLevel;
 
             //the "Tap to restart" handler
             this.fireButton.onDown.addOnce(this.restart, this);
             game.input.onTap.addOnce(this.restart, this);
         }
-
-
     },
 
     // Enemy Fires
@@ -611,12 +530,11 @@ PlutoGame.prototype = {
         var myalien;
 
         this.aliens.forEachAlive(function (myalien) {
-
             // put every living enemy in an array
             mylivingEnemies.push(myalien);
         });
 
-
+        // detrmine the enemy to fire next
         if (this.enemyBullet && mylivingEnemies.length > 0) {
 
             var random = game.rnd.integerInRange(0, mylivingEnemies.length - 1);
@@ -651,34 +569,28 @@ PlutoGame.prototype = {
                 this.bulletTime = game.time.now + this.gameSpeed - (levelSpeed/2);
             }
         }
-
-
     },
 
     resetBullet: function (bullet) {
         //  Called if the bullet goes out of the screen
         bullet.kill();
-
     },
 
     restart: function () {
 
         //  A new level starts
 
-        //resets the life count
+        // resets the life count
         this.lives.callAll('revive');
-        //  And brings the aliens back from the dead :)
+        // And brings the aliens back from the dead :)
         this.aliens.removeAll();
         this.createAliens();
 
         //revives the player
         this.player.revive();
         //hides the text
-
         this.stateText.visible = false;
 
         this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
-
     }
-
 };
