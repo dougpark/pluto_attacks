@@ -5,16 +5,15 @@
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'PlutoAttacks'), Main = function () {};
       
-// Global povin object to track stuff  
-var povin = {
+// Global Povin object to track stuff  
+var Povin = {
   trainingLevel: 1,
   gameMode: 1,
   bgMusic: null,
   toString: function() {return "I am new Povin!";}
 };
 
-var Main = function (game) {
-};  
+var Main = function (game) {};  
 
 Main.prototype = {
 

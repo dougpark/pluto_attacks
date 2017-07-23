@@ -3,14 +3,9 @@
 // **************************************************************************************
 "use strict";
 
-var Options = function () {
-    var levelSelect;
-    var title;
-    var buttonNormal;
-    var buttonFun;
-    var buttonInsane;
-    var buttonMusic;
-};
+var Options = function () {};
+
+var xwin_doug = window.Options;
 
 Options.prototype = {
 
@@ -78,23 +73,23 @@ Options.prototype = {
 
     // Action when click on the music button
     actionOnClickMusic: function () {
-        if (povin.bgMusic.isPlaying == true) {povin.bgMusic.pause();}
-        else {povin.bgMusic.play();};
+        if (Povin.bgMusic.isPlaying == true) {Povin.bgMusic.pause();}
+        else {Povin.bgMusic.play();};
     },
 
     // Start Level 1
     actionOnClickTrainingLevel_1: function () {
-        povin.trainingLevel = 1;
+        Povin.trainingLevel = 1;
     },
 
     // Start Level 9
     actionOnClickTrainingLevel_9: function () {
-        povin.trainingLevel = 9;
+        Povin.trainingLevel = 9;
     },
 
     // Start Level 27
     actionOnClickTrainingLevel_27: function () {
-        povin.trainingLevel = 27;
+        Povin.trainingLevel = 27;
     },
 
     // button Back
@@ -103,16 +98,16 @@ Options.prototype = {
     },
 
     render: function() {
-        var debug = this.game.debug;
+        var debug = game.debug;
         debug.text('height ' + game.world.height,10,120);
-        debug.text('trainingLevel '+ povin.trainingLevel,10,140);
-        debug.text('povin '+ povin,10,160);
+        debug.text('trainingLevel '+ Povin.trainingLevel,10,140);
+        debug.text('Povin '+ Povin,10,160);
         debug.text('Options Menu',10,180);
 
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
     },
 
     nextState: function () {
-        this.state.start('MainMenu', true, false, povin);
+        this.state.start('MainMenu', true, false, Povin);
     }
 };

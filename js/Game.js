@@ -3,51 +3,7 @@
 // **************************************************************************************
 "use strict";
 
-var PlutoGame = function () {
-
-    this.trainingLevel;
-    this.txtFPS;
-    this.player;
-    this.aliens;
-    var bullets;
-    this.bulletTime = 0;
-    var cursors;
-    var fireButton;
-    var fireButtonNow;
-    var explosions;
-    var ship_explosions;
-    var bullet_explosions;
-    var starfield;
-    var background;
-    this.score = 0;
-    this.level;
-    var scoreString = '';
-    var scoreText;
-    var lives;
-    this.enemyBullet;
-    this.firingTimer = 0;
-    var stateText;
-    this.livingEnemies = [];
-    var explosionSfx;
-    var ship_explosionSfx;
-    var swordSfx;
-    var blasterSfx;
-    var wilhelmSfx;
-
-    // Top Bar
-    var playerEnergy;
-    var buttonHome;
-    var buttonSpeaker;
-    var buttonPause;
-
-    var gameSpeed; // set based on gameMode
-    var gameSpeedTxt;
-    var gameSpeedText; // display
-    this.gameMode; // determined by MainMenu
-    this.setvel;
-
-    var buttonNorm;
-};
+var PlutoGame = function () {};
 
 PlutoGame.prototype = {
 
@@ -63,6 +19,10 @@ PlutoGame.prototype = {
 // Create
 // **************************************************************************************
     create: function () {
+
+        this.score = 0;
+        this.firingTimer = 0;
+        this.bulletTime = 0;
 
         //  The scrolling starfield background
         this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
@@ -366,7 +326,7 @@ PlutoGame.prototype = {
                         this.player.y = game.input.pointer1.y - 70;
                     }
                 }
-               }
+            }
 
             // Fire
             if (this.fireButton.isDown) {
@@ -407,8 +367,8 @@ PlutoGame.prototype = {
 
         //game.debug.text('this.trainingLevel ' + this.trainingLevel,16, 400);
         //var debug = this.game.debug;
-        //debug.text('povin.triningLevel ' + povin.trainingLevel,10,120);
-        //debug.text('povin ' + povin,10,140);
+        //debug.text('Povin.triningLevel ' + Povin.trainingLevel,10,120);
+        //debug.text('Povin ' + Povin,10,140);
     },
 
     // Player bullet hits an enemy bullet

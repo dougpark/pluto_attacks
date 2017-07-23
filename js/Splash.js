@@ -7,7 +7,7 @@ var WebFontConfig;
 
 var Splash = function () {};
 
-Splash.prototype = {
+Splash.prototype = { 
 
   loadScripts: function () {
     game.load.script('MainMenu',  "js/MainMenu.js");
@@ -131,9 +131,9 @@ Splash.prototype = {
   },
 
   addGameMusic: function () {
-    povin.bgMusic = game.add.audio('bgm');
-    povin.bgMusic.loop = true;
-    //povin.bgMusic.play(); // autostart music
+    Povin.bgMusic = game.add.audio('bgm');
+    Povin.bgMusic.loop = true;
+    //Povin.bgMusic.play(); // autostart music
   },
 
   create: function() {

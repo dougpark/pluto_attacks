@@ -3,14 +3,7 @@
 // **************************************************************************************
 "use strict";
 
-var MainMenu = function () {
-    var levelSelect;
-    var title;
-    var buttonNormal;
-    var buttonFun;
-    var buttonInsane;
-    var buttonOptions;
-};
+var MainMenu = function () {};
 
 MainMenu.prototype = {
 
@@ -64,37 +57,37 @@ MainMenu.prototype = {
 
     // Action when click on the music button
     actionOnClickOption: function () {
-        this.state.start('Options', true, false, povin);   
+        this.state.start('Options', true, false, Povin);   
     },
 
     // button Normal
     actionOnClickNormal: function () {
-        povin.gameMode = 1;
+        Povin.gameMode = 1;
         this.nextState();
     },
 
     // button Fun
     actionOnClickFun: function () {
-        povin.gameMode = 2;
+        Povin.gameMode = 2;
         this.nextState();
     },
 
     // button Insane
     actionOnClickInsane: function () {
-        povin.gameMode = 3;
+        Povin.gameMode = 3;
         this.nextState();
     },
 
     render: function() {
         var debug = this.game.debug;
         debug.text('height ' + game.world.height,10,120);
-        debug.text('trainingLevel '+ povin.trainingLevel,10,140);
-        debug.text('povin '+ povin,10,160);
+        debug.text('trainingLevel '+ Povin.trainingLevel,10,140);
+        debug.text('Povin '+ Povin,10,160);
 
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
     },
 
     nextState: function () {
-        this.state.start('PlutoGame', true, false, povin.gameMode, povin.trainingLevel);
+        this.state.start('PlutoGame', true, false, Povin.gameMode, Povin.trainingLevel);
     }
 };
