@@ -13,7 +13,7 @@ var Povin = {
   toString: function() {return "I am new Povin!";}
 };
 
-var Main = function (game) {};  
+var Main = function () {};  
 
 Main.prototype = {
 

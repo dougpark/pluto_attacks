@@ -79,12 +79,13 @@ MainMenu.prototype = {
     },
 
     render: function() {
-        var debug = this.game.debug;
+        /* var debug = this.game.debug;
         debug.text('height ' + game.world.height,10,120);
         debug.text('trainingLevel '+ Povin.trainingLevel,10,140);
         debug.text('Povin '+ Povin,10,160);
 
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
+        */
     },
 
     nextState: function () {
