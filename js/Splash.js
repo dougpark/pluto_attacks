@@ -67,7 +67,7 @@ Splash.prototype = {
 
     // Top Status Bars
     game.load.spritesheet('playerEnergy', 'assets/buttons/player_energy.png');
-    game.load.spritesheet('buttonHome', 'assets/buttons/button_home.png',50,50);
+    game.load.spritesheet('buttonHome', 'assets/buttons/button_home1.png',100,100);
     game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
     game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
     game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',166,166);

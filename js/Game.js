@@ -142,9 +142,12 @@ PlutoGame.prototype = {
         this.background.scale.setTo(.50, .50);
      
         // Home button to return to the main menu
-        this.buttonHome = game.add.button(20, 20, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
+        this.buttonHome = game.add.button(40, 40, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
-        this.buttonHome.scale.setTo(.5, .5);
+        this.buttonHome.scale.setTo(.8, .8);
+        this.buttonHome.events.onInputDown.add(this.onInputDownHome, this);
+        this.buttonHome.events.onInputUp.add(this.onInputUpHome, this);
+
         
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
@@ -178,6 +181,20 @@ PlutoGame.prototype = {
     // Action when click on the home button
     actionOnClickHome: function () {
         this.state.start('MainMenu');
+    },
+
+    onInputDownHome: function(target) {
+        game.add.tween(target.scale).to({
+            x: 0.6,
+            y: 0.6
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+     onInputUpHome: function(target) {
+        game.add.tween(target.scale).to({
+            x: .8,
+            y: .8
+        }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
     // test action based on clicking a button
