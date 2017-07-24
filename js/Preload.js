@@ -1,17 +1,19 @@
 // **************************************************************************************
-// Splash
+// Preload
 // **************************************************************************************
 "use strict";
 
 var WebFontConfig;
 
-var Splash = function () {};
+var Preload = function () {};
 
-Splash.prototype = { 
+Preload.prototype = { 
 
+  // loading scripts in index.html while in development so can debug in Safari
   loadScripts: function () {
     game.load.script('MainMenu',  "js/MainMenu.js");
     game.load.script('Options',   "js/Options.js");
+    game.load.script('Credits',   "js/Credits.js");
     game.load.script('PlutoGame', "js/Game.js");
     game.load.script('Util',      "js/Util.js");
 
@@ -38,17 +40,23 @@ Splash.prototype = {
   loadImages: function () {
     // MainMenu Images
     game.load.image('title', 'assets/buttons/title.png');
-    game.load.image('options', 'assets/buttons/options.png');
     game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
     game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal.png', 227, 100);
     game.load.spritesheet('buttonFun', 'assets/buttons/button_fun.png', 227, 100);
     game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
+    game.load.spritesheet('buttonOptions', 'assets/buttons/button_options.png');
 
     // Options Images
+    game.load.image('options', 'assets/buttons/options.png');
+    game.load.image('buttonCredits', 'assets/buttons/button_credits.png');
     game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 100,100);
     game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 100,100);
     game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 100,100);
     game.load.image('training_level', 'assets/buttons/training_level.png');
+    game.load.spritesheet('buttonBack', 'assets/buttons/button_back.png',128,100);
+    //game.load.spritesheet('buttonCredits', 'assets/buttons/button_back.png',100,100);
+
+    // Credits Images
 
     // Game Images
     game.load.image('bullet', 'assets/images/bullet.png');
@@ -57,7 +65,7 @@ Splash.prototype = {
     game.load.image('ship', 'assets/images/player.png');
     game.load.spritesheet('kaboom', 'assets/images/explodeblue.png', 128, 128);
     game.load.spritesheet('ship_kaboom', 'assets/images/explode_ice_nova.png',256,128);
-    game.load.spritesheet('bullet_kaboom', 'assets/images/explode_Blue.png',66,66);
+    game.load.spritesheet('bullet_kaboom', 'assets/images/explode_blue.png',66,66);
 
     game.load.image('starfield', 'assets/images/starfield1.png');
     game.load.image('background', 'assets/images/hud_1.png');
@@ -70,9 +78,10 @@ Splash.prototype = {
     game.load.spritesheet('buttonHome', 'assets/buttons/button_home1.png',100,100);
     game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
     game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
-    game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',166,166);
-    game.load.spritesheet('buttonBack', 'assets/buttons/button_back.png',100,100);
-    game.load.spritesheet('buttonOptions', 'assets/buttons/button_gear.png',100,100);
+    game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',128,100);
+  
+   
+    
 
     // Sound Effects
     game.load.audio('explosionSfx', 'assets/audio/pusher.wav');
@@ -125,6 +134,7 @@ Splash.prototype = {
   addGameStates: function () {
     game.state.add('MainMenu', MainMenu);
     game.state.add('Options', Options);
+    game.state.add('Credits', Credits);
     game.state.add('PlutoGame', PlutoGame);
     //game.state.add("GameOver",GameOver);
     //game.state.add("Credits",Credits);

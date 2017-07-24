@@ -1,11 +1,11 @@
 // **************************************************************************************
-// Options
+// Credits
 // **************************************************************************************
 "use strict";
 
-var Options = function () {};
+var Credits = function () {};
 
-Options.prototype = {
+Credits.prototype = {
 
     init: function() {
     },
@@ -15,7 +15,7 @@ Options.prototype = {
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
         
         // Option menu title image
-        this.title = game.add.sprite(game.world.centerX, 65, 'options');
+        this.title = game.add.sprite(game.world.centerX, 65, 'credits');
         this.title.anchor.setTo(0.5, 0.5);
         this.title.scale.setTo(1.5, .80);
 
@@ -55,17 +55,10 @@ Options.prototype = {
         // Music Button
         this.buttonMusic = game.add.button(game.world.width-75, game.world.centerY+200, 'buttonMusic', this.actionOnClickMusic, this, 2, 1, 0);
         this.buttonMusic.anchor.setTo(0.5, 0.5);
-        this.buttonMusic.scale.setTo(1, 1);
+        this.buttonMusic.scale.setTo(.6, .6);
         this.buttonMusic.events.onInputDown.add(this.onInputDownMusic, this);
         this.buttonMusic.events.onInputUp.add(this.onInputUpMusic, this);
 
-        // Credits Button
-        this.buttonCredits = game.add.button(75, game.world.centerY+95, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
-        this.buttonCredits.anchor.setTo(0.5, 0.5);
-        this.buttonCredits.scale.setTo(1,1);
-        this.buttonCredits.events.onInputDown.add(this.onInputDownCredits, this);
-        this.buttonCredits.events.onInputUp.add(this.onInputUpCredits, this);
-  
         // Back Button
         this.buttonBack = game.add.button(75, game.world.centerY+200, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
         this.buttonBack.anchor.setTo(0.5, 0.5);
@@ -95,8 +88,8 @@ Options.prototype = {
 
      onInputDownMusic: function(target) {
         game.add.tween(target.scale).to({
-            x: 0.8,
-            y: 0.8
+            x: 0.4,
+            y: 0.4
         }, 100, Phaser.Easing.Cubic.Out, true);
         //game.add.tween(target.my_txt.scale).to({
         //    x: 0.9,
@@ -106,8 +99,8 @@ Options.prototype = {
 
      onInputUpMusic: function(target) {
         game.add.tween(target.scale).to({
-            x: 1,
-            y: 1
+            x: 0.6,
+            y: 0.6
         }, 100, Phaser.Easing.Cubic.Out, true);
         //game.add.tween(target.my_txt.scale).to({
         //    x: 1,
@@ -163,25 +156,6 @@ Options.prototype = {
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
-    // button Credits
-    actionOnClickCredits: function () {
-        this.state.start('Credits', true, false);
-    },
-
-    onInputDownCredits: function(target) {
-        game.add.tween(target.scale).to({
-            x: 0.8,
-            y: 0.8
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
-
-    onInputUpCredits: function(target) {
-        game.add.tween(target.scale).to({
-            x: 1,
-            y: 1
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
-
     // button Back
     actionOnClickBack: function () {
         this.nextState();
@@ -202,17 +176,17 @@ Options.prototype = {
     },
 
     render: function() {
-     /* var debug = game.debug;
+      var debug = game.debug;
         debug.text('height ' + game.world.height,10,120);
-        debug.text('trainingLevel '+ Povin.trainingLevel,10,140);
+        //debug.text('trainingLevel '+ Povin.trainingLevel,10,140);
         debug.text('Povin '+ Povin,10,160);
-        debug.text('Options Menu',10,180);
+        debug.text('Credits Menu',10,180);
 
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
-     */
+     
     },
 
     nextState: function () {
-        this.state.start('MainMenu', true, false);
+        this.state.start('Options', true, false);
     }
 };

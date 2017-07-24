@@ -23,12 +23,12 @@ Main.prototype = {
   preload: function () {
     game.load.image('logo', 'assets/images/povinlogo.png');
     game.load.image('loading',  'assets/images/loading.png');
-    game.load.script('splash',  'js/Splash.js');
+    game.load.script('Preload',  'js/Preload.js');
   },
 
   create: function () {
-    game.state.add('Splash', Splash);
-    game.state.start('Splash');
+    game.state.add('Preload', Preload);
+    game.state.start('Preload');
   }
 
 };
