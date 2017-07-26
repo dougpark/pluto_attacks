@@ -17,50 +17,18 @@ Options.prototype = {
         // Option menu title image
         this.title = game.add.sprite(game.world.centerX, 65, 'options');
         this.title.anchor.setTo(0.5, 0.5);
-        this.title.scale.setTo(1.5, .80);
-
-        // Option menu
-        this.levelSelect = game.add.sprite(game.world.centerX, game.world.centerY + 50, 'levelSelect');
-        this.levelSelect.anchor.setTo(0.5, 0.5);
-        //this.buttonNormal.scale.setTo(.90,.90);
-        //var levelTween = game.add.tween(this.levelSelect.scale).to( { x: game.world.centerX-5, y:game.world.centerY+50-5 }, 500, Phaser.Easing.Back.Out, true, -1);
-
-        var levelTween = game.add.tween(this.levelSelect.scale).to({ x: 1.05, y: 1.05 }, 2000, Phaser.Easing.Linear.None, true);
-        levelTween.yoyo(true, 0);
-        levelTween.repeat(-1);
-     
-        // Training Level menu title image
-        this.training_level = game.add.sprite(game.world.centerX, game.world.centerY-50, 'training_level');
-        this.training_level.anchor.setTo(0.5, 0.5);
-        this.training_level.scale.setTo(0.3, 0.3);
-
-        this.buttonLevel_1 = game.add.button(game.world.centerX-100, game.world.centerY+50, 'buttonLevel_1', this.actionOnClickTrainingLevel_1, this, 2, 1, 0);
-        this.buttonLevel_1.anchor.setTo(0.5, 0.5);
-        this.buttonLevel_1.scale.setTo(1,1);
-        this.buttonLevel_1.events.onInputDown.add(this.onInputDownTraining, this);
-        this.buttonLevel_1.events.onInputUp.add(this.onInputUpTraining, this);
-
-        this.buttonLevel_9 = game.add.button(game.world.centerX, game.world.centerY+50, 'buttonLevel_9', this.actionOnClickTrainingLevel_9, this, 2, 1, 0);
-        this.buttonLevel_9.anchor.setTo(0.5, 0.5); 
-        this.buttonLevel_9.scale.setTo(1,1);
-        this.buttonLevel_9.events.onInputDown.add(this.onInputDownTraining, this);
-        this.buttonLevel_9.events.onInputUp.add(this.onInputUpTraining, this);
-
-        this.buttonLevel_27 = game.add.button(game.world.centerX+100, game.world.centerY+50, 'buttonLevel_27', this.actionOnClickTrainingLevel_27, this, 2, 1, 0);
-        this.buttonLevel_27.anchor.setTo(0.5, 0.5);
-        this.buttonLevel_27.scale.setTo(1,1);
-        this.buttonLevel_27.events.onInputDown.add(this.onInputDownTraining, this);
-        this.buttonLevel_27.events.onInputUp.add(this.onInputUpTraining, this);
+        this.title.scale.setTo(1.2, .80);
 
         // Music Button
-        this.buttonMusic = game.add.button(game.world.width-75, game.world.centerY+200, 'buttonMusic', this.actionOnClickMusic, this, 2, 1, 0);
+        this.buttonMusic = game.add.button(game.world.centerX, game.world.centerY-50, 'buttonMusic', this.actionOnClickMusic, this);
         this.buttonMusic.anchor.setTo(0.5, 0.5);
         this.buttonMusic.scale.setTo(1, 1);
         this.buttonMusic.events.onInputDown.add(this.onInputDownMusic, this);
         this.buttonMusic.events.onInputUp.add(this.onInputUpMusic, this);
+        this.buttonMusic.frame = Povin.musicEnabled; 
 
         // Credits Button
-        this.buttonCredits = game.add.button(75, game.world.centerY+95, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
+        this.buttonCredits = game.add.button(game.world.centerX, game.world.centerY+100, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
         this.buttonCredits.anchor.setTo(0.5, 0.5);
         this.buttonCredits.scale.setTo(1,1);
         this.buttonCredits.events.onInputDown.add(this.onInputDownCredits, this);
@@ -72,7 +40,6 @@ Options.prototype = {
         this.buttonBack.scale.setTo(1,1);
         this.buttonBack.events.onInputDown.add(this.onInputDownBack, this);
         this.buttonBack.events.onInputUp.add(this.onInputUpBack, this);
-
     },
 
     // Test to animate blinking panels
@@ -88,9 +55,19 @@ Options.prototype = {
     },
 
     // Action when click on the music button
-    actionOnClickMusic: function () {
-        if (Povin.bgMusic.isPlaying == true) {Povin.bgMusic.pause();}
-        else {Povin.bgMusic.play();};
+    actionOnClickMusic: function (target) {
+        if (Povin.bgMusic.isPlaying == true) {
+            Povin.bgMusic.pause();
+            Povin.musicEnabled = 0;
+            localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
+            target.frame = 0; // off
+        }
+        else {
+            Povin.bgMusic.play();
+            Povin.musicEnabled = 1;
+            localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
+            target.frame = 1; // on
+        };
     },
 
      onInputDownMusic: function(target) {
@@ -109,6 +86,8 @@ Options.prototype = {
             x: 1,
             y: 1
         }, 100, Phaser.Easing.Cubic.Out, true);
+
+
         //game.add.tween(target.my_txt.scale).to({
         //    x: 1,
         //    y: 1
@@ -131,36 +110,6 @@ Options.prototype = {
             click.play();
         }
         */
-    },
-
-
-    // Start Level 1
-    actionOnClickTrainingLevel_1: function () {
-        Povin.trainingLevel = 1;
-    },
-
-    // Start Level 9
-    actionOnClickTrainingLevel_9: function () {
-        Povin.trainingLevel = 9;
-    },
-
-    // Start Level 27
-    actionOnClickTrainingLevel_27: function () {
-        Povin.trainingLevel = 27;
-    },
-
-    onInputDownTraining: function(target) {
-        game.add.tween(target.scale).to({
-            x: 0.8,
-            y: 0.8
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
-
-     onInputUpTraining: function(target) {
-        game.add.tween(target.scale).to({
-            x: 1,
-            y: 1
-        }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
     // button Credits
@@ -199,6 +148,10 @@ Options.prototype = {
             x: 1,
             y: 1
         }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    update: function() {
+
     },
 
     render: function() {

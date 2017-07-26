@@ -177,10 +177,9 @@ Credits.prototype = {
 
     render: function() {
       var debug = game.debug;
-        debug.text('height ' + game.world.height,10,120);
-        //debug.text('trainingLevel '+ Povin.trainingLevel,10,140);
-        debug.text('Povin '+ Povin,10,160);
-        debug.text('Credits Menu',10,180);
+        debug.text('Credits Menu',10,100);
+        debug.text('height ' + game.world.height,10,120); 
+        debug.text('Povin '+ Povin.toString(),10,140);
 
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
      

@@ -26,7 +26,7 @@ Preload.prototype = {
     //game.load.script('options', 'states/Options.js');
 
     //Fonts
-    game.load.script('WebFont', 'lib/webfontloader.js');
+    //game.load.script('WebFont', 'lib/webfontloader.js');
   },
 
   loadBgm: function () {
@@ -49,11 +49,12 @@ Preload.prototype = {
     // Options Images
     game.load.image('options', 'assets/buttons/options.png');
     game.load.image('buttonCredits', 'assets/buttons/button_credits.png');
-    game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 100,100);
-    game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 100,100);
-    game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 100,100);
-    game.load.image('training_level', 'assets/buttons/training_level.png');
-    game.load.spritesheet('buttonBack', 'assets/buttons/button_back.png',128,100);
+    game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 110,100);
+    game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 110,100);
+    game.load.spritesheet('buttonLevel_18', 'assets/buttons/button_level_18.png', 110,100);
+    game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 110,100);
+    game.load.image('level_title', 'assets/buttons/panel_level.png');
+    game.load.spritesheet('buttonBack', 'assets/buttons/button_left.png',129,100);
     //game.load.spritesheet('buttonCredits', 'assets/buttons/button_back.png',100,100);
 
     // Credits Images
@@ -80,9 +81,6 @@ Preload.prototype = {
     game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
     game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',128,100);
   
-   
-    
-
     // Sound Effects
     game.load.audio('explosionSfx', 'assets/audio/pusher.wav');
     game.load.audio('ship_explosionSfx', 'assets/audio/pusher.wav');
@@ -127,7 +125,7 @@ Preload.prototype = {
 
     //this.loadScripts();
     this.loadImages();
-    this.loadFonts();
+    //this.loadFonts();
     this.loadBgm();
   },
 
@@ -143,11 +141,19 @@ Preload.prototype = {
   addGameMusic: function () {
     Povin.bgMusic = game.add.audio('bgm');
     Povin.bgMusic.loop = true;
-    //Povin.bgMusic.play(); // autostart music
+    if (Povin.musicEnabled == 1) {Povin.bgMusic.play();}
+  },
+
+  getLocalStorage: function() {
+    // get the localstorage saved value for musicEnabled
+    if (localStorage.getItem("PlutoAttacksMusicEnabled") !== null) {
+      Povin.musicEnabled = parseInt(localStorage.getItem("PlutoAttacksMusicEnabled"));
+    }
   },
 
   create: function() {
     this.status.setText('Ready!');
+    this.getLocalStorage();
     this.addGameStates();
     this.addGameMusic();
 
