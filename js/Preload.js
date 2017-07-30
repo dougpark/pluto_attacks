@@ -31,8 +31,8 @@ Preload.prototype = {
 
   loadBgm: function () {
     // thanks Kevin Macleod at http://incompetech.com/
-    //game.load.audio('bgm', 'assets/audio/Dangerous.mp3');
-    game.load.audio('bgm', 'assets/audio/Exit the Premises.mp3');
+    game.load.audio('bgm', 'assets/audio/Dangerous.mp3');
+    //game.load.audio('bgm', 'assets/audio/Exit the Premises.mp3');
     //game.load.audio('bgm', 'assets/audio/Kevin_MacLeod_-_Early_Riser.mp3');
   },
 
@@ -94,6 +94,7 @@ Preload.prototype = {
   },
 
   // Load and process web fonts
+  /*
   loadFonts: function () {
     WebFontConfig = {
       custom: {
@@ -102,6 +103,7 @@ Preload.prototype = {
       }
     }
   },
+  */
 
   init: function () {
     this.physics.startSystem(Phaser.Physics.ARCADE);
@@ -135,7 +137,6 @@ Preload.prototype = {
     game.state.add('Credits', Credits);
     game.state.add('PlutoGame', PlutoGame);
     //game.state.add("GameOver",GameOver);
-    //game.state.add("Credits",Credits);
   },
 
   addGameMusic: function () {

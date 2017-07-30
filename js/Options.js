@@ -114,7 +114,7 @@ Options.prototype = {
 
     // button Credits
     actionOnClickCredits: function () {
-        this.state.start('Credits', true, false);
+       // this.state.start('Credits', true, false);
     },
 
     onInputDownCredits: function(target) {

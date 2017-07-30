@@ -383,8 +383,8 @@ PlutoGame.prototype = {
         //game.debug.spriteInfo(this.player, 32, 32);
 
         //game.debug.text('this.trainingLevel ' + this.trainingLevel,16, 400);
-        //var debug = this.game.debug;
-        //debug.text('Povin.triningLevel ' + Povin.trainingLevel,10,120);
+        var debug = this.game.debug;
+        debug.text('High score ' + Povin.getHighScore(),10,120);
         //debug.text('Povin ' + Povin,10,140);
     },
 
@@ -479,8 +479,17 @@ PlutoGame.prototype = {
             this.player.kill();
             this.enemyBullets.callAll('kill');
 
-            this.stateText.text = "\n   Pluto Wins Again \n Tap to Save Earth";
-            this.stateText.visible = true;
+            if (Povin.compareHighScore(this.gameMode, this.level, this.score)) {
+
+                this.stateText.text = "\n  New High Score!\n   Pluto Wins Again \n Tap to Save Earth";
+                this.stateText.visible = true;
+
+            } else {
+
+                this.stateText.text = "\n   Pluto Wins Again \n Tap to Save Earth";
+                this.stateText.visible = true;    
+
+            }
 
             // reset score and level
             this.score = 0;
