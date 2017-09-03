@@ -64,6 +64,7 @@ PlutoGame.prototype = {
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
+        
 
         //  The hero!
         this.player = game.add.sprite(game.world.centerX, game.world.centerY + 250, 'shipLR');
@@ -73,6 +74,7 @@ PlutoGame.prototype = {
         this.player.body.collideWorldBounds = true;
         this.player.animations.add('fly1', [0,1,2,1,0,11,12,11], 10, true);
         this.player.play('fly1');
+        this.player.bonusPoints = 0;
 
         // BlinkingPanels
         this.blinkingPanels = game.add.group();
@@ -84,6 +86,7 @@ PlutoGame.prototype = {
         this.aliens = game.add.group();
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
+        this.aliens.bonusPoints = 0;
 
         this.createAliens();
         
@@ -383,8 +386,8 @@ PlutoGame.prototype = {
         //game.debug.spriteInfo(this.player, 32, 32);
 
         //game.debug.text('this.trainingLevel ' + this.trainingLevel,16, 400);
-        var debug = this.game.debug;
-        debug.text('High score ' + Povin.getHighScore(),10,120);
+        //var debug = this.game.debug;
+        //debug.text('High score ' + Povin.getHighScore(),10,120);
         //debug.text('Povin ' + Povin,10,140);
     },
 
@@ -399,6 +402,26 @@ PlutoGame.prototype = {
         var explosion = this.bullet_explosions.getFirstExists(false);
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
         explosion.play('bullet_kaboom', 30, false, true);
+
+        this.aliens.bonusPoints += 1; // start counting bonus when hit enemy bullet
+
+        if (this.aliens.bonusPoints > 9) { // must hit n enemy bullets in a row to start bonus points
+            this.player.bonusPoints = this.aliens.bonusPoints * 3;
+
+            // show a Bonus text floating up the screen
+            this.txtCaption = "+" + this.player.bonusPoints;
+            var txtAddition = game.add.text(enemyBullet.body.x, enemyBullet.body.y, this.txtCaption, { font: '18px HappyKiller', fill: '#00ddff' });
+            game.time.events.add(100, function () {
+                game.add.tween(txtAddition).to({ y: enemyBullet.body.y-100, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+            }, this);
+            game.time.events.add(1000, function () {
+                txtAddition.destroy();
+            }, this);
+
+            this.score += this.player.bonusPoints;
+            this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+            
+        }
     },
 
     // Player bullet hits the enemny
@@ -416,6 +439,8 @@ PlutoGame.prototype = {
         var explosion = this.explosions.getFirstExists(false);
         explosion.reset(alien.body.x, alien.body.y);
         explosion.play('kaboom', 30, false, true);
+
+        this.aliens.bonusPoints = 0; // reset bonus counter when hit alien
 
         // End of the level (all the enemies are killed)
         if (this.aliens.countLiving() == 0) {
@@ -462,7 +487,7 @@ PlutoGame.prototype = {
 
         // animate some cool text up the screen
         this.txtCaption = "AAAHHHH";
-        var txtAddition = game.add.text(this.player.body.x, this.player.body.y, this.txtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
+        var txtAddition = game.add.text(this.player.body.x, this.player.body.y, this.txtCaption, { font: '12px HappyKiller', fill: '#ff3333' });
         game.time.events.add(100, function () {
             game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
         }, this);

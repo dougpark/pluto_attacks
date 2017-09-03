@@ -115,7 +115,7 @@ Preload.prototype = {
     this.loadingBar = game.make.sprite(game.world.centerX-(387/2), 400, "loading");
     this.logo = game.make.sprite(game.world.centerX, 200, 'logo');
     this.logo.anchor.setTo(0.5,0.5);
-    this.status = game.make.text(game.world.centerX, 380, 'Loading...', { font: '20px HappyKiller', fill: '#0099ff' });
+    this.status = game.make.text(game.world.centerX, 380, 'Loading...', { font: '20px HappyKiller, arial', fill: '#0099ff' });
     this.status.anchor.setTo(0.5,0.5);
   },
 
