@@ -36,7 +36,7 @@ Preload.prototype = {
     //game.load.audio('bgm', 'assets/audio/Kevin_MacLeod_-_Early_Riser.mp3');
   },
 
-  // varios freebies found from google image search
+ 
   loadImages: function () {
     // MainMenu Images
     game.load.image('title', 'assets/buttons/title.png');
@@ -73,6 +73,7 @@ Preload.prototype = {
     game.load.spritesheet('shipleft', 'assets/images/ship_1_left_strip10.png',138,150);
     game.load.spritesheet('shipright', 'assets/images/ship_1_right_strip10.png',138,150);
     game.load.spritesheet('shipLR', 'assets/images/ship_1_strip20.png',138,150);
+    game.load.spritesheet('shield','assets/images/shield_1.png',150,150);
 
     // Top Status Bars
     game.load.spritesheet('playerEnergy', 'assets/buttons/player_energy.png');
@@ -115,7 +116,7 @@ Preload.prototype = {
     this.loadingBar = game.make.sprite(game.world.centerX-(387/2), 400, "loading");
     this.logo = game.make.sprite(game.world.centerX, 200, 'logo');
     this.logo.anchor.setTo(0.5,0.5);
-    this.status = game.make.text(game.world.centerX, 380, 'Loading...', { font: '20px HappyKiller, arial', fill: '#0099ff' });
+    this.status = game.make.text(game.world.centerX, 380, ' ', { font: '20px HappyKiller', fill: '#0099ff' });
     this.status.anchor.setTo(0.5,0.5);
   },
 
@@ -142,7 +143,7 @@ Preload.prototype = {
   addGameMusic: function () {
     Povin.bgMusic = game.add.audio('bgm');
     Povin.bgMusic.loop = true;
-    if (Povin.musicEnabled == 1) {Povin.bgMusic.play();}
+    //if (Povin.musicEnabled == 1) {Povin.bgMusic.play();}
   },
 
   getLocalStorage: function() {

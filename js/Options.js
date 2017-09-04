@@ -60,13 +60,14 @@ Options.prototype = {
             Povin.bgMusic.pause();
             Povin.musicEnabled = 0;
             localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-            target.frame = 0; // off
+            target.frame = 0; // button image music off
         }
         else {
+            Povin.bgMusic.stop();
             Povin.bgMusic.play();
             Povin.musicEnabled = 1;
             localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-            target.frame = 1; // on
+            target.frame = 1; // button image music on
         };
     },
 
