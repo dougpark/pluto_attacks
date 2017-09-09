@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <title>iPhone Test</title>
+        <link rel="icon" type="image/png" href="/images/povingames-icon-512.png" /> 
+        <link rel="apple-touch-icon" href="/images/povingames-icon-512.png" /> 
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="viewport" content="initial-scale=1 maximum-scale=1 user-scalable=0" />
+        <style>
+            html {margin: 0px; padding: 0px}
+            body {margin: 0px; padding: 0px}
+        </style>
+    </head>
+    <body>
+        <main id="game"></main>   
+        <script src="lib/phaser.2.6.2.min.js" type="text/javascript"></script>  
+        <script>
+
+        var winW = Math.max(window.innerWidth, document.documentElement.clientWidth);
+        var winH = Math.max(window.innerHeight, document.documentElement.clientHeight);
+
+        var game = new Phaser.Game(this.winW, this.winH, Phaser.AUTO, 'iPhoneTest'), Main = function () {};
+
+        var Main = function () {};  
+
+        Main.prototype = {
+
+            init: function() {
+                this.physics.startSystem(Phaser.Physics.ARCADE);
+                this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+            },
+
+            preload: function () {
+                game.load.spritesheet('shipLR', 'assets/images/ship_1_strip20.png',138,150);
+                game.load.image('ship', 'assets/images/player.png');   
+            },
+
+            create: function () {
+
+                var graphics = game.add.graphics(0, 0);
+
+                // draw a rectangle
+                graphics.lineStyle(5, 0xff0000, 1);
+                graphics.drawRect(0, 0, winW, winH);
+
+                //  The hero!
+                this.player = game.add.sprite(game.world.centerX, game.world.centerY, 'shipLR');
+                this.player.anchor.setTo(0.5, 0.5);
+                this.player.scale.setTo(.3, .3); 
+                game.physics.enable(this.player, Phaser.Physics.ARCADE);
+                this.player.body.collideWorldBounds = true;
+                this.player.animations.add('flyL', [3,4,3], 20, true);
+                this.player.animations.add('flyR', [11,12,11], 20, true);
+                this.player.animations.add('fly1', [0,1,2,1,0,11,12,11], 10, true);
+                this.player.play('fly1');
+                this.player.bonusPoints = 0;
+                this.player.fire = 0;
+                this.player.energy =0;
+                
+                console.log("create ready");
+            },
+
+            update: function () {
+
+                this.player.body.velocity.setTo(0, 0);
+
+            },
+
+            render: function () {
+                var debug = this.game.debug;
+                debug.text('winW ' + winW,10,120);
+                debug.text('winH ' + winH,10,140);
+            }
+
+        };
+
+        game.state.add('Main', Main);
+        game.state.start('Main');
+        
+        </script>
+    </body>
+</html>

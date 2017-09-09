@@ -59,12 +59,14 @@ PlutoGame.prototype = {
         this.enemyBullets = game.add.group();
         this.enemyBullets.enableBody = true;
         this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
-        this.enemyBullets.createMultiple(60, 'enemyBullet'); //stephen
+        this.enemyBullets.createMultiple(60, 'enemyBullet');
         this.enemyBullets.setAll('anchor.x', 0.5);
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
         
+        // Rouge
+        //this.rouge = game.
 
         //  The hero!
         this.player = game.add.sprite(game.world.centerX, game.world.centerY + 250, 'shipLR');
@@ -101,6 +103,7 @@ PlutoGame.prototype = {
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
         this.aliens.bonusPoints = 0;
+        
 
         this.createAliens();
         
@@ -110,7 +113,7 @@ PlutoGame.prototype = {
 
         //  Lives
         this.lives = game.add.group();
-        game.add.text(game.world.width - 100, 50, 'Energy', { font: '20px HappyKiller', fill: '#0099ff' });
+        //game.add.text(game.world.width - 100, 50, 'Energy', { font: '20px HappyKiller', fill: '#0099ff' });
 
         //  Text
         this.stateText = game.add.text(game.world.centerX, game.world.centerY+75, '', { font: '30px HappyKiller', fill: '#0099ff' });
@@ -127,17 +130,17 @@ PlutoGame.prototype = {
 
         //  An explosion pool
         this.explosions = game.add.group();
-        this.explosions.createMultiple(60, 'kaboom');
+        this.explosions.createMultiple(80, 'kaboom');
         this.explosions.forEach(this.setupInvader, this);
 
         //  Player ship explosion pool
         this.ship_explosions = game.add.group();
-        this.ship_explosions.createMultiple(20, 'ship_kaboom');
+        this.ship_explosions.createMultiple(40, 'ship_kaboom');
         this.ship_explosions.forEach(this.setupShip, this);
 
         //  Bullet ship explosion pool
         this.bullet_explosions = game.add.group();
-        this.bullet_explosions.createMultiple(60, 'bullet_kaboom');
+        this.bullet_explosions.createMultiple(80, 'bullet_kaboom');
         this.bullet_explosions.forEach(this.setupBullet, this);
 
         //  And some controls to play the game with
@@ -238,6 +241,11 @@ PlutoGame.prototype = {
         //var tween = game.add.tween(this.blinkingPanels).to( { x: 50 }, 20, Phaser.Easing.Linear.None, true, 0, 1000, true);
     },
 
+    // Kill the aliens when they leave the screen
+    alienOut: function(alien) {
+        alien.kill();
+    },
+
     // create the aliens
     createAliens: function () {
         for (var y = 0; y < 4; y++) {
@@ -246,7 +254,9 @@ PlutoGame.prototype = {
                 alien.anchor.setTo(0.5, 0.5);
                 alien.animations.add('fly', [0, 1, 2, 3], 20, true);
                 alien.play('fly');
-                alien.body.moves = false;
+                alien.checkWorldBounds = true;
+                alien.events.onOutOfBounds.add(this.alienOut, this);
+                //alien.body.moves = false;
             }
         }
         this.aliens.x = 160;
@@ -258,6 +268,8 @@ PlutoGame.prototype = {
         //  When the tween loops it calls descend
         tween.onLoop.add(this.descend, this);
     },
+
+    
 
     setupBullet: function (bullet) {
         bullet.anchor.x = 0.5;
@@ -334,9 +346,9 @@ PlutoGame.prototype = {
                 this.player.energyTxtCaption = "Energy " + this.player.energy;
                 this.player.energyTxtAddition = game.add.text(game.world.width - 250, 60, this.player.energyTxtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
                 game.time.events.add(10, function () {
-                    game.add.tween(this.player.energyTxtAddition).to({ y: 60, alpha: 0 }, 10, Phaser.Easing.Linear.None, true);
+                    game.add.tween(this.player.energyTxtAddition).to({ y: 0, alpha: 0 }, 10, Phaser.Easing.Linear.None, true);
                 }, this);
-                game.time.events.add(10, function () {
+                game.time.events.add(20, function () {
                     this.player.energyTxtAddition.destroy();
                 }, this);
             } else {
@@ -421,6 +433,29 @@ PlutoGame.prototype = {
             game.physics.arcade.overlap(this.enemyBullets, this.player, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(this.bullets, this.enemyBullets, this.bulletHitsBullet, null, this);
         }
+
+        // End of the level (all the enemies are killed)
+        if (this.aliens.countLiving() == 0) {
+            this.score += 1000;
+            this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+
+            this.level += 1;
+
+            this.enemyBullets.callAll('kill', this);
+
+            // show a Level text floating up the screen
+            this.txtCaption = "Level " + this.level;
+            var txtAddition = game.add.text(game.world.centerX - 50, game.world.centerY, this.txtCaption, { font: '36px HappyKiller', fill: '#0099ff' });
+            game.time.events.add(100, function () {
+                game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+            }, this);
+            game.time.events.add(2000, function () {
+                txtAddition.destroy();
+            }, this);
+
+            // Immediatly start the next level
+            this.restart();
+        }
     }, // end update
 
     render: function () {
@@ -456,8 +491,8 @@ PlutoGame.prototype = {
             if (this.player.bonusPoints > 81) {this.player.bonusPoints = 81;}
 
             this.player.energy = this.player.energy + 1;
-            if (this.player.energy > 9) {
-                this.player.energy = 9;
+            if (this.player.energy > 27) {
+                this.player.energy = 27; // temp
             } 
 
             // show a Bonus text floating up the screen
@@ -480,44 +515,36 @@ PlutoGame.prototype = {
 
     // Player bullet hits the enemny
     playerHitsEnemy: function (bullet, alien) {
-        //  When a bullet hits an alien we kill them both
+        //  When a bullet hits an alien we kill the bullet
         bullet.kill();
-        alien.kill();
+
+        if (this.player.energy == 0) {
+            alien.kill(); // kill the alien when player has no energy
+            //  And create an explosion :)
+            this.explosionSfx.play();
+            var explosion = this.explosions.getFirstExists(false);
+            explosion.reset(alien.body.x, alien.body.y);
+            explosion.play('kaboom', 30, false, true);
+        } else { // player has energy
+        
+            if (Math.random() < .5) { // normal kill
+                alien.kill(); // alien just dies normally
+                //  And create an explosion :)
+                this.explosionSfx.play();
+                var explosion = this.explosions.getFirstExists(false);
+                explosion.reset(alien.body.x, alien.body.y);
+                explosion.play('kaboom', 30, false, true);
+            } else {    // alien absorbs the energy and breaks rank
+                game.physics.arcade.moveToObject(alien, this.player, 300);
+            }
+        }
 
         //  Increase the score
         this.score += 20;
         this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
-
-        //  And create an explosion :)
-        this.explosionSfx.play();
-        var explosion = this.explosions.getFirstExists(false);
-        explosion.reset(alien.body.x, alien.body.y);
-        explosion.play('kaboom', 30, false, true);
-
         this.aliens.bonusPoints = 0; // reset bonus counter when hit alien
 
-        // End of the level (all the enemies are killed)
-        if (this.aliens.countLiving() == 0) {
-            this.score += 1000;
-            this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
-
-            this.level += 1;
-
-            this.enemyBullets.callAll('kill', this);
-
-            // show a Level text floating up the screen
-            this.txtCaption = "Level " + this.level;
-            var txtAddition = game.add.text(game.world.centerX - 50, game.world.centerY, this.txtCaption, { font: '36px HappyKiller', fill: '#0099ff' });
-            game.time.events.add(100, function () {
-                game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-            }, this);
-            game.time.events.add(2000, function () {
-                txtAddition.destroy();
-            }, this);
-
-            // Immediatly start the next level
-            this.restart();
-        }
+        
     },
 
     // Enemny bullet hits the player
@@ -594,7 +621,8 @@ PlutoGame.prototype = {
     enemyFires: function () {
 
         // Increase speed based on level
-        var levelSpeed = this.level * 10;
+        var levelSpeed = this.level * 10 * (1+ this.level/30);
+        
 
         //  Grab the first bullet we can from the pool
         this.enemyBullet = this.enemyBullets.getFirstExists(false);
@@ -619,12 +647,20 @@ PlutoGame.prototype = {
 
             // aim the bullet at the players ship
             // randomly aim a little different to keep the player moving
-            if (Math.random() < 0.3 ) {
+            var rnd =0;
+            if (Math.random() < 0.5) {
+                rnd = 50;
+            } else {
+                rnd = -50;
+            }
+            if (Math.random() < 0.99 ) {
                 game.physics.arcade.moveToObject(this.enemyBullet, this.player, 120+levelSpeed);
             } else {
-                game.physics.arcade.moveToXY(this.enemyBullet, this.player.x+5, this.player.y, 120+levelSpeed);
+                game.physics.arcade.moveToXY(this.enemyBullet, this.player.x+rnd, this.player.y, 120+levelSpeed);
             }
             this.firingTimer = game.time.now + (this.gameSpeed * 2)-(levelSpeed/2);
+            
+            
         }
     },
 

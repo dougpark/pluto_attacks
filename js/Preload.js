@@ -109,6 +109,8 @@ Preload.prototype = {
   init: function () {
     this.physics.startSystem(Phaser.Physics.ARCADE);
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+    
     this.scale.setMinMax(400, 300, 1200, 900);
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
@@ -141,6 +143,15 @@ Preload.prototype = {
   },
 
   addGameMusic: function () {
+    game.sound.setDecodedCallback('blasterSfx', enableSound, this);
+    
+            function enableSound() {
+                function enableTheSound() {
+                    dummySound.play();
+                };
+                console.log("ready");
+                game.input.onDown.addOnce(enableTheSound, this);
+            }
     Povin.bgMusic = game.add.audio('bgm');
     Povin.bgMusic.loop = true;
     //if (Povin.musicEnabled == 1) {Povin.bgMusic.play();}

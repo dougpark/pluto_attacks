@@ -1,7 +1,10 @@
 // **************************************************************************************
 // Main
 // **************************************************************************************
-"use strict";
+"use strict";                    
+
+var winW = Math.max(window.innerWidth, document.documentElement.clientWidth);
+var winH = Math.max(window.innerHeight, document.documentElement.clientHeight);
 
 var game = new Phaser.Game(800, 600, Phaser.AUTO, 'PlutoAttacks'), Main = function () {};
       
