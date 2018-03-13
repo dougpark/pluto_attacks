@@ -52,19 +52,19 @@ MainMenu.prototype = {
         this.buttonGameModeFun.gameMode = 2;
         this.panelGameMode.add(this.buttonGameModeFun);        
 
-        this.buttonGameModeInsane = game.add.button(0,0, 'buttonInsane', this.actionOnClickGameMode, this, 2, 1, 0);
-        this.buttonGameModeInsane.anchor.setTo(0.5, 0.5);
-        this.place(this.buttonGameModeInsane, .5, .76);
-        this.buttonGameModeInsane.events.onInputDown.add(this.onInputDownGameMode, this);
-        this.buttonGameModeInsane.events.onInputUp.add(this.onInputUpGameMode, this);
-        this.buttonGameModeInsane.gameMode = 3;
-        this.panelGameMode.add(this.buttonGameModeInsane);
+        // this.buttonGameModeInsane = game.add.button(0,0, 'buttonInsane', this.actionOnClickGameMode, this, 2, 1, 0);
+        // this.buttonGameModeInsane.anchor.setTo(0.5, 0.5);
+        // this.place(this.buttonGameModeInsane, .5, .76);
+        // this.buttonGameModeInsane.events.onInputDown.add(this.onInputDownGameMode, this);
+        // this.buttonGameModeInsane.events.onInputUp.add(this.onInputUpGameMode, this);
+        // this.buttonGameModeInsane.gameMode = 3;
+        // this.panelGameMode.add(this.buttonGameModeInsane);
         
         // Options Button
         this.buttonOptions = game.add.button(0,0, 'buttonOptions', this.actionOnClickOptions, this, 2, 1, 0);
         this.buttonOptions.anchor.setTo(0.5, 0.5);
-        this.buttonOptions.scale.setTo(1,1);
-        this.place(this.buttonOptions, .1, .90);
+        //this.buttonOptions.scale.setTo(1,1);
+        this.place(this.buttonOptions, .5, .76);
         this.buttonOptions.events.onInputDown.add(this.onInputDownOptions, this);
         this.buttonOptions.events.onInputUp.add(this.onInputUpOptions, this);
         this.panelGameMode.add(this.buttonOptions);
@@ -130,8 +130,8 @@ MainMenu.prototype = {
 
     onInputDownOptions: function(target) {
         game.add.tween(target.scale).to({
-            x: 0.8,
-            y: 0.8
+            x: 0.95,
+            y: 0.95
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 

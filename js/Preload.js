@@ -44,7 +44,7 @@ Preload.prototype = {
     game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal.png', 227, 100);
     game.load.spritesheet('buttonFun', 'assets/buttons/button_fun.png', 227, 100);
     game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
-    game.load.spritesheet('buttonOptions', 'assets/buttons/button_options.png');
+    game.load.spritesheet('buttonOptions', 'assets/buttons/button_options.png', 227, 100);
 
     // Options Images
     game.load.image('options', 'assets/buttons/options.png');
