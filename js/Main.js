@@ -6,7 +6,10 @@
 var winW = Math.max(window.innerWidth, document.documentElement.clientWidth);
 var winH = Math.max(window.innerHeight, document.documentElement.clientHeight);
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'PlutoAttacks'), Main = function () {};
+winW = 800;
+winH = 600;
+
+var game = new Phaser.Game(winW, winH, Phaser.AUTO, 'PlutoAttacks'), Main = function () {};
       
 // Global Povin object to track stuff  
 var Povin = {

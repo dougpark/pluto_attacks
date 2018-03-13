@@ -115,11 +115,15 @@ Preload.prototype = {
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
 
-    this.loadingBar = game.make.sprite(game.world.centerX-(387/2), 400, "loading");
-    this.logo = game.make.sprite(game.world.centerX, 200, 'logo');
+    this.loadingBar = game.make.sprite(0,0, "loading");
+    this.loadingBar.anchor.setTo(0.5, 0.5);
+    this.place(this.loadingBar, .5, .66);
+    this.logo = game.make.sprite(0,0, 'logo');
     this.logo.anchor.setTo(0.5,0.5);
-    this.status = game.make.text(game.world.centerX, 380, ' ', { font: '20px HappyKiller', fill: '#0099ff' });
+    this.place(this.logo, 0.5, .33)
+    this.status = game.make.text(0,0, ' ', { font: '20px HappyKiller', fill: '#0099ff' });
     this.status.anchor.setTo(0.5,0.5);
+    this.place(this.status, 0.5, .62);
   },
 
   preload: function () {
@@ -173,5 +177,72 @@ Preload.prototype = {
     setTimeout(function () {
       game.state.start("MainMenu"); // wait on splash screen for 2 seconds then go to main menu
     }, 2000);  
+  },
+
+  // Scaling Functions
+  getScaleToGameW: function(obj)
+  {	
+      console.log(obj.width/game.width);
+  },
+  scaleToGameW: function(obj,percent)
+  {
+      obj.width=game.width*percent;
+      obj.scale.y=obj.scale.x;
+  },
+  place: function(obj,xPercent, yPercent) {
+      
+      this.fromTop(obj,yPercent);
+      this.fromLeft(obj,xPercent);
+      
+  },
+  center: function(obj) {
+      obj.x = game.width / 2;
+      obj.y = game.height / 2;
+  },
+  centerH: function(obj) {
+      obj.x = game.width / 2;
+  },
+  centerV: function(obj) {
+      obj.y = game.height / 2;
+  },
+  centerGroup: function(obj) {
+      obj.x = game.width / 2 - obj.width / 2;
+      obj.y = game.height / 2 - obj.height / 2;
+  },
+  centerGroupH: function(obj) {
+      obj.y = game.height / 2 - obj.height / 2;
+  },
+  centerGroupW: function(obj) {
+      obj.x = game.width / 2 - obj.width / 2;
+  },
+  alignToBottom: function(obj, offset = 0) {
+      obj.y = game.height - obj.height / 2;
+      obj.y+= offset;
+  },
+  fromBottom: function(obj, percent, offset=0) {
+      obj.y = game.height - (game.height * percent);
+      obj.y -= offset;
+  },
+  fromTop:function(obj,percent,offet=0)
+  {
+      obj.y=game.height*percent;
+      obj.y+=percent;
+  },
+  fromRight: function(obj, percent, offset = 0) {
+      obj.x = game.width - (game.width * percent);
+      obj.x -= offset;
+      //obj.x -= obj.width / 2;
+  },
+  fromLeft: function(obj, percent, offset = 0) {
+      obj.x = game.width * percent;
+      obj.x += offset;
+  },
+  fromCenterH: function(obj, percent) {
+      obj.x = game.width / 2 - (game.width * percent);
+      obj.x -= obj.width / 2;
+  },
+  fromCenterV: function(obj, percent) {
+      obj.x = game.width / 2 - (game.width * percent);
+      obj.x -= obj.width / 2;
   }
 };

@@ -20,22 +20,25 @@ MainMenu.prototype = {
         this.panelGameMode.alpha = 1;
 
         // Game mode menu title image
-        this.imageGameMode_title = game.add.sprite(game.world.centerX, 65, 'title');
+        this.imageGameMode_title = game.add.sprite(0,0, 'title');
         this.imageGameMode_title.anchor.setTo(0.5, 0.5);
         this.imageGameMode_title.scale.setTo(1.25, .80);
         this.panelGameMode.add(this.imageGameMode_title);
+        this.place(this.imageGameMode_title, .5, .1);
 
         // Game mode menu floaters
-        this.imageGameMode_floater = game.add.sprite(game.world.centerX, game.world.centerY + 50, 'levelSelect');
+        this.imageGameMode_floater = game.add.sprite(0,0, 'levelSelect');
         this.imageGameMode_floater.anchor.setTo(0.5, 0.5);
         this.panelGameMode.add(this.imageGameMode_floater);
+        this.place(this.imageGameMode_floater, .5, .58);
         var levelTween = game.add.tween(this.imageGameMode_floater.scale).to({ x: 1.05, y: 1.05 }, 2000, Phaser.Easing.Linear.None, true);
         levelTween.yoyo(true, 0);
         levelTween.repeat(-1);
 
         // Game mode menu buttons
-        this.buttonGameModeNormal = game.add.button(game.world.centerX, 240, 'buttonNormal', this.actionOnClickGameMode, this, 2, 1, 0);
+        this.buttonGameModeNormal = game.add.button(0,0, 'buttonNormal', this.actionOnClickGameMode, this, 2, 1, 0);
         this.buttonGameModeNormal.anchor.setTo(0.5, 0.5);
+        this.place(this.buttonGameModeNormal, .5, .40);
         this.buttonGameModeNormal.events.onInputDown.add(this.onInputDownGameMode, this);
         this.buttonGameModeNormal.events.onInputUp.add(this.onInputUpGameMode, this);
         this.buttonGameModeNormal.gameMode = 1;
@@ -43,22 +46,25 @@ MainMenu.prototype = {
 
         this.buttonGameModeFun = game.add.button(game.world.centerX, 345, 'buttonFun', this.actionOnClickGameMode, this, 2, 1, 0);
         this.buttonGameModeFun.anchor.setTo(0.5, 0.5);
+        this.place(this.buttonGameModeFun, .5, .58);
         this.buttonGameModeFun.events.onInputDown.add(this.onInputDownGameMode, this);
         this.buttonGameModeFun.events.onInputUp.add(this.onInputUpGameMode, this);
         this.buttonGameModeFun.gameMode = 2;
         this.panelGameMode.add(this.buttonGameModeFun);        
 
-        this.buttonGameModeInsane = game.add.button(game.world.centerX, 450, 'buttonInsane', this.actionOnClickGameMode, this, 2, 1, 0);
+        this.buttonGameModeInsane = game.add.button(0,0, 'buttonInsane', this.actionOnClickGameMode, this, 2, 1, 0);
         this.buttonGameModeInsane.anchor.setTo(0.5, 0.5);
+        this.place(this.buttonGameModeInsane, .5, .76);
         this.buttonGameModeInsane.events.onInputDown.add(this.onInputDownGameMode, this);
         this.buttonGameModeInsane.events.onInputUp.add(this.onInputUpGameMode, this);
         this.buttonGameModeInsane.gameMode = 3;
         this.panelGameMode.add(this.buttonGameModeInsane);
         
         // Options Button
-        this.buttonOptions = game.add.button(75, game.world.centerY+200, 'buttonOptions', this.actionOnClickOptions, this, 2, 1, 0);
+        this.buttonOptions = game.add.button(0,0, 'buttonOptions', this.actionOnClickOptions, this, 2, 1, 0);
         this.buttonOptions.anchor.setTo(0.5, 0.5);
         this.buttonOptions.scale.setTo(1,1);
+        this.place(this.buttonOptions, .1, .90);
         this.buttonOptions.events.onInputDown.add(this.onInputDownOptions, this);
         this.buttonOptions.events.onInputUp.add(this.onInputUpOptions, this);
         this.panelGameMode.add(this.buttonOptions);
@@ -69,37 +75,42 @@ MainMenu.prototype = {
         this.panelGameLevel.alpha = 0;
         this.panelGameLevel.visible = false;
 
-        this.buttonGameLevel_title = game.add.sprite(game.world.centerX, game.world.centerY, 'level_title');
+        this.buttonGameLevel_title = game.add.sprite(0,0, 'level_title');
         this.buttonGameLevel_title.anchor.setTo(0.5, 0.5)
+        this.place(this.buttonGameLevel_title, 0.5, 0.5);
         this.panelGameLevel.add(this.buttonGameLevel_title);
 
-        this.buttonGameLevel_1 = game.add.button(game.world.centerX, game.world.centerY-120, 'buttonLevel_1', this.actionOnClickGameLevel, this, 2, 1, 0);
+        this.buttonGameLevel_1 = game.add.button(0,0, 'buttonLevel_1', this.actionOnClickGameLevel, this, 2, 1, 0);
         this.buttonGameLevel_1.anchor.setTo(0.5, 0.5);
         this.buttonGameLevel_1.scale.setTo(1,1);
+        this.place(this.buttonGameLevel_1, 0.5, 0.30);
         this.buttonGameLevel_1.events.onInputDown.add(this.onInputDownGameLevel, this);
         this.buttonGameLevel_1.events.onInputUp.add(this.onInputUpGameLevel, this);
         this.panelGameLevel.add(this.buttonGameLevel_1);
         this.buttonGameLevel_1.gameLevel = 1;
 
-        this.buttonGameLevel_9 = game.add.button(game.world.centerX, game.world.centerY-20, 'buttonLevel_9', this.actionOnClickGameLevel, this, 2, 1, 0);
+        this.buttonGameLevel_9 = game.add.button(0,0, 'buttonLevel_9', this.actionOnClickGameLevel, this, 2, 1, 0);
         this.buttonGameLevel_9.anchor.setTo(0.5, 0.5); 
         this.buttonGameLevel_9.scale.setTo(1,1);
+        this.place(this.buttonGameLevel_9, 0.5, 0.47);
         this.buttonGameLevel_9.events.onInputDown.add(this.onInputDownGameLevel, this);
         this.buttonGameLevel_9.events.onInputUp.add(this.onInputUpGameLevel, this);
         this.panelGameLevel.add(this.buttonGameLevel_9);
         this.buttonGameLevel_9.gameLevel = 9;
      
-        this.buttonGameLevel_18 = game.add.button(game.world.centerX, game.world.centerY+80, 'buttonLevel_18', this.actionOnClickGameLevel, this, 2, 1, 0);
+        this.buttonGameLevel_18 = game.add.button(0,0, 'buttonLevel_18', this.actionOnClickGameLevel, this, 2, 1, 0);
         this.buttonGameLevel_18.anchor.setTo(0.5, 0.5); 
         this.buttonGameLevel_18.scale.setTo(1,1);
+        this.place(this.buttonGameLevel_18, 0.5, 0.64);
         this.buttonGameLevel_18.events.onInputDown.add(this.onInputDownGameLevel, this);
         this.buttonGameLevel_18.events.onInputUp.add(this.onInputUpGameLevel, this);
         this.panelGameLevel.add(this.buttonGameLevel_18);
         this.buttonGameLevel_18.gameLevel = 18;
         
-        this.buttonGameLevel_27 = game.add.button(game.world.centerX, game.world.centerY+180, 'buttonLevel_27', this.actionOnClickGameLevel, this, 2, 1, 0);
+        this.buttonGameLevel_27 = game.add.button(0,0, 'buttonLevel_27', this.actionOnClickGameLevel, this, 2, 1, 0);
         this.buttonGameLevel_27.anchor.setTo(0.5, 0.5);
         this.buttonGameLevel_27.scale.setTo(1,1);
+        this.place(this.buttonGameLevel_27,0.5, 0.81);
         this.buttonGameLevel_27.events.onInputDown.add(this.onInputDownGameLevel, this);
         this.buttonGameLevel_27.events.onInputUp.add(this.onInputUpGameLevel, this);
         this.panelGameLevel.add(this.buttonGameLevel_27);
@@ -188,6 +199,73 @@ MainMenu.prototype = {
 
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
         */
+    },
+
+    // Scaling Functions
+    getScaleToGameW: function(obj)
+    {	
+        console.log(obj.width/game.width);
+    },
+    scaleToGameW: function(obj,percent)
+    {
+        obj.width=game.width*percent;
+        obj.scale.y=obj.scale.x;
+    },
+    place: function(obj,xPercent, yPercent) {
+        
+        this.fromTop(obj,yPercent);
+        this.fromLeft(obj,xPercent);
+        
+    },
+    center: function(obj) {
+        obj.x = game.width / 2;
+        obj.y = game.height / 2;
+    },
+    centerH: function(obj) {
+        obj.x = game.width / 2;
+    },
+    centerV: function(obj) {
+        obj.y = game.height / 2;
+    },
+    centerGroup: function(obj) {
+        obj.x = game.width / 2 - obj.width / 2;
+        obj.y = game.height / 2 - obj.height / 2;
+    },
+    centerGroupH: function(obj) {
+        obj.y = game.height / 2 - obj.height / 2;
+    },
+    centerGroupW: function(obj) {
+        obj.x = game.width / 2 - obj.width / 2;
+    },
+    alignToBottom: function(obj, offset = 0) {
+        obj.y = game.height - obj.height / 2;
+        obj.y+= offset;
+    },
+    fromBottom: function(obj, percent, offset=0) {
+        obj.y = game.height - (game.height * percent);
+        obj.y -= offset;
+    },
+    fromTop:function(obj,percent,offet=0)
+    {
+        obj.y=game.height*percent;
+        obj.y+=percent;
+    },
+    fromRight: function(obj, percent, offset = 0) {
+        obj.x = game.width - (game.width * percent);
+        obj.x -= offset;
+        //obj.x -= obj.width / 2;
+    },
+    fromLeft: function(obj, percent, offset = 0) {
+        obj.x = game.width * percent;
+        obj.x += offset;
+    },
+    fromCenterH: function(obj, percent) {
+        obj.x = game.width / 2 - (game.width * percent);
+        obj.x -= obj.width / 2;
+    },
+    fromCenterV: function(obj, percent) {
+        obj.x = game.width / 2 - (game.width * percent);
+        obj.x -= obj.width / 2;
     },
 
     nextState: function () {

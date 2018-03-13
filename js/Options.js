@@ -15,29 +15,33 @@ Options.prototype = {
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
         
         // Option menu title image
-        this.title = game.add.sprite(game.world.centerX, 65, 'options');
+        this.title = game.add.sprite(0,0, 'options');
         this.title.anchor.setTo(0.5, 0.5);
         this.title.scale.setTo(1.2, .80);
+        this.place(this.title, .5, .10);
 
         // Music Button
-        this.buttonMusic = game.add.button(game.world.centerX, game.world.centerY-50, 'buttonMusic', this.actionOnClickMusic, this);
+        this.buttonMusic = game.add.button(0,0, 'buttonMusic', this.actionOnClickMusic, this);
         this.buttonMusic.anchor.setTo(0.5, 0.5);
         this.buttonMusic.scale.setTo(1, 1);
+        this.place(this.buttonMusic, 0.5, 0.40);
         this.buttonMusic.events.onInputDown.add(this.onInputDownMusic, this);
         this.buttonMusic.events.onInputUp.add(this.onInputUpMusic, this);
         this.buttonMusic.frame = Povin.musicEnabled; 
 
         // Credits Button
-        this.buttonCredits = game.add.button(game.world.centerX, game.world.centerY+100, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
+        this.buttonCredits = game.add.button(0,0, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
         this.buttonCredits.anchor.setTo(0.5, 0.5);
         this.buttonCredits.scale.setTo(1,1);
+        this.place(this.buttonCredits, 0.5, 0.6);
         this.buttonCredits.events.onInputDown.add(this.onInputDownCredits, this);
         this.buttonCredits.events.onInputUp.add(this.onInputUpCredits, this);
   
         // Back Button
-        this.buttonBack = game.add.button(75, game.world.centerY+200, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
+        this.buttonBack = game.add.button(0,0, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
         this.buttonBack.anchor.setTo(0.5, 0.5);
         this.buttonBack.scale.setTo(1,1);
+        this.place(this.buttonBack, 0.1, 0.90);
         this.buttonBack.events.onInputDown.add(this.onInputDownBack, this);
         this.buttonBack.events.onInputUp.add(this.onInputUpBack, this);
     },
@@ -165,6 +169,73 @@ Options.prototype = {
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
      */
     },
+
+    // Scaling Functions
+    getScaleToGameW: function(obj)
+    {	
+        console.log(obj.width/game.width);
+    },
+    scaleToGameW: function(obj,percent)
+    {
+        obj.width=game.width*percent;
+        obj.scale.y=obj.scale.x;
+    },
+    place: function(obj,xPercent, yPercent) {
+        this.fromTop(obj,yPercent);
+        this.fromLeft(obj,xPercent);
+        
+    },
+    center: function(obj) {
+        obj.x = game.width / 2;
+        obj.y = game.height / 2;
+    },
+    centerH: function(obj) {
+        obj.x = game.width / 2;
+    },
+    centerV: function(obj) {
+        obj.y = game.height / 2;
+    },
+    centerGroup: function(obj) {
+        obj.x = game.width / 2 - obj.width / 2;
+        obj.y = game.height / 2 - obj.height / 2;
+    },
+    centerGroupH: function(obj) {
+        obj.y = game.height / 2 - obj.height / 2;
+    },
+    centerGroupW: function(obj) {
+        obj.x = game.width / 2 - obj.width / 2;
+    },
+    alignToBottom: function(obj, offset = 0) {
+        obj.y = game.height - obj.height / 2;
+        obj.y+= offset;
+    },
+    fromBottom: function(obj, percent, offset=0) {
+        obj.y = game.height - (game.height * percent);
+        obj.y -= offset;
+    },
+    fromTop:function(obj,percent,offet=0)
+    {
+        obj.y=game.height*percent;
+        obj.y+=percent;
+    },
+    fromRight: function(obj, percent, offset = 0) {
+        obj.x = game.width - (game.width * percent);
+        obj.x -= offset;
+        //obj.x -= obj.width / 2;
+    },
+    fromLeft: function(obj, percent, offset = 0) {
+        obj.x = game.width * percent;
+        obj.x += offset;
+    },
+    fromCenterH: function(obj, percent) {
+        obj.x = game.width / 2 - (game.width * percent);
+        obj.x -= obj.width / 2;
+    },
+    fromCenterV: function(obj, percent) {
+        obj.x = game.width / 2 - (game.width * percent);
+        obj.x -= obj.width / 2;
+    },
+
 
     nextState: function () {
         this.state.start('MainMenu', true, false);

@@ -64,14 +64,12 @@ PlutoGame.prototype = {
         this.enemyBullets.setAll('anchor.y', 1);
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
-        
-        // Rouge
-        //this.rouge = game.
 
         //  The hero!
-        this.player = game.add.sprite(game.world.centerX, game.world.centerY + 250, 'shipLR');
+        this.player = game.add.sprite(0,0, 'shipLR');
         this.player.anchor.setTo(0.5, 0.5);
         this.player.scale.setTo(.3, .3); 
+        this.place(this.player,0.5, 0.91);
         game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;
         this.player.animations.add('flyL', [3,4,3], 20, true);
@@ -83,7 +81,7 @@ PlutoGame.prototype = {
         this.player.energy =0;
 
         // Shield
-        this.shield = game.add.sprite(game.world.centerX, game.world.centerY + 250, 'shield');
+        this.shield = game.add.sprite(this.player.body.x, this.player.body.y, 'shield');
         this.shield.anchor.setTo(0.45, 0.5);
         this.shield.scale.setTo(.3, .3); 
         game.physics.enable(this.shield, Phaser.Physics.ARCADE);
@@ -93,9 +91,9 @@ PlutoGame.prototype = {
      
 
         // BlinkingPanels
-        this.blinkingPanels = game.add.group();
-        this.blinkingPanels.enableBody = true;
-        this.blinkingPanels.physicsBodyType = Phaser.Physics.ARCADE;
+        //this.blinkingPanels = game.add.group();
+       // this.blinkingPanels.enableBody = true;
+       // this.blinkingPanels.physicsBodyType = Phaser.Physics.ARCADE;
         //this.createBlinkingPanels();
 
         //  The baddies!
@@ -109,20 +107,24 @@ PlutoGame.prototype = {
         
         //  The score
         this.scoreString = 'Score ';
-        this.scoreText = game.add.text(150, 30, this.scoreString + "\n" +this.level + ':' + this.score, { font: '20px HappyKiller', fill: '#0099ff' });
+        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '20px HappyKiller', fill: '#0099ff' });
+        this.place(this.scoreText,0.1875,0.05);
 
         //  Lives
         this.lives = game.add.group();
         //game.add.text(game.world.width - 100, 50, 'Energy', { font: '20px HappyKiller', fill: '#0099ff' });
 
         //  Text
-        this.stateText = game.add.text(game.world.centerX, game.world.centerY+75, '', { font: '30px HappyKiller', fill: '#0099ff' });
+        this.stateText = game.add.text(0,0, '', { font: '30px HappyKiller', fill: '#0099ff' });
         this.stateText.anchor.setTo(0.5, 0.5);
+        this.place(this.stateText,0.5, 0.625);
         this.stateText.visible = false;
 
+        // number of lives
         for (var i = 0; i < 3; i++) {
             var ship = this.lives.create(game.world.width - 240 + (30 * i), 40, 'ship');
             ship.anchor.setTo(0.5, 0.5);
+            //this.place(ship, x, 0.066);
             ship.angle = 90;
             ship.alpha = 1;
             ship.scale.setTo(0.8, 0.8);
@@ -162,9 +164,10 @@ PlutoGame.prototype = {
         this.background.scale.setTo(.50, .50);
      
         // Home button to return to the main menu
-        this.buttonHome = game.add.button(40, 40, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
+        this.buttonHome = game.add.button(0,0, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
         this.buttonHome.scale.setTo(.8, .8);
+        this.place(this.buttonHome, 0.05, 0.066);
         this.buttonHome.events.onInputDown.add(this.onInputDownHome, this);
         this.buttonHome.events.onInputUp.add(this.onInputUpHome, this);
 
@@ -172,6 +175,11 @@ PlutoGame.prototype = {
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.gameSpeedText.setTextBounds(0, 45, this.game.world.width, 50);
+
+        // Energy
+        this.player.energyTxtAddition = game.add.text(0,0, "Energy 00", { font: '12px HappyKiller', fill: '#0099ff' });
+        this.place(this.player.energyTxtAddition, 0.6875, 0.1);
+        this.player.energyTxtAddition.visible = false;
 
         // FPS
         //this.txtFPS1 = "FPS: " + game.time.fps;
@@ -195,8 +203,8 @@ PlutoGame.prototype = {
     }, // end create
 
     // temporary
-    actionOnClickEnergy: function () {
-    },
+    //actionOnClickEnergy: function () {
+    //},
 
     // Action when click on the home button
     actionOnClickHome: function () {
@@ -218,6 +226,7 @@ PlutoGame.prototype = {
     },
 
     // test action based on clicking a button
+    /*
     actionOnClickNorm: function () {
         var txtCaption = "+ Hi Stephen";
         var txtAddition = game.add.text(400, 400, txtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
@@ -227,10 +236,10 @@ PlutoGame.prototype = {
         game.time.events.add(6000, function () {
             txtAddition.destroy();
         }, this);
-    },
+    }, */
 
     // test panel to show an aminmation
-    createBlinkingPanels: function () {
+    /*createBlinkingPanels: function () {
         var blinkingPanel = this.blinkingPanels.create(1, 1, 'buttonNorm');
         //blinkingPanel.anchor.setTo(0.5,0.5);
         blinkingPanel.animations.add('fly', [0, 1], 2, true);
@@ -239,7 +248,7 @@ PlutoGame.prototype = {
         this.blinkingPanels.x = 50;
         this.blinkingPanels.y = 300;
         //var tween = game.add.tween(this.blinkingPanels).to( { x: 50 }, 20, Phaser.Easing.Linear.None, true, 0, 1000, true);
-    },
+    },*/
 
     // Kill the aliens when they leave the screen
     alienOut: function(alien) {
@@ -341,19 +350,14 @@ PlutoGame.prototype = {
                 if (this.player.energy > 3) {this.shield.frame=0;} // green
                 else {this.shield.frame=1;} // red
 
-
-                // show a Energy text 
-                this.player.energyTxtCaption = "Energy " + this.player.energy;
-                this.player.energyTxtAddition = game.add.text(game.world.width - 250, 60, this.player.energyTxtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
-                game.time.events.add(10, function () {
-                    game.add.tween(this.player.energyTxtAddition).to({ y: 0, alpha: 0 }, 10, Phaser.Easing.Linear.None, true);
-                }, this);
-                game.time.events.add(20, function () {
-                    this.player.energyTxtAddition.destroy();
-                }, this);
+                // show Energy text 
+                this.player.energyTxtAddition.text = "Energy " + this.player.energy;
+                this.player.energyTxtAddition.visible = true;
+                
             } else {
 
                 this.shield.visible = false;
+                this.player.energyTxtAddition.visible = false;
             }
 
             // Mouse Pointer
@@ -707,5 +711,72 @@ PlutoGame.prototype = {
         this.stateText.visible = false;
 
         this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+    }, 
+
+    // Scaling Functions
+    getScaleToGameW: function(obj)
+    {	
+        console.log(obj.width/game.width);
+    },
+    scaleToGameW: function(obj,percent)
+    {
+        obj.width=game.width*percent;
+        obj.scale.y=obj.scale.x;
+    },
+    place: function(obj,xPercent, yPercent) {
+        this.fromTop(obj,yPercent);
+        this.fromLeft(obj,xPercent);
+        
+    },
+    center: function(obj) {
+        obj.x = game.width / 2;
+        obj.y = game.height / 2;
+    },
+    centerH: function(obj) {
+        obj.x = game.width / 2;
+    },
+    centerV: function(obj) {
+        obj.y = game.height / 2;
+    },
+    centerGroup: function(obj) {
+        obj.x = game.width / 2 - obj.width / 2;
+        obj.y = game.height / 2 - obj.height / 2;
+    },
+    centerGroupH: function(obj) {
+        obj.y = game.height / 2 - obj.height / 2;
+    },
+    centerGroupW: function(obj) {
+        obj.x = game.width / 2 - obj.width / 2;
+    },
+    alignToBottom: function(obj, offset = 0) {
+        obj.y = game.height - obj.height / 2;
+        obj.y+= offset;
+    },
+    fromBottom: function(obj, percent, offset=0) {
+        obj.y = game.height - (game.height * percent);
+        obj.y -= offset;
+    },
+    fromTop:function(obj,percent,offet=0)
+    {
+        obj.y=game.height*percent;
+        obj.y+=percent;
+    },
+    fromRight: function(obj, percent, offset = 0) {
+        obj.x = game.width - (game.width * percent);
+        obj.x -= offset;
+        //obj.x -= obj.width / 2;
+    },
+    fromLeft: function(obj, percent, offset = 0) {
+        obj.x = game.width * percent;
+        obj.x += offset;
+    },
+    fromCenterH: function(obj, percent) {
+        obj.x = game.width / 2 - (game.width * percent);
+        obj.x -= obj.width / 2;
+    },
+    fromCenterV: function(obj, percent) {
+        obj.x = game.width / 2 - (game.width * percent);
+        obj.x -= obj.width / 2;
     }
+
 };
