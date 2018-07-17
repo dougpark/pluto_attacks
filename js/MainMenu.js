@@ -60,7 +60,7 @@ MainMenu.prototype = {
         // this.buttonGameModeInsane.gameMode = 3;
         // this.panelGameMode.add(this.buttonGameModeInsane);
         
-        // Options Button
+        // Options Button 
         this.buttonOptions = game.add.button(0,0, 'buttonOptions', this.actionOnClickOptions, this, 2, 1, 0);
         this.buttonOptions.anchor.setTo(0.5, 0.5);
         //this.buttonOptions.scale.setTo(1,1);

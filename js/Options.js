@@ -24,26 +24,37 @@ Options.prototype = {
         this.buttonMusic = game.add.button(0,0, 'buttonMusic', this.actionOnClickMusic, this);
         this.buttonMusic.anchor.setTo(0.5, 0.5);
         this.buttonMusic.scale.setTo(1, 1);
-        this.place(this.buttonMusic, 0.5, 0.40);
+        this.place(this.buttonMusic, 0.5, 0.30);
         this.buttonMusic.events.onInputDown.add(this.onInputDownMusic, this);
         this.buttonMusic.events.onInputUp.add(this.onInputUpMusic, this);
         this.buttonMusic.frame = Povin.musicEnabled; 
 
         // Credits Button
-        this.buttonCredits = game.add.button(0,0, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
-        this.buttonCredits.anchor.setTo(0.5, 0.5);
-        this.buttonCredits.scale.setTo(1,1);
-        this.place(this.buttonCredits, 0.5, 0.6);
-        this.buttonCredits.events.onInputDown.add(this.onInputDownCredits, this);
-        this.buttonCredits.events.onInputUp.add(this.onInputUpCredits, this);
+        //this.buttonCredits = game.add.button(0,0, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
+        //this.buttonCredits.anchor.setTo(0.5, 0.5);
+        //this.buttonCredits.scale.setTo(1,1);
+        //this.place(this.buttonCredits, 0.5, 0.6);
+        //this.buttonCredits.events.onInputDown.add(this.onInputDownCredits, this);
+        //this.buttonCredits.events.onInputUp.add(this.onInputUpCredits, this);
   
         // Back Button
         this.buttonBack = game.add.button(0,0, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
         this.buttonBack.anchor.setTo(0.5, 0.5);
-        this.buttonBack.scale.setTo(1,1);
-        this.place(this.buttonBack, 0.1, 0.90);
+        this.buttonBack.scale.setTo(.5,.5);
+        this.place(this.buttonBack, 0.1, 0.10);
         this.buttonBack.events.onInputDown.add(this.onInputDownBack, this);
         this.buttonBack.events.onInputUp.add(this.onInputUpBack, this);
+
+        this.creditsTxt = "Credits:\n"+
+                          "Based on: phaser.io - example project\n"+
+                          "Artwork: thegameassetsmine.com - Space Game UI\n"+
+                          "Spaceship: market.envato.com - Spaceships by neogeo37\n"+
+                          "Music: incompetech.com - Dangerous by Kevin MacLeod\n"+
+                          "Font: dafont.com - Happy-Killer.font\n"+
+                          "Sfx: phaser.io - example Sounds\n"+
+                          "Scream: wilhelmscream.net - Wilhelm Scream";
+        this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '18px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
+        this.place(this.creditsText,0.05,0.40);
     },
 
     // Test to animate blinking panels
@@ -77,8 +88,8 @@ Options.prototype = {
 
      onInputDownMusic: function(target) {
         game.add.tween(target.scale).to({
-            x: 0.8,
-            y: 0.8
+            x: 0.9,
+            y: 0.9
         }, 100, Phaser.Easing.Cubic.Out, true);
         //game.add.tween(target.my_txt.scale).to({
         //    x: 0.9,
@@ -143,15 +154,15 @@ Options.prototype = {
 
     onInputDownBack: function(target) {
         game.add.tween(target.scale).to({
-            x: 0.8,
-            y: 0.8
+            x: 0.4,
+            y: 0.4
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
      onInputUpBack: function(target) {
         game.add.tween(target.scale).to({
-            x: 1,
-            y: 1
+            x: 0.5,
+            y: 0.5
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 

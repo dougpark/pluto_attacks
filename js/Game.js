@@ -23,6 +23,10 @@ PlutoGame.prototype = {
         this.score = 0;
         this.firingTimer = 0;
         this.bulletTime = 0;
+        this.levelTimer = 0;
+        this.alienEscape = 0;
+        this.totalPerfectLevel = 0;
+        this.totalAlienEscape = 0;
 
         //  The scrolling starfield background
         this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
@@ -252,6 +256,20 @@ PlutoGame.prototype = {
 
     // Kill the aliens when they leave the screen
     alienOut: function(alien) {
+        // show a  text floating up the screen
+        this.txtAlien = "-1000";
+        var txtAlien2 = game.add.text(alien.x+100, game.world.height, this.txtAlien, { font: '36px HappyKiller', fill: '#ff0000' });
+        game.time.events.add(100, function () {
+            game.add.tween(txtAlien2).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+        }, this);
+        game.time.events.add(2000, function () {
+            txtAlien2.destroy();
+        }, this);
+
+        this.score -= 1000;
+        this.alienEscape += 1;
+        this.totalAlienEscape += 1;
+        this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
         alien.kill();
     },
 
@@ -272,10 +290,10 @@ PlutoGame.prototype = {
         this.aliens.y = 150;
 
         //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-        var tween = game.add.tween(this.aliens).to({ x: 200 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        this.tween = game.add.tween(this.aliens).to({ x: 200 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
         //  When the tween loops it calls descend
-        tween.onLoop.add(this.descend, this);
+        this.tween.onLoop.add(this.descend, this);
     },
 
     
@@ -326,11 +344,13 @@ PlutoGame.prototype = {
 
             if (this.cursors.left.isDown) {
                 this.player.body.velocity.x = -this.setvel-levelSpeed;
+                //this.shield.body.velocity.x = -this.setvel-levelSpeed;
                 this.player.play('flyL');
                 this.player.fire = 10;
             }
             else if (this.cursors.right.isDown) {
                 this.player.body.velocity.x = this.setvel+levelSpeed;
+                //this.shield.body.velocity.x = this.setvel+levelSpeed;
                 this.player.play('flyR');
                 this.player.fire = 10;
             } else {
@@ -338,8 +358,16 @@ PlutoGame.prototype = {
             }
 
             // The shield always stays with the player ship
-            this.shield.x = this.player.x;
-            this.shield.y = this.player.y;
+            if (this.player.body.velocity.x < 0) {
+                this.shield.x = this.player.x-10;
+                this.shield.y = this.player.y;
+            } else if (this.player.body.velocity.x > 0) {
+                this.shield.x = this.player.x+5;
+                this.shield.y = this.player.y;
+            } else {
+                this.shield.x = this.player.x-2;
+                this.shield.y = this.player.y;
+            }
 
             if (this.player.energy > 0) {
                 this.player.fire += 1;
@@ -439,7 +467,7 @@ PlutoGame.prototype = {
         }
 
         // End of the level (all the enemies are killed)
-        if (this.aliens.countLiving() == 0) {
+        if (this.aliens.countLiving() == 0 && this.levelTimer == 0) {
             this.score += 1000;
             this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
 
@@ -449,7 +477,7 @@ PlutoGame.prototype = {
 
             // show a Level text floating up the screen
             this.txtCaption = "Level " + this.level;
-            var txtAddition = game.add.text(game.world.centerX - 50, game.world.centerY, this.txtCaption, { font: '36px HappyKiller', fill: '#0099ff' });
+            var txtAddition = game.add.text(game.world.centerX - (game.world.centerX*.30), game.world.centerY, this.txtCaption, { font: '36px HappyKiller', fill: '#0099ff' });
             game.time.events.add(100, function () {
                 game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
             }, this);
@@ -457,9 +485,32 @@ PlutoGame.prototype = {
                 txtAddition.destroy();
             }, this);
 
-            // Immediatly start the next level
-            this.restart();
+            
+            this.levelTimer = game.time.now + 2000; // wait n seconds to start next level
+            
+            // Perfect Level
+            if (this.alienEscape == 0 ) {
+                this.totalPerfectLevel += 1;
+                this.txtPerfect = "Perfect Level + 10,000";
+                var txtPerfect2 = game.add.text(game.world.centerX - (game.world.centerX*.75), game.world.height, this.txtPerfect, { font: '36px HappyKiller', fill: '#ff0000' });
+                game.time.events.add(100, function () {
+                    game.add.tween(txtPerfect2).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+                }, this);
+                game.time.events.add(2000, function () {
+                    txtPerfect2.destroy();
+                }, this);
+                this.score += 10000;
+                this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+            }
+            
         }
+
+        // Delay before starting the next level
+        if (this.levelTimer > 0 && game.time.now > this.levelTimer) {
+            this.levelTimer = 0;
+            this.restart();
+            this.alienEscape = 0;
+        } 
     }, // end update
 
     render: function () {
@@ -597,20 +648,31 @@ PlutoGame.prototype = {
             this.player.kill();
             this.enemyBullets.callAll('kill');
 
+            this.stateText.text = "";
+
             if (Povin.compareHighScore(this.gameMode, this.level, this.score)) {
+                this.stateText.text += "New High Score!";
+            } 
 
-                this.stateText.text = "\n  New High Score!\n   Pluto Wins Again \n Tap to Save Earth";
-                this.stateText.visible = true;
+            if (this.score <=0) {this.stateText.text += "\n Pluto ate your lunch.";
+                } else if (this.score < 10000) {this.stateText.text += "\n Nice Try.";
+                } else if (this.score < 100000) {this.stateText.text += "\n Not Bad.";
+                } else if (this.score < 200000) {this.stateText.text += "\n Pretty Good.";
+                } else if (this.score > 200000) {this.stateText.text += "\n Great Job.";
+                } 
+                
+            this.stateText.text += "\n Pefect Levels: " + this.totalPerfectLevel;
+            this.stateText.text += "\n Aliens Escaped: " + this.totalAlienEscape;
+            this.stateText.text += "\n Tap to Save Earth";
 
-            } else {
+            this.stateText.visible = true;    
 
-                this.stateText.text = "\n   Pluto Wins Again \n Tap to Save Earth";
-                this.stateText.visible = true;    
-
-            }
+        
 
             // reset score and level
             this.score = 0;
+            this.totalAlienEscape = 0;
+            this.totalPerfectLevel = 0;
 
             // if in training mode then stay on current level, otherwise reset the level
             //this.level = this.trainingLevel;
@@ -673,21 +735,23 @@ PlutoGame.prototype = {
         // Increase speed based on level
         var levelSpeed = this.level * 10;
 
-        //  To avoid them being allowed to fire too fast we set a time limit
-        if ((game.time.now > this.bulletTime) || (now)) {
-            // play bullet sound effects
-            this.blasterSfx.play();
+        if (this.levelTimer == 0) { // only fire if not waiting on level timer
+            //  To avoid them being allowed to fire too fast we set a time limit
+            if ((game.time.now > this.bulletTime) || (now)) {
+                // play bullet sound effects
+                this.blasterSfx.play();
 
-            //  Grab the first bullet we can from the pool
-            this.bullet = this.bullets.getFirstExists(false);
+                //  Grab the first bullet we can from the pool
+                this.bullet = this.bullets.getFirstExists(false);
 
-            if (this.bullet) {
-                //  And fire it
-                this.bullet.reset(this.player.x, this.player.y - 8);
-                this.bullet.body.velocity.y = -400 - levelSpeed;
-                this.bulletTime = game.time.now + this.gameSpeed - (levelSpeed/2);
+                if (this.bullet) {
+                    //  And fire it
+                    this.bullet.reset(this.player.x, this.player.y - 8);
+                    this.bullet.body.velocity.y = -400 - levelSpeed;
+                    this.bulletTime = game.time.now + this.gameSpeed - (levelSpeed/2);
+                }
             }
-        }
+        }      
     },
 
     resetBullet: function (bullet) {
