@@ -13,7 +13,7 @@ MainMenu.prototype = {
     create: function () {
         // background image
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
-
+        
         // Game mode menu group
         this.panelGameMode = this.add.group();
         this.panelGameMode.visible = true;

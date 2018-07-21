@@ -124,12 +124,19 @@ Preload.prototype = {
     this.status = game.make.text(0,0, ' ', { font: '20px HappyKiller', fill: '#0099ff' });
     this.status.anchor.setTo(0.5,0.5);
     this.place(this.status, 0.5, .62);
+
+    this.intro = game.make.text(0,0, " ", { font: '16px arial', fill: '#0099ff' });
+    this.intro.setText("Unhappy Plutonians send an infinite number of drones to attack Earth.\n"+
+                       "                      The action really begins at Fun Level 9");
+    this.intro.anchor.setTo(0.5,0.5);
+    this.place(this.intro, 0.5, .75);
   },
 
   preload: function () {
     game.add.existing(this.logo).scale.setTo(0.5);
     game.add.existing(this.loadingBar);
     game.add.existing(this.status);
+    game.add.existing(this.intro);
     this.load.setPreloadSprite(this.loadingBar);
 
     //this.loadScripts();
