@@ -111,17 +111,17 @@ PlutoGame.prototype = {
         
         //  The score
         this.scoreString = 'Score ';
-        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#0099ff' });
+        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#dc7b00' });
         this.place(this.scoreText,0.2075,0.03);
 
         //  Perfect Levels
         this.perfectLevelsString = 'P-Levels: ';
-        this.perfectLevelsText = game.add.text(0,0, this.perfectLevelsString + "" +this.totalPerfectLevel, { font: '16px HappyKiller', fill: '#0099ff' });
+        this.perfectLevelsText = game.add.text(0,0, this.perfectLevelsString + "" +this.totalPerfectLevel, { font: '16px HappyKiller', fill: '#dc7b00' });
         this.place(this.perfectLevelsText,.17,.95);
 
         //  Aliens Escaped
         this.aliensEscapedString = 'A-Escaped: ';
-        this.aliensEscapedText = game.add.text(0,0, this.aliensEscapedString + "" +this.totalAlienEscape, { font: '16px HappyKiller', fill: '#0099ff' });
+        this.aliensEscapedText = game.add.text(0,0, this.aliensEscapedString + "" +this.totalAlienEscape, { font: '16px HappyKiller', fill: '#dc7b00' });
         this.place(this.aliensEscapedText,.64,.95);
 
         //  Lives
@@ -193,7 +193,7 @@ PlutoGame.prototype = {
         this.gameSpeedText.setTextBounds(0, 45, this.game.world.width, 50);
 
         // Energy
-        this.player.energyTxtAddition = game.add.text(0,0, "Energy 00", { font: '12px HappyKiller', fill: '#0099ff' });
+        this.player.energyTxtAddition = game.add.text(0,0, "Energy 00", { font: '12px HappyKiller', fill: '#dc7b00' });
         this.place(this.player.energyTxtAddition, 0.6875, 0.1);
         this.player.energyTxtAddition.visible = false;
 
@@ -234,7 +234,7 @@ PlutoGame.prototype = {
         this.place(this.scoresTitle, 0.5, 0.25);
 
         //  Rank Text
-        this.scoresText_ra = game.add.text(0,0, 'Rank', { font: '20px arial', fill: '#0099ff' }); 
+        this.scoresText_ra = game.add.text(0,0, 'Rank', { font: '20px arial', fill: '#dc7b00' }); 
         this.scoresText_ra.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_ra);
         this.place(this.scoresText_ra, 0.20, 0.32);
@@ -245,7 +245,7 @@ PlutoGame.prototype = {
         this.place(this.scoresText_rav, 0.20, 0.38);
         
         //  Perfect Levels Text
-        this.scoresText_pl = game.add.text(0,0, 'Perfect Levels', { font: '20px arial', fill: '#0099ff' }); 
+        this.scoresText_pl = game.add.text(0,0, 'Perfect Levels', { font: '20px arial', fill: '#dc7b00' }); 
         this.scoresText_pl.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_pl);
         this.place(this.scoresText_pl, 0.38, 0.32);
@@ -257,7 +257,7 @@ PlutoGame.prototype = {
         this.place(this.scoresText_plv, 0.38, 0.38);
         
         //  Aliens Escaped Text
-        this.scoresText_ae = game.add.text(0,0, 'Aliens Escaped', { font: '20px arial', fill: '#0099ff' }); 
+        this.scoresText_ae = game.add.text(0,0, 'Aliens Escaped', { font: '20px arial', fill: '#dc7b00' }); 
         this.scoresText_ae.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_ae);
         this.place(this.scoresText_ae, 0.60, 0.32);
@@ -268,7 +268,7 @@ PlutoGame.prototype = {
         this.place(this.scoresText_aev, 0.60, 0.38);
 
         //  Name Text
-        this.scoresText_na = game.add.text(0,0, 'Name', { font: '20px arial', fill: '#0099ff' }); 
+        this.scoresText_na = game.add.text(0,0, 'Name', { font: '20px arial', fill: '#dc7b00' }); 
         this.scoresText_na.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_na);
         this.place(this.scoresText_na, 0.78, 0.32);
@@ -287,7 +287,7 @@ PlutoGame.prototype = {
         this.panelScores.add(this.stateText);
 
         //  Tap to play again Text
-        this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#0099ff' }); 
+        this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#dc7b00' }); 
         this.scoresText_pa.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_pa);
         this.place(this.scoresText_pa, 0.5, 0.85);
@@ -747,11 +747,13 @@ PlutoGame.prototype = {
                 this.stateText.text += "New High Score!";
             } 
 
-            if (this.score <=0) {this.stateText.text += "\n Pluto ate your lunch.";
-                } else if (this.score < 10000) {this.stateText.text += "\n Nice Try.";
-                } else if (this.score < 100000) {this.stateText.text += "\n Not Bad.";
-                } else if (this.score < 200000) {this.stateText.text += "\n Pretty Good.";
-                } else if (this.score > 200000) {this.stateText.text += "\n Great Job.";
+            this.stateText.text +=                                      "\n A message from your commander:"
+
+            if (this.score <=0) {this.stateText.text +=                 "\n           Pluto ate your lunch.     ";
+                } else if (this.score < 10000) {this.stateText.text +=  "\n                 Nice Try.           ";
+                } else if (this.score < 100000) {this.stateText.text += "\n                 Not Bad.            ";
+                } else if (this.score < 200000) {this.stateText.text += "\n               Pretty Good.          ";
+                } else if (this.score > 200000) {this.stateText.text += "\n                Great Job.           ";
                 } 
 
             this.scoresText_plv.text = this.totalPerfectLevel;

@@ -123,7 +123,7 @@ Preload.prototype = {
     this.logo = game.make.sprite(0,0, 'logo');
     this.logo.anchor.setTo(0.5,0.5);
     this.place(this.logo, 0.5, .33)
-    this.status = game.make.text(0,0, ' ', { font: '20px HappyKiller', fill: '#0099ff' });
+    this.status = game.make.text(0,0, ' ', { font: '20px HappyKiller', fill: '#dc7b00' });
     this.status.anchor.setTo(0.5,0.5);
     this.place(this.status, 0.5, .62);
 

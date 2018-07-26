@@ -73,7 +73,7 @@ Options.prototype = {
         this.panelCredits.add(this.panelCredits_title);
 
         //  Credits Title
-        this.creditsTitle = game.add.text(0,0, 'Credits', { font: '24px arial', fill: '#0099ff' }); 
+        this.creditsTitle = game.add.text(0,0, 'Credits', { font: '24px arial', fill: '#dc7b00' }); 
         this.creditsTitle.anchor.setTo(0.5, 0.5);
         this.panelCredits.add(this.creditsTitle);
         this.place(this.creditsTitle, 0.5, 0.25);
@@ -86,12 +86,12 @@ Options.prototype = {
                           "Font: dafont.com - Happy-Killer.font\n"+
                           "Sfx: phaser.io - example Sounds\n"+
                           "Scream: wilhelmscream.net - Wilhelm Scream";
-        this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
+        this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '16px arial', fill: '#dc7b00', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.place(this.creditsText,0.2,0.40);
         this.panelCredits.add(this.creditsText);
 
         //  Tap to return Text
-        this.creditsText_pa = game.add.text(0,0, 'Tap To Return', { font: '20px arial', fill: '#0099ff' }); 
+        this.creditsText_pa = game.add.text(0,0, 'Tap To Return', { font: '20px arial', fill: '#dc7b00' }); 
         this.creditsText_pa.anchor.setTo(0.5, 0.5);
         this.panelCredits.add(this.creditsText_pa);
         this.place(this.creditsText_pa, 0.5, 0.85);
