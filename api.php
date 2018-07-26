@@ -64,7 +64,7 @@ class api
         ;
         $result = $this->db->query($query);
 
-        return $query;
+        return $result;
     }
 
     /**

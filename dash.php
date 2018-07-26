@@ -14,8 +14,8 @@ require_once 'api.php';
 require('utility.php');
 
 // Start debug logging
-$debug = new debug_log();
-$debug->start('dash.php');
+//$debug = new debug_log();
+//$debug->start('dash.php');
 //$debug->msg('$_SERVER["REMOTE_ADDR"]', $_SERVER );
 
 showHeader();

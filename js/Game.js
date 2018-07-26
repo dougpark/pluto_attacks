@@ -13,8 +13,6 @@ PlutoGame.prototype = {
         this.gameMode = gameMode;
         this.trainingLevel = trainingLevel;
         this.level = this.trainingLevel;
-
-        console.log("trainingLevel"+ this.trainingLevel);
     },
 
 // **************************************************************************************
