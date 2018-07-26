@@ -13,6 +13,7 @@ MainMenu.prototype = {
     create: function () {
         // background image
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
+        this.starfield.alpha = 0.5;
         
         // Game mode menu group
         this.panelGameMode = this.add.group();
@@ -122,6 +123,14 @@ MainMenu.prototype = {
         //game.add.tween(this.buttonGameLevel_27.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 150, false).yoyo(true);
         
     },
+
+    update: function() {
+
+        //  Scroll the background
+        this.starfield.tilePosition.y += 2;
+        
+
+   },
 
     // Action when click on the Options button
     actionOnClickOptions: function () {

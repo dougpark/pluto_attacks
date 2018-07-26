@@ -115,12 +115,12 @@ PlutoGame.prototype = {
         this.place(this.scoreText,0.2075,0.03);
 
         //  Perfect Levels
-        this.perfectLevelsString = 'P Levels: ';
+        this.perfectLevelsString = 'P-Levels: ';
         this.perfectLevelsText = game.add.text(0,0, this.perfectLevelsString + "" +this.totalPerfectLevel, { font: '16px HappyKiller', fill: '#0099ff' });
         this.place(this.perfectLevelsText,.17,.95);
 
         //  Aliens Escaped
-        this.aliensEscapedString = 'Aliens Esc: ';
+        this.aliensEscapedString = 'A-Escaped: ';
         this.aliensEscapedText = game.add.text(0,0, this.aliensEscapedString + "" +this.totalAlienEscape, { font: '16px HappyKiller', fill: '#0099ff' });
         this.place(this.aliensEscapedText,.64,.95);
 
@@ -652,8 +652,6 @@ PlutoGame.prototype = {
             game.time.events.add(1000, function () {
                 txtAddition.destroy();
             }, this);
-
-            
 
             this.score += this.player.bonusPoints;
             this.showScores();

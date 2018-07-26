@@ -54,6 +54,7 @@ Preload.prototype = {
     game.load.spritesheet('buttonLevel_18', 'assets/buttons/button_level_18.png', 110,100);
     game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 110,100);
     game.load.image('level_title', 'assets/buttons/panel_level.png');
+    game.load.image('options_title', 'assets/buttons/panel_options.png');
     game.load.spritesheet('buttonBack', 'assets/buttons/button_left.png',129,100);
     game.load.image('score_panel', 'assets/buttons/panel_2b.png');
     //game.load.spritesheet('buttonCredits', 'assets/buttons/button_back.png',100,100);
