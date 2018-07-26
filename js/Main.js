@@ -25,22 +25,57 @@ var Povin = {
     hsName ='';
   },
 
-  compareHighScore: function(gm, gl, sc) {
+  compareHighScore: function(gameMode, gameLevel, endLevel, perfectLevels, aliensEscaped, score) {
 
-    if (sc > this.highScore.hsScore) { 
-      this.highScore.hsScore = sc;
-      this.saveHighScore(gm,gl,sc,'Doug');
+    this.notifyServer(gameMode,gameLevel,endLevel, perfectLevels,aliensEscaped,score,'Player');
+
+    if (score > this.highScore.hsScore) { 
+      this.highScore.hsScore = score;
+      this.saveHighScore(gameMode,gameLevel,score,'Player');
+     
       return true;
     } else {
       return false;
     }
   },
 
-  saveHighScore: function(gm, gl, sc, name) {
-    localStorage.setItem("PlutoAttacksHighScoreGameMode", gm);
-    localStorage.setItem("PlutoAttacksHighScoreGameLevel", gl);
-    localStorage.setItem("PlutoAttacksHighScoreScore", sc);
-    localStorage.setItem("PlutoAttacksHighScoreName", name);
+  saveHighScore: function(gameMode, gameLevel, score, userName) {
+    localStorage.setItem("PlutoAttacksHighScoreGameMode", gameMode);
+    localStorage.setItem("PlutoAttacksHighScoreGameLevel", gameLevel);
+    localStorage.setItem("PlutoAttacksHighScoreScore", score);
+    localStorage.setItem("PlutoAttacksHighScoreName", userName);
+    
+  },
+
+  notifyServer: function(gameMode, gameLevel, endLevel, perfectLevels, aliensEscaped, score, userName) {
+    // Notify the sever of score
+    var d = new Date();
+    //var n = d.toJSON();
+    var w = window.innerWidth
+    || document.documentElement.clientWidth
+    || document.body.clientWidth;
+    
+    var h = window.innerHeight
+    || document.documentElement.clientHeight
+    || document.body.clientHeight;
+
+    console.log("gameMode= "+gameMode+" gameLevel= "+gameLevel + " endLevel= "+ endLevel + " perfectLevels= "+perfectLevels + " aliensEscaped= "+aliensEscaped + " score= "+score);
+    var localPA = { "Game":"Pluto Attacks", "Date":d.toJSON(), "WinWidth":w,"WinHeight":h,
+    "GameMode":gameMode,"GameLevel":gameLevel,"EndLevel":endLevel,"PerfectLevels":perfectLevels, "AliensEscaped":aliensEscaped,
+    "Score":score,"UserName":userName,"Browser":navigator.userAgent };
+
+    var localPAJSON = JSON.stringify(localPA);
+    
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("notifyScoreServerResponse= " + this.responseText);
+            //var rspText = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "sethighscore.php?q=" + localPAJSON, true);
+    xmlhttp.send();
+
   },
 
   getHighScore: function() {

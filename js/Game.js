@@ -13,6 +13,8 @@ PlutoGame.prototype = {
         this.gameMode = gameMode;
         this.trainingLevel = trainingLevel;
         this.level = this.trainingLevel;
+
+        console.log("trainingLevel"+ this.trainingLevel);
     },
 
 // **************************************************************************************
@@ -650,7 +652,7 @@ PlutoGame.prototype = {
 
             this.stateText.text = "";
 
-            if (Povin.compareHighScore(this.gameMode, this.level, this.score)) {
+            if (Povin.compareHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score)) {
                 this.stateText.text += "New High Score!";
             } 
 

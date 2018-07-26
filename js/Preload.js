@@ -175,8 +175,36 @@ Preload.prototype = {
     }
   },
 
+  notifyServer: function() {
+    // Notify the sever that a new game is starting
+    var d = new Date();
+    //var n = d.toJSON();
+    var w = window.innerWidth
+    || document.documentElement.clientWidth
+    || document.body.clientWidth;
+    
+    var h = window.innerHeight
+    || document.documentElement.clientHeight
+    || document.body.clientHeight;
+
+    var localPA = { "Game":"Pluto Attacks", "Date":d.toJSON(), "WinHeight":h,"WinWidth":w,"GameLevel":"0","GameMode":"0","Score":"0","Browser":navigator.userAgent };
+    var localPAJSON = JSON.stringify(localPA);
+    
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            console.log("notifyServerResponse= " + this.responseText);
+            //var rspText = this.responseText;
+        }
+    };
+    xmlhttp.open("GET", "sethighscore.php?q=" + localPAJSON, true);
+    xmlhttp.send();
+
+  },
+
   create: function() {
     this.status.setText('Ready!');
+    this.notifyServer();
     this.getLocalStorage();
     this.addGameStates();
     this.addGameMusic();
