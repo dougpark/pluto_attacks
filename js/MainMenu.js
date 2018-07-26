@@ -38,7 +38,7 @@ MainMenu.prototype = {
         // Game mode menu buttons
         this.buttonGameModeNormal = game.add.button(0,0, 'buttonNormal', this.actionOnClickGameMode, this, 2, 1, 0);
         this.buttonGameModeNormal.anchor.setTo(0.5, 0.5);
-        this.place(this.buttonGameModeNormal, .5, .40);
+        this.place(this.buttonGameModeNormal, .5, .58);
         this.buttonGameModeNormal.events.onInputDown.add(this.onInputDownGameMode, this);
         this.buttonGameModeNormal.events.onInputUp.add(this.onInputUpGameMode, this);
         this.buttonGameModeNormal.gameMode = 1;
@@ -46,7 +46,7 @@ MainMenu.prototype = {
 
         this.buttonGameModeFun = game.add.button(game.world.centerX, 345, 'buttonFun', this.actionOnClickGameMode, this, 2, 1, 0);
         this.buttonGameModeFun.anchor.setTo(0.5, 0.5);
-        this.place(this.buttonGameModeFun, .5, .58);
+        this.place(this.buttonGameModeFun, .5, .40);
         this.buttonGameModeFun.events.onInputDown.add(this.onInputDownGameMode, this);
         this.buttonGameModeFun.events.onInputUp.add(this.onInputUpGameMode, this);
         this.buttonGameModeFun.gameMode = 2;
@@ -69,7 +69,7 @@ MainMenu.prototype = {
         this.buttonOptions.events.onInputUp.add(this.onInputUpOptions, this);
         this.panelGameMode.add(this.buttonOptions);
 
-
+       
         // Popup Game level menu
         this.panelGameLevel = this.add.group();
         this.panelGameLevel.alpha = 0;
@@ -141,6 +141,8 @@ MainMenu.prototype = {
             y: 1
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
+
+    
 
     // Pop up the GameLevel select panel
     selectGameLevel: function() {
