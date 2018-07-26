@@ -111,8 +111,18 @@ PlutoGame.prototype = {
         
         //  The score
         this.scoreString = 'Score ';
-        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '20px HappyKiller', fill: '#0099ff' });
-        this.place(this.scoreText,0.1875,0.05);
+        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#0099ff' });
+        this.place(this.scoreText,0.2075,0.03);
+
+        //  Perfect Levels
+        this.perfectLevelsString = 'P Levels: ';
+        this.perfectLevelsText = game.add.text(0,0, this.perfectLevelsString + "" +this.totalPerfectLevel, { font: '16px HappyKiller', fill: '#0099ff' });
+        this.place(this.perfectLevelsText,.17,.95);
+
+        //  Aliens Escaped
+        this.aliensEscapedString = 'Aliens Esc: ';
+        this.aliensEscapedText = game.add.text(0,0, this.aliensEscapedString + "" +this.totalAlienEscape, { font: '16px HappyKiller', fill: '#0099ff' });
+        this.place(this.aliensEscapedText,.64,.95);
 
         //  Lives
         this.lives = game.add.group();
@@ -277,16 +287,12 @@ PlutoGame.prototype = {
         this.panelScores.add(this.stateText);
 
         //  Tap to play again Text
-        this.scoresText_pa = game.add.text(0,0, 'Tap To Play Again', { font: '20px arial', fill: '#0099ff' }); 
+        this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#0099ff' }); 
         this.scoresText_pa.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_pa);
         this.place(this.scoresText_pa, 0.5, 0.85);
 
     }, // end create
-
-    // temporary
-    //actionOnClickEnergy: function () {
-    //},
 
     // Action when click on the home button
     actionOnClickHome: function () {
@@ -347,7 +353,8 @@ PlutoGame.prototype = {
         this.score -= 1000;
         this.alienEscape += 1;
         this.totalAlienEscape += 1;
-        this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+        this.showScores();
+
         alien.kill();
     },
 
@@ -355,7 +362,7 @@ PlutoGame.prototype = {
     createAliens: function () {
         for (var y = 0; y < 4; y++) {
             for (var x = 0; x < 10; x++) {
-                var alien = this.aliens.create(x * 48, y * 50, 'invader');
+                var alien = this.aliens.create(x * 49, y * 50, 'invader');
                 alien.anchor.setTo(0.5, 0.5);
                 alien.animations.add('fly', [0, 1, 2, 3], 20, true);
                 alien.play('fly');
@@ -364,11 +371,11 @@ PlutoGame.prototype = {
                 //alien.body.moves = false;
             }
         }
-        this.aliens.x = 160;
+        this.aliens.x = 70;
         this.aliens.y = 150;
 
         //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-        this.tween = game.add.tween(this.aliens).to({ x: 200 }, 2000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        this.tween = game.add.tween(this.aliens).to({ x: 300 }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
         //  When the tween loops it calls descend
         this.tween.onLoop.add(this.descend, this);
@@ -547,8 +554,8 @@ PlutoGame.prototype = {
         // End of the level (all the enemies are killed)
         if (this.aliens.countLiving() == 0 && this.levelTimer == 0) {
             this.score += 1000;
-            this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
-
+            this.showScores();
+  
             this.level += 1;
 
             this.enemyBullets.callAll('kill', this);
@@ -578,7 +585,7 @@ PlutoGame.prototype = {
                     txtPerfect2.destroy();
                 }, this);
                 this.score += 10000;
-                this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+                this.showScores();
             }
             
         }
@@ -586,10 +593,18 @@ PlutoGame.prototype = {
         // Delay before starting the next level
         if (this.levelTimer > 0 && game.time.now > this.levelTimer) {
             this.levelTimer = 0;
-            this.restart();
             this.alienEscape = 0;
+            this.restart();
+            
         } 
     }, // end update
+
+
+    showScores: function() {
+        this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+        this.perfectLevelsText.text = this.perfectLevelsString + "" +this.totalPerfectLevel;
+        this.aliensEscapedText.text = this.aliensEscapedString + "" +this.totalAlienEscape;
+    },
 
     render: function () {
 
@@ -641,7 +656,7 @@ PlutoGame.prototype = {
             
 
             this.score += this.player.bonusPoints;
-            this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+            this.showScores();
             
         }
     },
@@ -674,7 +689,7 @@ PlutoGame.prototype = {
 
         //  Increase the score
         this.score += 20;
-        this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+        this.showScores();
         this.aliens.bonusPoints = 0; // reset bonus counter when hit alien
 
         
@@ -740,35 +755,29 @@ PlutoGame.prototype = {
                 } else if (this.score < 200000) {this.stateText.text += "\n Pretty Good.";
                 } else if (this.score > 200000) {this.stateText.text += "\n Great Job.";
                 } 
-                
-            //this.stateText.text += "\n Pefect Levels: " + this.totalPerfectLevel;
-            //this.stateText.text += "\n Aliens Escaped: " + this.totalAlienEscape;
-            //this.stateText.text += "\n Tap to Save Earth";
 
             this.scoresText_plv.text = this.totalPerfectLevel;
             this.scoresText_aev.text = this.totalAlienEscape;
 
-            //this.stateText.visible = true;    
-
-        
-
-            // reset score and level
-            this.score = 0;
-            this.totalAlienEscape = 0;
-            this.totalPerfectLevel = 0;
-
-            // if in training mode then stay on current level, otherwise reset the level
-            //this.level = this.trainingLevel;
-
             //the "Tap to restart" handler
-            this.fireButton.onDown.addOnce(this.restart, this);
-            game.input.onTap.addOnce(this.restart, this);
+            this.fireButton.onDown.addOnce(this.restartGame, this);
+            game.input.onTap.addOnce(this.restartGame, this);
         }
+    },
+
+    restartGame: function() {
+
+        // zero out scores
+        this.score = 0;
+        this.totalAlienEscape = 0;
+        this.totalPerfectLevel = 0;
+
+        this.restart();
     },
 
     // Pop up the Scores panel
     showHighScores: function () {
-        game.add.tween(this.panelScores).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        game.add.tween(this.panelScores).to( { alpha: 0.95 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         game.add.tween(this.starfield).to( { alpha: 0.25 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
     
         //this.panelScores.visible = true;
@@ -876,7 +885,7 @@ PlutoGame.prototype = {
 
         this.hideHighScores();
 
-        this.scoreText.text = this.scoreString + "\n" + this.level + ':' + this.score;
+        this.showScores();
     }, 
 
     // Scaling Functions
