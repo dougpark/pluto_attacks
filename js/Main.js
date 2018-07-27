@@ -26,20 +26,7 @@ var Povin = {
     hsName ='';
   },
 
-  compareHighScore: function(gameMode, gameLevel, endLevel, perfectLevels, aliensEscaped, score) {
-
-    this.notifyServer(gameMode,gameLevel,endLevel, perfectLevels,aliensEscaped,score,'Player');
-
-    if (score > this.highScore.hsScore) { 
-      this.highScore.hsScore = score;
-      this.saveHighScore(gameMode,gameLevel,score,'Player');
-     
-      return true;
-    } else {
-      return false;
-    }
-  },
-
+ 
   // save the currently read intro text into browser local storage
   setReadIntroVer: function() {
     localStorage.setItem("PlutoAttacksReadIntroVer", this.currentIntroVer());
@@ -124,9 +111,23 @@ var Povin = {
 
   },
 
+  saveHighScore: function(gameMode, gameLevel, endLevel, perfectLevels, aliensEscaped, score) {
+
+    this.notifyServer(gameMode,gameLevel,endLevel, perfectLevels,aliensEscaped,score,'Player');
+
+    if (score > this.highScore.hsScore) { 
+      this.highScore.hsScore = score;
+      this.saveHighScoreLocal(gameMode,gameLevel,score,'Player');
+     
+      return true;
+    } else {
+      return false;
+    }
+  },
+
 
   // high scores in local storage
-  saveHighScore: function(gameMode, gameLevel, score, userName) {
+  saveHighScoreLocal: function(gameMode, gameLevel, score, userName) {
     localStorage.setItem("PlutoAttacksHighScoreGameMode", gameMode);
     localStorage.setItem("PlutoAttacksHighScoreGameLevel", gameLevel);
     localStorage.setItem("PlutoAttacksHighScoreScore", score);
@@ -135,7 +136,7 @@ var Povin = {
   },
 
   // high scores in local storage
-  getHighScore: function() {
+  getHighScoreLocal: function() {
 
     if (localStorage.getItem("PlutoAttacksHighScoreScore") !== null) {
       return parseInt(localStorage.getItem("PlutoAttacksHighScoreScore"));
@@ -160,7 +161,7 @@ Main.prototype = {
     } else {Povin.highScore.hsGameLevel = 1}
     if (localStorage.getItem("PlutoAttacksHighScoreScore") !== null) {
       Povin.highScore.hsScore = parseInt(localStorage.getItem("PlutoAttacksHighScoreScore"));
-      console.log("localStorage high score= "+Povin.highScore.hsScore);
+      //console.log("localStorage high score= "+Povin.highScore.hsScore);
     } else {Povin.highScore.hsScore = 0}
     if (localStorage.getItem("PlutoAttacksHighScoreName") !== null) {
       Povin.highScore.hsName = localStorage.getItem("PlutoAttacksHighScoreName");

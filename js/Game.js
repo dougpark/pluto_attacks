@@ -741,15 +741,18 @@ PlutoGame.prototype = {
 
             this.stateText.text = "";
 
+            // save your current score to the score server
+            Povin.saveHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score);
+
             // retrieve high scores from server
             this.retrieveHighScores();
 
-            // show the hud
+            // show the high score hud
             this.showHighScores();
-
-            if (Povin.compareHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score)) {
-                this.stateText.text += "New High Score!";
-            } 
+          
+            //if (Povin.compareHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score)) {
+            //    this.stateText.text += "New High Score!";
+            //} 
 
             this.stateText.text +=                                      "\n A message from your commander:"
 
