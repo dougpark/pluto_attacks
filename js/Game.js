@@ -956,6 +956,7 @@ PlutoGame.prototype = {
         obj.x -= obj.width / 2;
     },
 
+    // retrieve high scores from the score server    
     retrieveHighScores: function() {
         self = this;
         var xmlhttp = new XMLHttpRequest();
@@ -970,6 +971,7 @@ PlutoGame.prototype = {
 
     },
 
+    // process the high scores from the score server
     processHighScores: function(highScores) {
 
         //console.log("processHighScores= " + highScores);

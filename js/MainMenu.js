@@ -142,22 +142,8 @@ MainMenu.prototype = {
         this.panelIntro.add(this.introTitle);
         this.place(this.introTitle, 0.5, 0.25);
 
-        this.introTxt = 
-        "Plutonians are not happy with the reclassification of their home world\n"+
-        "to Dwarf Planet. So when they discovered a trick in the space time \n"+
-        "continuum they sent an infinite number of drones to attack Earth. We've \n"+
-        "learned just enough about their technology to use it to our own \n"+
-        "advantage. We created an energy weapon that can siphon off the energy \n"+
-        "from the drones weapons. This powers the Earth vessel and creates a \n"+
-        "powerful energy shield.\n"+
-
-        "For desktop just press the space bar to start and then left and \n"+
-        "right arrows to move. That’s it.\n"+
-        
-        "For mobile just tap to start and then use your finger to move back \n"+
-        "and forth. "
-        ;
-                         
+        // Intro Text
+        this.introTxt = Povin.getIntroText();                       
         this.introText = game.add.text(0,0, this.introTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.place(this.introText,0.2,0.30);
         this.panelIntro.add(this.introText);
@@ -168,9 +154,9 @@ MainMenu.prototype = {
         this.panelIntro.add(this.introText_pa);
         this.place(this.introText_pa, 0.5, 0.85);
 
-        if (Povin.showIntro == 1) {
-            Povin.showIntro = 0;
+        if (Povin.showIntroText() == true) {
             this.showIntro();
+            Povin.setReadIntroVer();
         }
         
     },
