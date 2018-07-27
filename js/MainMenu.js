@@ -11,6 +11,9 @@ MainMenu.prototype = {
     },
 
     create: function () {
+
+        this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
         // background image
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
         this.starfield.alpha = 0.5;
@@ -24,7 +27,7 @@ MainMenu.prototype = {
         this.imageGameMode_title = game.add.sprite(0,0, 'title');
         this.imageGameMode_title.anchor.setTo(0.5, 0.5);
         this.imageGameMode_title.scale.setTo(1.25, .80);
-        this.panelGameMode.add(this.imageGameMode_title);
+        //this.panelGameMode.add(this.imageGameMode_title);
         this.place(this.imageGameMode_title, .5, .1);
 
         // Game mode menu floaters
@@ -122,6 +125,78 @@ MainMenu.prototype = {
         //game.add.tween(this.buttonGameLevel_18.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 100, false).yoyo(true);
         //game.add.tween(this.buttonGameLevel_27.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 150, false).yoyo(true);
         
+        // Popup Intro Screen
+        this.panelIntro = this.add.group();
+        this.panelIntro.alpha = 0;
+        //this.panelIntro.visible = false;
+
+        this.panelIntro_title = game.add.sprite(0,0, 'score_panel');
+        this.panelIntro_title.anchor.setTo(0.5, 0.5);
+        this.panelIntro_title.scale.setTo(1.75,2.0);
+        this.place(this.panelIntro_title, 0.5, 0.55);
+        this.panelIntro.add(this.panelIntro_title);
+
+        //  Intro Title
+        this.introTitle = game.add.text(0,0, 'Intro', { font: '24px arial', fill: '#0099ff' }); 
+        this.introTitle.anchor.setTo(0.5, 0.5);
+        this.panelIntro.add(this.introTitle);
+        this.place(this.introTitle, 0.5, 0.25);
+
+        this.introTxt = 
+        "Plutonians are not happy with the reclassification of their home world\n"+
+        "to Dwarf Planet. So when they discovered a trick in the space time \n"+
+        "continuum they sent an infinite number of drones to attack Earth. We've \n"+
+        "learned just enough about their technology to use it to our own \n"+
+        "advantage. We created an energy weapon that can siphon off the energy \n"+
+        "from the drones weapons. This powers the Earth vessel and creates a \n"+
+        "powerful energy shield.\n"+
+
+        "For desktop just press the space bar to start and then left and \n"+
+        "right arrows to move. That’s it.\n"+
+        
+        "For mobile just tap to start and then use your finger to move back \n"+
+        "and forth. "
+        ;
+                         
+        this.introText = game.add.text(0,0, this.introTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
+        this.place(this.introText,0.2,0.30);
+        this.panelIntro.add(this.introText);
+
+        //  Tap to start Text
+        this.introText_pa = game.add.text(0,0, 'Tap To Start', { font: '20px arial', fill: '#dc7b00' }); 
+        this.introText_pa.anchor.setTo(0.5, 0.5);
+        this.panelIntro.add(this.introText_pa);
+        this.place(this.introText_pa, 0.5, 0.85);
+
+        if (Povin.showIntro == 1) {
+            Povin.showIntro = 0;
+            this.showIntro();
+        }
+        
+    },
+
+    // Pop up the Intro panel
+    showIntro: function () {
+        this.buttonGameModeNormal.inputEnabled = false;
+        this.buttonGameModeFun.inputEnabled = false;
+        this.buttonOptions.inputEnabled = false;
+        game.add.tween(this.panelGameMode).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        game.add.tween(this.panelIntro).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        //game.add.tween(this.starfield).to( { alpha: 0.25 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+    
+        //the "Tap to restart" handler
+        this.fireButton.onDown.addOnce(this.hideIntro, this);
+        game.input.onTap.addOnce(this.hideIntro, this);
+    },
+
+    // Pop up the Scores panel
+    hideIntro: function () {
+        this.buttonGameModeNormal.inputEnabled = true;
+        this.buttonGameModeFun.inputEnabled = true;
+        this.buttonOptions.inputEnabled = true;
+        game.add.tween(this.panelIntro).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        game.add.tween(this.panelGameMode).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        //this.panelGameMode.alpha = 1;
     },
 
     update: function() {
@@ -155,6 +230,9 @@ MainMenu.prototype = {
 
     // Pop up the GameLevel select panel
     selectGameLevel: function() {
+        game.add.tween(this.imageGameMode_title).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 0, 0, false);
+      
+        //this.imageGameMode_title.alpha = 0;
         game.add.tween(this.panelGameMode).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 0, 0, false);
         game.add.tween(this.panelGameLevel).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         this.panelGameLevel.visible = true;
