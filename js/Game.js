@@ -240,9 +240,9 @@ PlutoGame.prototype = {
         this.place(this.scoresText_ra, 0.20, 0.32);
         //  Rank Value
         this.scoresText_rav = game.add.text(0,0, '1st', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_rav.anchor.setTo(0.5, 0.5);
+        this.scoresText_rav.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_rav);
-        this.place(this.scoresText_rav, 0.20, 0.38);
+        this.place(this.scoresText_rav, 0.20, 0.34);
         
         //  Perfect Levels Text
         this.scoresText_pl = game.add.text(0,0, 'Perfect Levels', { font: '20px arial', fill: '#dc7b00' }); 
@@ -252,9 +252,9 @@ PlutoGame.prototype = {
 
         //  Perfect Levels Value
         this.scoresText_plv = game.add.text(0,0, '999', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_plv.anchor.setTo(0.5, 0.5);
+        this.scoresText_plv.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_plv);
-        this.place(this.scoresText_plv, 0.38, 0.38);
+        this.place(this.scoresText_plv, 0.38, 0.34);
         
         //  Aliens Escaped Text
         this.scoresText_ae = game.add.text(0,0, 'Aliens Escaped', { font: '20px arial', fill: '#dc7b00' }); 
@@ -263,9 +263,9 @@ PlutoGame.prototype = {
         this.place(this.scoresText_ae, 0.60, 0.32);
         //  Aliens Escaped Value
         this.scoresText_aev = game.add.text(0,0, '999', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_aev.anchor.setTo(0.5, 0.5);
+        this.scoresText_aev.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_aev);
-        this.place(this.scoresText_aev, 0.60, 0.38);
+        this.place(this.scoresText_aev, 0.60, 0.34);
 
         //  Name Text
         this.scoresText_na = game.add.text(0,0, 'Name', { font: '20px arial', fill: '#dc7b00' }); 
@@ -274,15 +274,15 @@ PlutoGame.prototype = {
         this.place(this.scoresText_na, 0.78, 0.32);
         //  Name Value
         this.scoresText_nav = game.add.text(0,0, 'Player', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_nav.anchor.setTo(0.5, 0.5);
+        this.scoresText_nav.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_nav);
-        this.place(this.scoresText_nav, 0.78, 0.38);
+        this.place(this.scoresText_nav, 0.78, 0.34);
         
 
          //  Scores Text
         this.stateText = game.add.text(0,0, '', { font: '20px arial', fill: '#0099ff' });
         this.stateText.anchor.setTo(0.5, 0.5);
-        this.place(this.stateText,0.5, 0.625);
+        this.place(this.stateText,0.5, 0.73);
         this.stateText.visible = true;
         this.panelScores.add(this.stateText);
 
@@ -741,6 +741,10 @@ PlutoGame.prototype = {
 
             this.stateText.text = "";
 
+            // retrieve high scores from server
+            this.retrieveHighScores();
+
+            // show the hud
             this.showHighScores();
 
             if (Povin.compareHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score)) {
@@ -756,8 +760,6 @@ PlutoGame.prototype = {
                 } else if (this.score > 200000) {this.stateText.text += "\n                Great Job.           ";
                 } 
 
-            this.scoresText_plv.text = this.totalPerfectLevel;
-            this.scoresText_aev.text = this.totalAlienEscape;
 
             //the "Tap to restart" handler
             this.fireButton.onDown.addOnce(this.restartGame, this);
@@ -952,6 +954,49 @@ PlutoGame.prototype = {
     fromCenterV: function(obj, percent) {
         obj.x = game.width / 2 - (game.width * percent);
         obj.x -= obj.width / 2;
+    },
+
+    retrieveHighScores: function() {
+        self = this;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                //console.log("retriveHighScores= " + this.responseText);
+                self.processHighScores(this.responseText);
+            }
+        };
+        xmlhttp.open("GET", "gethighscore.php", true);
+        xmlhttp.send();
+
+    },
+
+    processHighScores: function(highScores) {
+
+        //console.log("processHighScores= " + highScores);
+        this.scoresText_plv.text = "";
+        this.scoresText_aev.text = "";
+        this.scoresText_rav.text = "1st"+"\n2nd"+"\n3rd"+"\n4th"+"\n5th"+"\n\nYou";
+        this.scoresText_nav.text = "Player 1"+"\nPlayer 2"+"\nPlayer 3"+"\nPlayer 4"+"\nPlayer 5"+"\n\nYou";
+        var scores = JSON.parse(highScores);
+        
+        var i;
+        for (i = 0; i <= 4; i++) { 
+            this.scoresText_plv.text += scores[i].PerfectLevels + "\n";
+            this.scoresText_aev.text += scores[i].AliensEscaped + "\n";
+            //console.log(myObj[i].PerfectLevels + myObj[i].AliensEscaped);
+        }
+
+        // add Your scores to end of the list
+        this.scoresText_plv.text += "\n"+this.totalPerfectLevel;
+        this.scoresText_aev.text += "\n"+this.totalAlienEscape;
+        
+        
+    
+    },
+
+    parseHighScores: function(plv, aev) {
+
+        console.log("plv="+plv+" aev="+aev);
     }
 
 };

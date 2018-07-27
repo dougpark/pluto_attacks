@@ -66,7 +66,29 @@ class api
 
         return $result;
     }
-
+    /**
+	 * Get game high score list
+	 *
+	 * @param none 
+	 * @return list array
+	 */
+	function gameHighScoresList($params)
+	{
+        $query = 'SELECT PerfectLevels, AliensEscaped ' 
+        . ' FROM highscore'
+        . ' where GameLevel > 0 and type = "prod" '
+		. ' ORDER BY PerfectLevels DESC, AliensEscaped Limit 10'
+        ;
+        
+		$list = array();
+        $result = $this->db->query($query);
+        while ($row = $result->fetch_assoc())
+        {   
+            $list[] = $row;
+        }
+        return $list;       
+    }
+    
     /**
 	 * Get game high score 
 	 *
