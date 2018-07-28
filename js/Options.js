@@ -62,7 +62,7 @@ Options.prototype = {
         // Continue Button
         this.buttonContinue = game.add.button(0,0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
         this.buttonContinue.anchor.setTo(0.5, 0.5);
-        this.buttonContinue.scale.setTo(.75,.75);
+        this.buttonContinue.scale.setTo(.5,.5);
         this.place(this.buttonContinue, 0.5, 0.85);
         //this.buttonContinue.alpha = 0;
         this.buttonContinue.inputEnabled = false;
@@ -230,15 +230,15 @@ Options.prototype = {
 
     onInputDownContinue: function(target) {
         game.add.tween(target.scale).to({
-            x: 0.7,
-            y: 0.7
+            x: 0.4,
+            y: 0.4
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
     onInputUpContinue: function(target) {
         game.add.tween(target.scale).to({
-            x: .85,
-            y: .85
+            x: .5,
+            y: .5
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 

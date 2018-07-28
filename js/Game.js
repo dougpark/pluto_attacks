@@ -296,7 +296,7 @@ PlutoGame.prototype = {
         // Continue Button
         this.buttonContinue = game.add.button(0,0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
         this.buttonContinue.anchor.setTo(0.5, 0.5);
-        this.buttonContinue.scale.setTo(.75,.75);
+        this.buttonContinue.scale.setTo(.5,.5);
         this.place(this.buttonContinue, 0.5, 0.85);
         this.panelScores.add(this.buttonContinue);
         this.buttonContinue.inputEnabled = false;
@@ -331,15 +331,15 @@ PlutoGame.prototype = {
 
     onInputDownContinue: function(target) {
         game.add.tween(target.scale).to({
-            x: 0.7,
-            y: 0.7
+            x: 0.4,
+            y: 0.4
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
     onInputUpContinue: function(target) {
         game.add.tween(target.scale).to({
-            x: .85,
-            y: .85
+            x: .5,
+            y: .5
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
@@ -795,7 +795,7 @@ PlutoGame.prototype = {
 
 
             //the "Tap to restart" handler
-            //this.fireButton.onDown.addOnce(this.restartGame, this);
+            this.fireButton.onDown.addOnce(this.restartGame, this);
             //game.input.onTap.addOnce(this.restartGame, this);
         }
     },
@@ -820,7 +820,7 @@ PlutoGame.prototype = {
 
     // Pop up the Scores panel
     hideHighScores: function () {
-        game.add.tween(this.panelScores).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        game.add.tween(this.panelScores).to( { alpha: 0 }, 100, Phaser.Easing.Linear.None, true, 250, 0, false);
         game.add.tween(this.starfield).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         this.buttonContinue.inputEnabled = false;
         //this.panelScores.visible = false;
