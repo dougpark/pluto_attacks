@@ -209,6 +209,7 @@ PlutoGame.prototype = {
         this.swordSfx = game.add.audio('swordSfx',0.8);
         this.blasterSfx = game.add.audio('blasterSfx', 0.3);
         this.wilhelmSfx = game.add.audio('wilhelmSfx');
+        this.alienSfx = game.add.audio('alienSfx');
 
         //  Being mp3 files these take time to decode, so we can't play them instantly
         //  Using setDecodedCallback we can be notified when they're ALL ready for use.
@@ -372,13 +373,15 @@ PlutoGame.prototype = {
     alienOut: function(alien) {
         // show a  text floating up the screen
         this.txtAlien = "-1000";
-        var txtAlien2 = game.add.text(alien.x+100, game.world.height, this.txtAlien, { font: '36px HappyKiller', fill: '#ff0000' });
+        var txtAlien2 = game.add.text(alien.body.x, game.world.height, this.txtAlien, { font: '36px HappyKiller', fill: '#ff0000' });
         game.time.events.add(100, function () {
             game.add.tween(txtAlien2).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
         }, this);
         game.time.events.add(2000, function () {
             txtAlien2.destroy();
         }, this);
+
+        this.alienSfx.play();
 
         this.score -= 1000;
         this.alienEscape += 1;
@@ -399,6 +402,8 @@ PlutoGame.prototype = {
                 alien.checkWorldBounds = true;
                 alien.events.onOutOfBounds.add(this.alienOut, this);
                 //alien.body.moves = false;
+                alien.lives = 1;
+                alien.atacking = false;
             }
         }
         this.aliens.x = 70;
@@ -666,7 +671,7 @@ PlutoGame.prototype = {
 
         if (this.aliens.bonusPoints > 9) { // must hit n enemy bullets in a row to start bonus points
             this.player.bonusPoints = this.aliens.bonusPoints * 3;
-            if (this.player.bonusPoints > 81) {this.player.bonusPoints = 81;}
+            if (this.player.bonusPoints > 27) {this.player.bonusPoints = 27;}
 
             this.player.energy = this.player.energy + 1;
             if (this.player.energy > 27) {
@@ -683,7 +688,8 @@ PlutoGame.prototype = {
                 txtAddition.destroy();
             }, this);
 
-            this.score += this.player.bonusPoints;
+            // removed score point for hitting alien bullets, only get enery points
+            //this.score += this.player.bonusPoints;
             this.showScores();
             
         }
@@ -694,7 +700,9 @@ PlutoGame.prototype = {
         //  When a bullet hits an alien we kill the bullet
         bullet.kill();
 
-        if (this.player.energy == 0) {
+        if (this.player.energy == 0 || alien.lives < 1) {
+            alien.atacking = false;
+            alien.lives = 1;
             alien.kill(); // kill the alien when player has no energy
             //  And create an explosion :)
             this.explosionSfx.play();
@@ -702,21 +710,51 @@ PlutoGame.prototype = {
             explosion.reset(alien.body.x, alien.body.y);
             explosion.play('kaboom', 30, false, true);
         } else { // player has energy
-        
-            if (Math.random() < .5) { // normal kill
-                alien.kill(); // alien just dies normally
-                //  And create an explosion :)
-                this.explosionSfx.play();
-                var explosion = this.explosions.getFirstExists(false);
-                explosion.reset(alien.body.x, alien.body.y);
-                explosion.play('kaboom', 30, false, true);
-            } else {    // alien absorbs the energy and breaks rank
-                game.physics.arcade.moveToObject(alien, this.player, 300);
-            }
+
+                if (this.level >= 27) {
+                
+                    if (alien.atacking == false) {
+                        game.physics.arcade.moveToXY(alien, game.rnd.integerInRange(0, game.width), game.height, 300);
+                        alien.lives = 5;
+                        alien.atacking = true;
+                    } else {
+                        alien.lives -= 1;
+                    }
+                } else {
+
+                    if (this.level >= 18) {
+                    
+                        if (alien.atacking == false) {
+                            game.physics.arcade.moveToXY(alien, game.rnd.integerInRange(0+100, game.width-100), game.height, 300);
+                            alien.lives = 2;
+                            alien.atacking = true;
+                        } else {
+                            alien.lives -= 1;
+                        }
+                    } else {
+                
+                        if (alien.atacking == false && Math.random() < .5) { // normal kill
+                            alien.kill(); // alien just dies normally
+                            //  And create an explosion :)
+                            this.explosionSfx.play();
+                            var explosion = this.explosions.getFirstExists(false);
+                            explosion.reset(alien.body.x, alien.body.y);
+                            explosion.play('kaboom', 30, false, true);
+                            alien.atacking = false;
+                            alien.lives = 1;
+                        } else {    // alien absorbs the energy and breaks rank
+                            game.physics.arcade.moveToObject(alien, this.player, 300);
+                            alien.atacking = true;
+                            alien.lives = 0;
+                        }
+                    }
+                }
+                
         }
+        
 
         //  Increase the score
-        this.score += 20;
+        this.score += 81;
         this.showScores();
         this.aliens.bonusPoints = 0; // reset bonus counter when hit alien
 

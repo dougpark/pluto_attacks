@@ -93,6 +93,7 @@ Preload.prototype = {
     game.load.audio('swordSfx', 'assets/audio/alien_death1.wav');
     game.load.audio('blasterSfx', 'assets/audio/pistol.wav');
     game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3');
+    game.load.audio('alienSfx', 'assets/audio/lazer_wall_off.mp3');
 
     // Test buttons
     game.load.spritesheet('buttonNorm', 'assets/buttons/Panel2ButtonSpritex71.png', 161, 71);
