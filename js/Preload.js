@@ -41,25 +41,26 @@ Preload.prototype = {
     // MainMenu Images
     game.load.image('title', 'assets/buttons/title.png');
     game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
-    game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal.png', 227, 100);
-    game.load.spritesheet('buttonFun', 'assets/buttons/button_fun.png', 227, 100);
+    game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal2.png', 227, 100);
+    game.load.spritesheet('buttonFun', 'assets/buttons/button_fun2.png', 227, 100);
     game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
-    game.load.spritesheet('buttonOptions', 'assets/buttons/button_options.png', 227, 100);
+    game.load.spritesheet('buttonOptions', 'assets/buttons/button_options2.png', 227, 100);
 
     // Options Images
     game.load.image('options', 'assets/buttons/options.png');
-    game.load.image('buttonCredits', 'assets/buttons/button_credits.png');
-    game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1.png', 110,100);
-    game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9.png', 110,100);
-    game.load.spritesheet('buttonLevel_18', 'assets/buttons/button_level_18.png', 110,100);
-    game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27.png', 110,100);
+    game.load.spritesheet('buttonCredits', 'assets/buttons/button_credits2.png',100,100);
+    game.load.spritesheet('buttonLevel_1', 'assets/buttons/button_level_1_2.png', 100,100);
+    game.load.spritesheet('buttonLevel_9', 'assets/buttons/button_level_9_2.png', 100,100);
+    game.load.spritesheet('buttonLevel_18', 'assets/buttons/button_level_18_2.png', 100,100);
+    game.load.spritesheet('buttonLevel_27', 'assets/buttons/button_level_27_2.png', 100,100);
     game.load.image('level_title', 'assets/buttons/panel_level.png');
     game.load.image('options_title', 'assets/buttons/panel_options.png');
-    game.load.spritesheet('buttonBack', 'assets/buttons/button_left.png',129,100);
+    game.load.spritesheet('buttonBack', 'assets/buttons/button_left2.png',100,100);
     game.load.image('score_panel', 'assets/buttons/panel_2b.png');
     //game.load.spritesheet('buttonCredits', 'assets/buttons/button_back.png',100,100);
 
-    // Credits Images
+    // Other Images
+    game.load.spritesheet('buttonContinue', 'assets/buttons/button_continue.png',227,50);
 
     // Game Images
     game.load.image('bullet', 'assets/images/bullet.png');
@@ -82,7 +83,9 @@ Preload.prototype = {
     game.load.spritesheet('buttonHome', 'assets/buttons/button_home1a.png',100,100);
     game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
     game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
-    game.load.spritesheet('buttonMusic', 'assets/buttons/button_music.png',128,100);
+    game.load.spritesheet('buttonMusic', 'assets/buttons/button_music2.png',100,100);
+    game.load.spritesheet('buttonMusicOn', 'assets/buttons/button_music_on.png',100,100);
+    game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png',100,100);
   
     // Sound Effects
     game.load.audio('explosionSfx', 'assets/audio/pusher.wav');

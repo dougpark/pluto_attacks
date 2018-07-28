@@ -35,13 +35,13 @@ Options.prototype = {
         this.place(this.options_title, 0.5, 0.55);
 
         // Music Button
-        this.buttonMusic = game.add.button(0,0, 'buttonMusic', this.actionOnClickMusic, this);
+        this.buttonMusic = game.add.button(0,0, 'buttonMusicOn', this.actionOnClickMusic, this, 2, 1, 0);
         this.buttonMusic.anchor.setTo(0.5, 0.5);
         this.buttonMusic.scale.setTo(1, 1);
         this.place(this.buttonMusic, 0.5, 0.48);
         this.buttonMusic.events.onInputDown.add(this.onInputDownMusic, this);
         this.buttonMusic.events.onInputUp.add(this.onInputUpMusic, this);
-        this.buttonMusic.frame = Povin.musicEnabled; 
+        //this.buttonMusic.frame = Povin.musicEnabled; 
 
         // Credits Button
         this.buttonCredits = game.add.button(0,0, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
@@ -58,6 +58,16 @@ Options.prototype = {
         this.place(this.buttonBack, 0.1, 0.10);
         this.buttonBack.events.onInputDown.add(this.onInputDownBack, this);
         this.buttonBack.events.onInputUp.add(this.onInputUpBack, this);
+
+        // Continue Button
+        this.buttonContinue = game.add.button(0,0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
+        this.buttonContinue.anchor.setTo(0.5, 0.5);
+        this.buttonContinue.scale.setTo(.75,.75);
+        this.place(this.buttonContinue, 0.5, 0.85);
+        //this.buttonContinue.alpha = 0;
+        this.buttonContinue.inputEnabled = false;
+        this.buttonContinue.events.onInputDown.add(this.onInputDownContinue, this);
+        this.buttonContinue.events.onInputUp.add(this.onInputUpContinue, this);
 
         
 
@@ -86,33 +96,38 @@ Options.prototype = {
                           "Font: dafont.com - Happy-Killer.font\n"+
                           "Sfx: phaser.io - example Sounds\n"+
                           "Scream: wilhelmscream.net - Wilhelm Scream";
-        this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '16px arial', fill: '#dc7b00', boundsAlignH: "center", boundsAlignV: "middle" });    
+        this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.place(this.creditsText,0.2,0.40);
         this.panelCredits.add(this.creditsText);
 
+        this.panelCredits.add(this.buttonContinue);
+
         //  Tap to return Text
-        this.creditsText_pa = game.add.text(0,0, 'Tap To Return', { font: '20px arial', fill: '#dc7b00' }); 
-        this.creditsText_pa.anchor.setTo(0.5, 0.5);
-        this.panelCredits.add(this.creditsText_pa);
-        this.place(this.creditsText_pa, 0.5, 0.85);
+        //this.creditsText_pa = game.add.text(0,0, 'Tap To Return', { font: '20px arial', fill: '#dc7b00' }); 
+        //this.creditsText_pa.anchor.setTo(0.5, 0.5);
+        //this.panelCredits.add(this.creditsText_pa);
+        //this.place(this.creditsText_pa, 0.5, 0.85);
 
     },
 
-    // Pop up the Scores panel
+    // Pop up the Credits panel
     showCredits: function () {
         game.add.tween(this.panelCredits).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         game.add.tween(this.starfield).to( { alpha: 0.25 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
-    
+        //this.buttonContinue.alpha = 1;
+        this.buttonContinue.inputEnabled = true;
+
         //the "Tap to restart" handler
-        this.fireButton.onDown.addOnce(this.hideCredits, this);
-        game.input.onTap.addOnce(this.hideCredits, this);
+        //this.fireButton.onDown.addOnce(this.hideCredits, this);
+        //game.input.onTap.addOnce(this.hideCredits, this);
     },
 
-    // Pop up the Scores panel
+    // Pop up the Credits panel
     hideCredits: function () {
         game.add.tween(this.panelCredits).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         game.add.tween(this.starfield).to( { alpha: 0.5 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
-     
+        //this.buttonContinue.alpha = 0;
+        this.buttonContinue.inputEnabled = false;
         //this.panelCredits.visible = false;
     },
 
@@ -134,14 +149,16 @@ Options.prototype = {
             Povin.bgMusic.pause();
             Povin.musicEnabled = 0;
             localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-            target.frame = 0; // button image music off
+            //target.frame = 0; // button image music off
+            target.loadTexture('buttonMusicOff');
         }
         else {
             Povin.bgMusic.stop();
             Povin.bgMusic.play();
             Povin.musicEnabled = 1;
             localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-            target.frame = 1; // button image music on
+            //target.frame = 1; // button image music on
+            target.loadTexture('buttonMusicOn');
         };
     },
 
@@ -203,6 +220,25 @@ Options.prototype = {
         game.add.tween(target.scale).to({
             x: 1,
             y: 1
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    // button Continue
+    actionOnClickContinue: function () {
+        this.hideCredits();
+      },
+
+    onInputDownContinue: function(target) {
+        game.add.tween(target.scale).to({
+            x: 0.7,
+            y: 0.7
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    onInputUpContinue: function(target) {
+        game.add.tween(target.scale).to({
+            x: .85,
+            y: .85
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 

@@ -283,14 +283,25 @@ PlutoGame.prototype = {
         this.stateText = game.add.text(0,0, '', { font: '20px arial', fill: '#0099ff' });
         this.stateText.anchor.setTo(0.5, 0.5);
         this.place(this.stateText,0.5, 0.73);
+        this.stateText.align = 'center';
         this.stateText.visible = true;
         this.panelScores.add(this.stateText);
 
         //  Tap to play again Text
-        this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#dc7b00' }); 
-        this.scoresText_pa.anchor.setTo(0.5, 0.5);
-        this.panelScores.add(this.scoresText_pa);
-        this.place(this.scoresText_pa, 0.5, 0.85);
+        //this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#dc7b00' }); 
+        //this.scoresText_pa.anchor.setTo(0.5, 0.5);
+        //this.panelScores.add(this.scoresText_pa);
+        //this.place(this.scoresText_pa, 0.5, 0.85);
+
+        // Continue Button
+        this.buttonContinue = game.add.button(0,0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
+        this.buttonContinue.anchor.setTo(0.5, 0.5);
+        this.buttonContinue.scale.setTo(.75,.75);
+        this.place(this.buttonContinue, 0.5, 0.85);
+        this.panelScores.add(this.buttonContinue);
+        this.buttonContinue.inputEnabled = false;
+        this.buttonContinue.events.onInputDown.add(this.onInputDownContinue, this);
+        this.buttonContinue.events.onInputUp.add(this.onInputUpContinue, this);
 
     }, // end create
 
@@ -310,6 +321,25 @@ PlutoGame.prototype = {
         game.add.tween(target.scale).to({
             x: .8,
             y: .8
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    // button Continue
+    actionOnClickContinue: function () {
+        this.restartGame();
+      },
+
+    onInputDownContinue: function(target) {
+        game.add.tween(target.scale).to({
+            x: 0.7,
+            y: 0.7
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    onInputUpContinue: function(target) {
+        game.add.tween(target.scale).to({
+            x: .85,
+            y: .85
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
@@ -754,19 +784,19 @@ PlutoGame.prototype = {
             //    this.stateText.text += "New High Score!";
             //} 
 
-            this.stateText.text +=                                      "\n A message from your commander:"
+            this.stateText.text += "\n A message from your commander:"
 
-            if (this.score <=0) {this.stateText.text +=                 "\n           Pluto ate your lunch.     ";
-                } else if (this.score < 10000) {this.stateText.text +=  "\n                 Nice Try.           ";
-                } else if (this.score < 100000) {this.stateText.text += "\n                 Not Bad.            ";
-                } else if (this.score < 200000) {this.stateText.text += "\n               Pretty Good.          ";
-                } else if (this.score > 200000) {this.stateText.text += "\n                Great Job.           ";
+            if (this.score <=0) {this.stateText.text +=                 "\n Pluto ate your lunch.";
+                } else if (this.score < 10000) {this.stateText.text +=  "\n Nice Try.";
+                } else if (this.score < 100000) {this.stateText.text += "\n Not Bad.";
+                } else if (this.score < 200000) {this.stateText.text += "\n Pretty Good.";
+                } else if (this.score > 200000) {this.stateText.text += "\n Great Job.";
                 } 
 
 
             //the "Tap to restart" handler
-            this.fireButton.onDown.addOnce(this.restartGame, this);
-            game.input.onTap.addOnce(this.restartGame, this);
+            //this.fireButton.onDown.addOnce(this.restartGame, this);
+            //game.input.onTap.addOnce(this.restartGame, this);
         }
     },
 
@@ -784,7 +814,7 @@ PlutoGame.prototype = {
     showHighScores: function () {
         game.add.tween(this.panelScores).to( { alpha: 0.95 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         game.add.tween(this.starfield).to( { alpha: 0.25 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
-    
+        this.buttonContinue.inputEnabled = true;
         //this.panelScores.visible = true;
     },
 
@@ -792,7 +822,7 @@ PlutoGame.prototype = {
     hideHighScores: function () {
         game.add.tween(this.panelScores).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         game.add.tween(this.starfield).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
-     
+        this.buttonContinue.inputEnabled = false;
         //this.panelScores.visible = false;
     },
 
