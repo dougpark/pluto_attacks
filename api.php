@@ -74,10 +74,10 @@ class api
 	 */
 	function gameHighScoresList($params)
 	{
-        $query = 'SELECT PerfectLevels, AliensEscaped ' 
+        $query = 'SELECT Score, PerfectLevels, AliensEscaped ' 
         . ' FROM highscore'
         . ' where GameLevel > 0 and type = "prod" '
-		. ' ORDER BY PerfectLevels DESC, AliensEscaped Limit 10'
+		. ' ORDER BY Score DESC, PerfectLevels DESC, AliensEscaped Limit 10'
         ;
         
 		$list = array();
@@ -97,10 +97,10 @@ class api
 	 */
 	function gameHighScores($params)
 	{
-        $query = 'SELECT PerfectLevels, AliensEscaped ' 
+        $query = 'SELECT Score, PerfectLevels, AliensEscaped ' 
         . ' FROM highscore'
         . ' where GameLevel > 0 and type = "prod" '
-		. ' ORDER BY PerfectLevels DESC, AliensEscaped Limit 10'
+		. ' ORDER BY Score DESC, PerfectLevels DESC, AliensEscaped Limit 10'
 		;
 		
         $result = $this->db->query($query);
@@ -115,11 +115,11 @@ class api
 	 */
 	function gameHighScoresToday($params)
 	{
-        $query = 'SELECT PerfectLevels, AliensEscaped ' 
+        $query = 'SELECT Score, PerfectLevels, AliensEscaped ' 
         . ' FROM highscore'
         . ' where GameLevel > 0 and type = "prod" '
         . ' and Date(Time) = CURDATE() '
-		. ' ORDER BY PerfectLevels DESC, AliensEscaped Limit 10'
+		. ' ORDER BY Score DESC, PerfectLevels DESC, AliensEscaped Limit 10'
 		;
 		
         $result = $this->db->query($query);
@@ -134,14 +134,14 @@ class api
 	 */
 	function highScoresToday($params)
 	{
-        $query = 'SELECT Time, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
+        $query = 'SELECT Time, Score, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
         . ' GameLevel, EndLevel, '
         . ' (PerfectLevels / (EndLevel-GameLevel))*100 as Percent,'
-        . ' Score, IpAddress'
+        . ' IpAddress'
         . ' FROM highscore'
         . ' where GameLevel > 0 and type = "prod" '
         . ' and Date(Time) = CURDATE() '
-		. ' ORDER BY PerfectLevels DESC, AliensEscaped Limit 10'
+		. ' ORDER BY Score DESC, PerfectLevels DESC, AliensEscaped Limit 10'
 		;
 		
         $result = $this->db->query($query);
@@ -175,13 +175,13 @@ class api
 	 */
 	function highScores($params)
 	{
-        $query = 'SELECT Time, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
+        $query = 'SELECT Time, Score, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
         . ' GameLevel, EndLevel, '
         . ' (PerfectLevels / (EndLevel-GameLevel))*100 as Percent,'
-        . ' Score, IpAddress'
+        . ' IpAddress'
         . ' FROM highscore'
         . ' where GameLevel > 0 and type = "prod" '
-		. ' ORDER BY PerfectLevels DESC, Percent DESC Limit 10'
+		. ' ORDER BY Score DESC, PerfectLevels DESC, Percent DESC Limit 10'
 		;
 		
         $result = $this->db->query($query);
@@ -197,14 +197,14 @@ class api
 	 */
 	function recentScores($params)
 	{
-        $query = 'SELECT Time,PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
+        $query = 'SELECT Time, Score, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
         . ' GameLevel, EndLevel, '
         . ' (PerfectLevels / (EndLevel-GameLevel))*100 as Percent,'
-        . ' Score, IpAddress'
+        . ' IpAddress'
         . ' FROM highscore'
         . ' where UserName != "" '
         . ' and type = "prod" '
-		. ' ORDER BY Date DESC, PerfectLevels DESC, Percent DESC Limit 10'
+		. ' ORDER BY Date DESC, Score DESC, PerfectLevels DESC, Percent DESC Limit 10'
 		;
 		
         $result = $this->db->query($query);
