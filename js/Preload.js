@@ -94,6 +94,9 @@ Preload.prototype = {
     game.load.audio('blasterSfx', 'assets/audio/pistol.wav');
     game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3');
     game.load.audio('alienSfx', 'assets/audio/lazer_wall_off.mp3');
+    game.load.audio('shieldSfx', 'assets/audio/TECH_CHARGER_Power_Up_06.wav');
+    game.load.audio('shieldDownSfx', 'assets/audio/TECH CHARGER Power Down 05.wav');
+    game.load.audio('perfectSfx', 'assets/audio/SUCCESS_PICKUP_Collect_Chime_01.wav');
 
     // Test buttons
     game.load.spritesheet('buttonNorm', 'assets/buttons/Panel2ButtonSpritex71.png', 161, 71);

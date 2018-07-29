@@ -69,7 +69,7 @@ PlutoGame.prototype = {
         this.enemyBullets.setAll('outOfBoundsKill', true);
         this.enemyBullets.setAll('checkWorldBounds', true);
 
-        //  The hero!
+        //  Player
         this.player = game.add.sprite(0,0, 'shipLR');
         this.player.anchor.setTo(0.5, 0.5);
         this.player.scale.setTo(.3, .3); 
@@ -91,22 +91,13 @@ PlutoGame.prototype = {
         game.physics.enable(this.shield, Phaser.Physics.ARCADE);
         this.shield.animations.add('green', [0,0], 200, true);
         this.shield.animations.add('red',[1,1],200, true);
-        //this.shield.visible = false;
-     
 
-        // BlinkingPanels
-        //this.blinkingPanels = game.add.group();
-       // this.blinkingPanels.enableBody = true;
-       // this.blinkingPanels.physicsBodyType = Phaser.Physics.ARCADE;
-        //this.createBlinkingPanels();
-
-        //  The baddies!
+        //  Pluto Drones
         this.aliens = game.add.group();
         this.aliens.enableBody = true;
         this.aliens.physicsBodyType = Phaser.Physics.ARCADE;
         this.aliens.bonusPoints = 0;
         
-
         this.createAliens();
         
         //  The score
@@ -126,9 +117,6 @@ PlutoGame.prototype = {
 
         //  Lives
         this.lives = game.add.group();
-        //game.add.text(game.world.width - 100, 50, 'Energy', { font: '20px HappyKiller', fill: '#0099ff' });
-
-        
 
         // number of lives
         for (var i = 0; i < 3; i++) {
@@ -165,15 +153,7 @@ PlutoGame.prototype = {
           };
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.fireButtonNow = game.input.keyboard.addKey(Phaser.Keyboard.F);
-
-        // test button
-        //this.buttonNorm = game.add.button(game.world.centerX - 161, 400, 'buttonNormGo', this.actionOnClickNorm, this, 2, 1, 0);
-
-        // Top Bar
-        //this.playerEnergy = game.add.sprite(game.world.centerX + 275, 25, 'playerEnergy');
-        //this.playerEnergy.anchor.setTo(0.5, 0.5);
-        //this.playerEnergy.scale.setTo(.20, .20);
-       
+    
         // HUD
         this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background')
         this.background.anchor.setTo(0.5, 0.5);
@@ -186,8 +166,7 @@ PlutoGame.prototype = {
         this.place(this.buttonHome, 0.05, 0.066);
         this.buttonHome.events.onInputDown.add(this.onInputDownHome, this);
         this.buttonHome.events.onInputUp.add(this.onInputUpHome, this);
-
-        
+   
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.gameSpeedText.setTextBounds(0, 45, this.game.world.width, 50);
@@ -197,12 +176,6 @@ PlutoGame.prototype = {
         this.place(this.player.energyTxtAddition, 0.6875, 0.1);
         this.player.energyTxtAddition.visible = false;
 
-        // FPS
-        //this.txtFPS1 = "FPS: " + game.time.fps;
-        //this.txtFPS = game.add.text(16, 332, this.txtFPS1, { font: '12px HappyKiller', fill: '#00ffff' });
-        //2) game.time.fps returns the current FPS (after the first 1s of your game). 
-        // You can draw it in your state's update method.
-
         // Audio
         this.explosionSfx = game.add.audio('explosionSfx',0.8);
         this.ship_explosionSfx = game.add.audio('ship_explosionSfx',0.8);
@@ -210,6 +183,9 @@ PlutoGame.prototype = {
         this.blasterSfx = game.add.audio('blasterSfx', 0.3);
         this.wilhelmSfx = game.add.audio('wilhelmSfx');
         this.alienSfx = game.add.audio('alienSfx');
+        this.shieldSfx = game.add.audio('shieldSfx');
+        this.shieldDownSfx = game.add.audio('shieldDownSfx');
+        this.perfectSfx = game.add.audio('perfectSfx');
 
         //  Being mp3 files these take time to decode, so we can't play them instantly
         //  Using setDecodedCallback we can be notified when they're ALL ready for use.
@@ -240,52 +216,10 @@ PlutoGame.prototype = {
         this.place(this.scoresText_ra, 0.20, 0.29);
 
         //  Rank Value
-        this.scoresText_rav = game.add.text(0,0, '1st', { font: '20px arial', fill: '#0099ff', tabs: [80, 120,100,80,100] }); 
+        this.scoresText_rav = game.add.text(0,0, '1st', { font: '20px arial', fill: '#0099ff', align: 'left', tabs: [80, 120,100,80,100] }); 
         //this.scoresText_rav.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_rav);
         this.place(this.scoresText_rav, 0.20, 0.34);
-
-        /*
-         //  Score Text
-         this.scoresText_sc = game.add.text(0,0, 'Score', { font: '20px arial', fill: '#dc7b00' }); 
-         this.scoresText_sc.anchor.setTo(0.5, 0.5);
-         this.panelScores.add(this.scoresText_sc);
-         this.place(this.scoresText_sc, 0.38, 0.32);
-        
-        //  Perfect Levels Text
-        this.scoresText_pl = game.add.text(0,0, 'Perfect', { font: '20px arial', fill: '#dc7b00' }); 
-        this.scoresText_pl.anchor.setTo(0.5, 0.5);
-        this.panelScores.add(this.scoresText_pl);
-        this.place(this.scoresText_pl, 0.38, 0.32);
-
-        //  Perfect Levels Value
-        this.scoresText_plv = game.add.text(0,0, '999', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_plv.anchor.setTo(0.5, 0);
-        this.panelScores.add(this.scoresText_plv);
-        this.place(this.scoresText_plv, 0.38, 0.34);
-        
-        //  Aliens Escaped Text
-        this.scoresText_ae = game.add.text(0,0, 'Escaped', { font: '20px arial', fill: '#dc7b00' }); 
-        this.scoresText_ae.anchor.setTo(0.5, 0.5);
-        this.panelScores.add(this.scoresText_ae);
-        this.place(this.scoresText_ae, 0.60, 0.32);
-        //  Aliens Escaped Value
-        this.scoresText_aev = game.add.text(0,0, '999', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_aev.anchor.setTo(0.5, 0);
-        this.panelScores.add(this.scoresText_aev);
-        this.place(this.scoresText_aev, 0.60, 0.34);
-
-        //  Name Text
-        this.scoresText_na = game.add.text(0,0, 'Name', { font: '20px arial', fill: '#dc7b00' }); 
-        this.scoresText_na.anchor.setTo(0.5, 0.5);
-        this.panelScores.add(this.scoresText_na);
-        this.place(this.scoresText_na, 0.78, 0.32);
-        //  Name Value
-        this.scoresText_nav = game.add.text(0,0, 'Player', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_nav.anchor.setTo(0.5, 0);
-        this.panelScores.add(this.scoresText_nav);
-        this.place(this.scoresText_nav, 0.78, 0.34);
-        */
 
          //  Scores Text
         this.stateText = game.add.text(0,0, '', { font: '20px arial', fill: '#0099ff' });
@@ -350,32 +284,7 @@ PlutoGame.prototype = {
             y: .5
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
-
-    // test action based on clicking a button
-    /*
-    actionOnClickNorm: function () {
-        var txtCaption = "+ Hi Stephen";
-        var txtAddition = game.add.text(400, 400, txtCaption, { font: '12px HappyKiller', fill: '#0099ff' });
-        game.time.events.add(100, function () {
-            game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-        }, this);
-        game.time.events.add(6000, function () {
-            txtAddition.destroy();
-        }, this);
-    }, */
-
-    // test panel to show an aminmation
-    /*createBlinkingPanels: function () {
-        var blinkingPanel = this.blinkingPanels.create(1, 1, 'buttonNorm');
-        //blinkingPanel.anchor.setTo(0.5,0.5);
-        blinkingPanel.animations.add('fly', [0, 1], 2, true);
-        blinkingPanel.play('fly');
-        blinkingPanel.body.moves = false;
-        this.blinkingPanels.x = 50;
-        this.blinkingPanels.y = 300;
-        //var tween = game.add.tween(this.blinkingPanels).to( { x: 50 }, 20, Phaser.Easing.Linear.None, true, 0, 1000, true);
-    },*/
-
+ 
     // Kill the aliens when they leave the screen
     alienOut: function(alien) {
         // show a  text floating up the screen
@@ -469,6 +378,8 @@ PlutoGame.prototype = {
             this.player.body.velocity.setTo(0, 0);
             //this.player.fire = 0;
 
+
+            // keyboard input
             if (this.cursors.left.isDown || this.wasd.left.isDown) {
                 this.player.body.velocity.x = -this.setvel-levelSpeed;
                 //this.shield.body.velocity.x = -this.setvel-levelSpeed;
@@ -499,6 +410,11 @@ PlutoGame.prototype = {
             if (this.player.energy > 0) {
                 this.player.fire += 1;
 
+                // play shield sfx when shield becomes available
+                if (this.shield.visible == false) {
+                    this.shieldSfx.play();
+                }
+
                 // show the shields
                 this.shield.visible = true;
                
@@ -511,14 +427,21 @@ PlutoGame.prototype = {
                 
             } else {
 
+                // play shield sfx when shield goes down
+                if (this.shield.visible == true) {
+                    this.shieldDownSfx.play();
+                }
+
                 this.shield.visible = false;
                 this.player.energyTxtAddition.visible = false;
             }
 
             // Mouse Pointer
-            //if (game.input.activePointer.leftButton.isDown) {
-            //    this.player.x = game.input.activePointer.x;
-            //}
+            /*
+            if (game.input.activePointer.leftButton.isDown) {
+              this.player.x = game.input.activePointer.x;
+            }
+            */
           
             // Touch Interface
             //var touchRight =(game.world.centerX*2); // full width of display
@@ -532,7 +455,7 @@ PlutoGame.prototype = {
             //var touchRight3 = touchRight-(touchSize);
             //var touchRight4 = touchRight;
 
-            
+            // touch interface
             if (game.input.pointer1.isDown) {
 
                 /*
@@ -620,11 +543,13 @@ PlutoGame.prototype = {
                 this.totalPerfectLevel += 1;
 
                 var txtPerfect = "Perfect Level";
+
+                this.perfectSfx.play();
                 
-                var txtPerfect2 = game.add.text(game.world.centerX, game.world.height, txtPerfect, { font: '36px HappyKiller', fill: '#dc7b00', align: 'center' });
+                var txtPerfect2 = game.add.text(game.world.centerX, game.world.height, txtPerfect, { font: '36px HappyKiller', fill: '#30acfc', align: 'center' });
                 txtPerfect2.anchor.setTo(0.5, 0.5);
                 game.time.events.add(100, function () {
-                    game.add.tween(txtPerfect2).to({ y:game.world.height/2, alpha: 0 }, 2500, Phaser.Easing.Quadratic.Out, true);
+                    game.add.tween(txtPerfect2).to({ y:game.world.height/2, alpha: 1 }, 2500, Phaser.Easing.Quadratic.Out, true);
                 }, this);
                 game.time.events.add(2500, function () {
                     txtPerfect2.destroy();
@@ -664,16 +589,6 @@ PlutoGame.prototype = {
 
     render: function () {
 
-        //for (var i = 0; i < this.aliens.length; i++)
-        // {
-        //      this.debug.body(this.aliens.children[i]);
-        // }
-        //game.debug.spriteInfo(this.player, 32, 32);
-
-        //game.debug.text('this.trainingLevel ' + this.trainingLevel,16, 400);
-        //var debug = this.game.debug;
-        //debug.text('High score ' + Povin.getHighScore(),10,120);
-        //debug.text('Povin ' + Povin,10,140);
     },
 
     // Player bullet hits an enemy bullet
@@ -1082,42 +997,26 @@ PlutoGame.prototype = {
     // process the high scores from the score server
     processHighScores: function(highScores) {
 
-        //console.log("processHighScores= " + highScores);
-        //this.scoresText_plv.text = "";
-        //this.scoresText_aev.text = "";
         this.scoresText_rav.text = "";
-        //this.scoresText_nav.text = "";
-        //this.scoresText_rav.text = "1st"+"\n2nd"+"\n3rd"+"\n4th"+"\n5th"+"\n\nYou";
-        //this.scoresText_nav.text = "Player 1"+"\nPlayer 2"+"\nPlayer 3"+"\nPlayer 4"+"\nPlayer 5"+"\n\nYou";
         var scores = JSON.parse(highScores);
         
         var i,j;
-        for (i = 0; i <= 4; i++) { 
+        for (i = 0; i <= 4; i++) 
+        { 
             j = i+1;
-
             this.scoresText_rav.text += j+'\t';
             this.scoresText_rav.text += this.addCommas(scores[i].Score) + "\t";
             this.scoresText_rav.text += scores[i].PerfectLevels + "\t";
             this.scoresText_rav.text += scores[i].AliensEscaped + "\t";
             this.scoresText_rav.text += "Player "+j+"\n";
-
-           // this.scoresText_plv.text += scores[i].PerfectLevels + "\n";
-           // this.scoresText_aev.text += scores[i].AliensEscaped + "\n";
-            //console.log(myObj[i].PerfectLevels + myObj[i].AliensEscaped);
         }
 
         // add Your scores to end of the list
-        this.scoresText_rav.text += "You" + "\t" ;
-        this.scoresText_rav.text += this.score + "\t";
+        this.scoresText_rav.text += "n" + "\t" ;
+        this.scoresText_rav.text += this.addCommas(this.score) + "\t";
         this.scoresText_rav.text += this.totalPerfectLevel + "\t";
         this.scoresText_rav.text += this.totalAlienEscape + "\t";
         this.scoresText_rav.text += "You";
-
-        //this.scoresText_plv.text += "\n"+this.totalPerfectLevel;
-        //this.scoresText_aev.text += "\n"+this.totalAlienEscape;
-        
-        
-    
     },
 
     parseHighScores: function(plv, aev) {
