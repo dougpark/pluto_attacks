@@ -1096,7 +1096,7 @@ PlutoGame.prototype = {
             j = i+1;
 
             this.scoresText_rav.text += j+'\t';
-            this.scoresText_rav.text += scores[i].Score + "\t";
+            this.scoresText_rav.text += this.addCommas(scores[i].Score) + "\t";
             this.scoresText_rav.text += scores[i].PerfectLevels + "\t";
             this.scoresText_rav.text += scores[i].AliensEscaped + "\t";
             this.scoresText_rav.text += "Player "+j+"\n";
@@ -1123,6 +1123,19 @@ PlutoGame.prototype = {
     parseHighScores: function(plv, aev) {
 
         console.log("plv="+plv+" aev="+aev);
-    }
+    },
+
+    addCommas: function(nStr)
+    {
+        nStr += '';
+        var x = nStr.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        }
+        return x1 + x2;
+}   
 
 };
