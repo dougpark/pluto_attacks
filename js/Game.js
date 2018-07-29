@@ -235,18 +235,25 @@ PlutoGame.prototype = {
         this.place(this.scoresTitle, 0.5, 0.25);
 
         //  Rank Text
-        this.scoresText_ra = game.add.text(0,0, 'Rank', { font: '20px arial', fill: '#dc7b00' }); 
-        this.scoresText_ra.anchor.setTo(0.5, 0.5);
+        this.scoresText_ra = game.add.text(0,0, 'Rank\tScore\tPerfect\tEscaped\tPlayer', { font: '20px arial', fill: '#dc7b00', tabs: [80, 100,100,100,100] }); 
         this.panelScores.add(this.scoresText_ra);
-        this.place(this.scoresText_ra, 0.20, 0.32);
+        this.place(this.scoresText_ra, 0.20, 0.29);
+
         //  Rank Value
-        this.scoresText_rav = game.add.text(0,0, '1st', { font: '20px arial', fill: '#0099ff' }); 
-        this.scoresText_rav.anchor.setTo(0.5, 0);
+        this.scoresText_rav = game.add.text(0,0, '1st', { font: '20px arial', fill: '#0099ff', tabs: [80, 120,100,80,100] }); 
+        //this.scoresText_rav.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_rav);
         this.place(this.scoresText_rav, 0.20, 0.34);
+
+        /*
+         //  Score Text
+         this.scoresText_sc = game.add.text(0,0, 'Score', { font: '20px arial', fill: '#dc7b00' }); 
+         this.scoresText_sc.anchor.setTo(0.5, 0.5);
+         this.panelScores.add(this.scoresText_sc);
+         this.place(this.scoresText_sc, 0.38, 0.32);
         
         //  Perfect Levels Text
-        this.scoresText_pl = game.add.text(0,0, 'Perfect Levels', { font: '20px arial', fill: '#dc7b00' }); 
+        this.scoresText_pl = game.add.text(0,0, 'Perfect', { font: '20px arial', fill: '#dc7b00' }); 
         this.scoresText_pl.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_pl);
         this.place(this.scoresText_pl, 0.38, 0.32);
@@ -258,7 +265,7 @@ PlutoGame.prototype = {
         this.place(this.scoresText_plv, 0.38, 0.34);
         
         //  Aliens Escaped Text
-        this.scoresText_ae = game.add.text(0,0, 'Aliens Escaped', { font: '20px arial', fill: '#dc7b00' }); 
+        this.scoresText_ae = game.add.text(0,0, 'Escaped', { font: '20px arial', fill: '#dc7b00' }); 
         this.scoresText_ae.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresText_ae);
         this.place(this.scoresText_ae, 0.60, 0.32);
@@ -278,12 +285,12 @@ PlutoGame.prototype = {
         this.scoresText_nav.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_nav);
         this.place(this.scoresText_nav, 0.78, 0.34);
-        
+        */
 
          //  Scores Text
         this.stateText = game.add.text(0,0, '', { font: '20px arial', fill: '#0099ff' });
         this.stateText.anchor.setTo(0.5, 0.5);
-        this.place(this.stateText,0.5, 0.73);
+        this.place(this.stateText,0.5, 0.69);
         this.stateText.align = 'center';
         this.stateText.visible = true;
         this.panelScores.add(this.stateText);
@@ -297,7 +304,7 @@ PlutoGame.prototype = {
         // Continue Button
         this.buttonContinue = game.add.button(0,0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
         this.buttonContinue.anchor.setTo(0.5, 0.5);
-        this.buttonContinue.scale.setTo(.5,.5);
+        this.buttonContinue.scale.setTo(.75,.75);
         this.place(this.buttonContinue, 0.5, 0.85);
         this.panelScores.add(this.buttonContinue);
         this.buttonContinue.inputEnabled = false;
@@ -373,9 +380,9 @@ PlutoGame.prototype = {
     alienOut: function(alien) {
         // show a  text floating up the screen
         this.txtAlien = "-1000";
-        var txtAlien2 = game.add.text(alien.body.x, game.world.height, this.txtAlien, { font: '36px HappyKiller', fill: '#ff0000' });
+        var txtAlien2 = game.add.text(alien.body.x, game.world.height, this.txtAlien, { font: '36px HappyKiller', fill: '#ff0000', align: 'center' });
         game.time.events.add(100, function () {
-            game.add.tween(txtAlien2).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+            game.add.tween(txtAlien2).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .5 }, 2000, Phaser.Easing.Linear.None, true);
         }, this);
         game.time.events.add(2000, function () {
             txtAlien2.destroy();
@@ -410,10 +417,10 @@ PlutoGame.prototype = {
         this.aliens.y = 150;
 
         //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-        this.tween = game.add.tween(this.aliens).to({ x: 300 }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        this.tween2 = game.add.tween(this.aliens).to({ x: 300 }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
         //  When the tween loops it calls descend
-        this.tween.onLoop.add(this.descend, this);
+        this.tween2.onLoop.add(this.descend, this);
     },
 
     
@@ -611,14 +618,28 @@ PlutoGame.prototype = {
             // Perfect Level
             if (this.alienEscape == 0 ) {
                 this.totalPerfectLevel += 1;
-                this.txtPerfect = "Perfect Level + 10,000";
-                var txtPerfect2 = game.add.text(game.world.centerX - (game.world.centerX*.75), game.world.height, this.txtPerfect, { font: '36px HappyKiller', fill: '#ff0000' });
+
+                var txtPerfect = "Perfect Level";
+                
+                var txtPerfect2 = game.add.text(game.world.centerX, game.world.height, txtPerfect, { font: '36px HappyKiller', fill: '#dc7b00', align: 'center' });
+                txtPerfect2.anchor.setTo(0.5, 0.5);
                 game.time.events.add(100, function () {
-                    game.add.tween(txtPerfect2).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+                    game.add.tween(txtPerfect2).to({ y:game.world.height/2, alpha: 0 }, 2500, Phaser.Easing.Quadratic.Out, true);
                 }, this);
-                game.time.events.add(2000, function () {
+                game.time.events.add(2500, function () {
                     txtPerfect2.destroy();
                 }, this);
+
+                var txtPerfect3 = "+10,000";
+                var txtPerfect4 = game.add.text(game.world.centerX, game.world.height, txtPerfect3, { font: '24px HappyKiller', fill: '#dc7b00', align: 'center' });
+                txtPerfect4.anchor.setTo(0.5, 0.5);
+                game.time.events.add(100, function () {
+                    game.add.tween(txtPerfect4).to({ x: this.fromLeft2(0.25), y: this.fromTop2(.10), alpha: .5 }, 2000, Phaser.Easing.Quadratic.Out, true);
+                }, this);
+                game.time.events.add(2000, function () {
+                    txtPerfect4.destroy();
+                }, this);
+
                 this.score += 10000;
                 this.showScores();
             }
@@ -682,7 +703,7 @@ PlutoGame.prototype = {
             this.txtCaption = "+" + this.player.bonusPoints;
             var txtAddition = game.add.text(enemyBullet.body.x, enemyBullet.body.y, this.txtCaption, { font: '18px HappyKiller', fill: '#00ddff' });
             game.time.events.add(100, function () {
-                game.add.tween(txtAddition).to({ y: enemyBullet.body.y-100, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+                game.add.tween(txtAddition).to({ x: this.fromLeft2(0.6875), y: this.fromTop2(.10), alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
             }, this);
             game.time.events.add(1000, function () {
                 txtAddition.destroy();
@@ -709,6 +730,14 @@ PlutoGame.prototype = {
             var explosion = this.explosions.getFirstExists(false);
             explosion.reset(alien.body.x, alien.body.y);
             explosion.play('kaboom', 30, false, true);
+            var txtPts = "+81";
+            var txtPts2 = game.add.text(alien.body.x, alien.body.y, txtPts, { font: '18px HappyKiller', fill: '#0099ff' });
+            game.time.events.add(100, function () {
+                game.add.tween(txtPts2).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .25 }, 2000, Phaser.Easing.Linear.None, true);
+            }, this);
+            game.time.events.add(2000, function () {
+                txtPts2.destroy();
+            }, this);
         } else { // player has energy
 
                 if (this.level >= 27) {
@@ -1009,6 +1038,10 @@ PlutoGame.prototype = {
         obj.y=game.height*percent;
         obj.y+=percent;
     },
+    fromTop2: function(percent)
+    {
+        return game.height*percent;
+    },
     fromRight: function(obj, percent, offset = 0) {
         obj.x = game.width - (game.width * percent);
         obj.x -= offset;
@@ -1017,6 +1050,10 @@ PlutoGame.prototype = {
     fromLeft: function(obj, percent, offset = 0) {
         obj.x = game.width * percent;
         obj.x += offset;
+    },
+    fromLeft2: function(percent) 
+    {
+        return game.width * percent;
     },
     fromCenterH: function(obj, percent) {
         obj.x = game.width / 2 - (game.width * percent);
@@ -1046,22 +1083,38 @@ PlutoGame.prototype = {
     processHighScores: function(highScores) {
 
         //console.log("processHighScores= " + highScores);
-        this.scoresText_plv.text = "";
-        this.scoresText_aev.text = "";
-        this.scoresText_rav.text = "1st"+"\n2nd"+"\n3rd"+"\n4th"+"\n5th"+"\n\nYou";
-        this.scoresText_nav.text = "Player 1"+"\nPlayer 2"+"\nPlayer 3"+"\nPlayer 4"+"\nPlayer 5"+"\n\nYou";
+        //this.scoresText_plv.text = "";
+        //this.scoresText_aev.text = "";
+        this.scoresText_rav.text = "";
+        //this.scoresText_nav.text = "";
+        //this.scoresText_rav.text = "1st"+"\n2nd"+"\n3rd"+"\n4th"+"\n5th"+"\n\nYou";
+        //this.scoresText_nav.text = "Player 1"+"\nPlayer 2"+"\nPlayer 3"+"\nPlayer 4"+"\nPlayer 5"+"\n\nYou";
         var scores = JSON.parse(highScores);
         
-        var i;
+        var i,j;
         for (i = 0; i <= 4; i++) { 
-            this.scoresText_plv.text += scores[i].PerfectLevels + "\n";
-            this.scoresText_aev.text += scores[i].AliensEscaped + "\n";
+            j = i+1;
+
+            this.scoresText_rav.text += j+'\t';
+            this.scoresText_rav.text += scores[i].Score + "\t";
+            this.scoresText_rav.text += scores[i].PerfectLevels + "\t";
+            this.scoresText_rav.text += scores[i].AliensEscaped + "\t";
+            this.scoresText_rav.text += "Player "+j+"\n";
+
+           // this.scoresText_plv.text += scores[i].PerfectLevels + "\n";
+           // this.scoresText_aev.text += scores[i].AliensEscaped + "\n";
             //console.log(myObj[i].PerfectLevels + myObj[i].AliensEscaped);
         }
 
         // add Your scores to end of the list
-        this.scoresText_plv.text += "\n"+this.totalPerfectLevel;
-        this.scoresText_aev.text += "\n"+this.totalAlienEscape;
+        this.scoresText_rav.text += "You" + "\t" ;
+        this.scoresText_rav.text += this.score + "\t";
+        this.scoresText_rav.text += this.totalPerfectLevel + "\t";
+        this.scoresText_rav.text += this.totalAlienEscape + "\t";
+        this.scoresText_rav.text += "You";
+
+        //this.scoresText_plv.text += "\n"+this.totalPerfectLevel;
+        //this.scoresText_aev.text += "\n"+this.totalAlienEscape;
         
         
     
