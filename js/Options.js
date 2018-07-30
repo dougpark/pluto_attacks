@@ -94,7 +94,7 @@ Options.prototype = {
                           "Spaceship: market.envato.com - Spaceships by neogeo37\n"+
                           "Music: incompetech.com - Dangerous by Kevin MacLeod\n"+
                           "Font: dafont.com - Happy-Killer.font\n"+
-                          "Sfx: phaser.io - example Sounds\n"+
+                          "Sound Effects: GameBurp.com\n"+
                           "Scream: wilhelmscream.net - Wilhelm Scream";
         this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
         this.place(this.creditsText,0.2,0.40);

@@ -291,7 +291,7 @@ PlutoGame.prototype = {
     // Kill the aliens when they leave the screen
     alienOut: function(alien) {
         // show a  text floating up the screen
-        this.txtAlien = "-1000";
+        this.txtAlien = "-999";
         var txtAlien2 = game.add.text(alien.body.x, game.world.height, this.txtAlien, { font: '36px HappyKiller', fill: '#ff0000', align: 'center' });
         game.time.events.add(100, function () {
             game.add.tween(txtAlien2).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .5 }, 2000, Phaser.Easing.Linear.None, true);
@@ -302,7 +302,7 @@ PlutoGame.prototype = {
 
         this.alienSfx.play();
 
-        this.score -= 1000;
+        this.score -= 999;
         this.alienEscape += 1;
         this.totalAlienEscape += 1;
         this.showScores();
@@ -519,7 +519,7 @@ PlutoGame.prototype = {
 
         // End of the level (all the enemies are killed)
         if (this.aliens.countLiving() == 0 && this.levelTimer == 0) {
-            this.score += 1000;
+            this.score += 999;
             this.showScores();
   
             this.level += 1;
@@ -556,7 +556,7 @@ PlutoGame.prototype = {
                     txtPerfect2.destroy();
                 }, this);
 
-                var txtPerfect3 = "+10,000";
+                var txtPerfect3 = "+9,999";
                 var txtPerfect4 = game.add.text(game.world.centerX, game.world.height, txtPerfect3, { font: '24px HappyKiller', fill: '#dc7b00', align: 'center' });
                 txtPerfect4.anchor.setTo(0.5, 0.5);
                 game.time.events.add(100, function () {
@@ -566,7 +566,7 @@ PlutoGame.prototype = {
                     txtPerfect4.destroy();
                 }, this);
 
-                this.score += 10000;
+                this.score += 9999;
                 this.showScores();
             }
             
