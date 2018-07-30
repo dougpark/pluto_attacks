@@ -88,16 +88,21 @@ Preload.prototype = {
     game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png',100,100);
   
     // Sound Effects
-    game.load.audio('explosionSfx', 'assets/audio/pusher.wav');
-    game.load.audio('ship_explosionSfx', 'assets/audio/pusher.wav');
-    game.load.audio('swordSfx', 'assets/audio/alien_death1.wav');
-    game.load.audio('blasterSfx', 'assets/audio/pistol.wav');
-    game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3');
-    game.load.audio('alienSfx', 'assets/audio/lazer_wall_off.mp3');
-    game.load.audio('shieldSfx', 'assets/audio/TECH_CHARGER_Power_Up_06.wav');
-    game.load.audio('shieldDownSfx', 'assets/audio/TECH CHARGER Power Down 05.wav');
-    game.load.audio('perfectSfx', 'assets/audio/SUCCESS_PICKUP_Collect_Chime_01.wav');
+    game.load.audio('explosionSfx', 'assets/audio/TECH WEAPON Gun Shot Blaster Laser Short 05.wav');// pusher.wav enemny explodes
+    game.load.audio('ship_explosionSfx', 'assets/audio/TECH WEAPON Gun Shot Phaser Down 03.wav'); // pusher.wav enemy hits player
+    game.load.audio('swordSfx', 'assets/audio/TECH WEAPON Gun Shot Zapper Short 02.wav'); //alien_death1.wav bullet hits bullet
+    game.load.audio('blasterSfx', 'assets/audio/TECH WEAPON Gun Shot Zapper 10.wav');// pistol.wav player shoots
 
+    game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3'); // player dies
+    game.load.audio('playerDiesSfx', 'assets/audio/TECH WEAPON Gun Shot Phaser Down 03.wav'); // player dies
+
+    game.load.audio('alienSfx', 'assets/audio/lazer_wall_off.mp3'); // enemy escapes
+    game.load.audio('alienPowerSfx', 'assets/audio/ELECTRIC Power Up 02.wav'); // enemy powers up to attack
+
+    game.load.audio('shieldSfx', 'assets/audio/TECH_CHARGER_Power_Up_06.wav'); // player shields on
+    game.load.audio('shieldDownSfx', 'assets/audio/TECH CHARGER Power Down 05.wav'); // player shields off
+    game.load.audio('shieldHitSfx', 'assets/audio/TECH WEAPON Gun Shot HandGun Zap Short 05.wav'); // bullet hits shields
+    game.load.audio('perfectSfx', 'assets/audio/SUCCESS_PICKUP_Collect_Chime_01.wav'); // complete perfect level
     // Test buttons
     game.load.spritesheet('buttonNorm', 'assets/buttons/Panel2ButtonSpritex71.png', 161, 71);
     game.load.spritesheet('buttonNormGo', 'assets/buttons/Panel2ButtonSpritex71Go.png', 161, 71);

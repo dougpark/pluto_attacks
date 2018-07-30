@@ -91,6 +91,7 @@ PlutoGame.prototype = {
         game.physics.enable(this.shield, Phaser.Physics.ARCADE);
         this.shield.animations.add('green', [0,0], 200, true);
         this.shield.animations.add('red',[1,1],200, true);
+        this.shield.visible = false;
 
         //  Pluto Drones
         this.aliens = game.add.group();
@@ -177,20 +178,22 @@ PlutoGame.prototype = {
         this.player.energyTxtAddition.visible = false;
 
         // Audio
-        this.explosionSfx = game.add.audio('explosionSfx',0.8);
-        this.ship_explosionSfx = game.add.audio('ship_explosionSfx',0.8);
-        this.swordSfx = game.add.audio('swordSfx',0.8);
-        this.blasterSfx = game.add.audio('blasterSfx', 0.3);
+        this.explosionSfx = game.add.audio('explosionSfx',0.8);// enemy explodes
+        this.ship_explosionSfx = game.add.audio('ship_explosionSfx',0.8); // player explodes
+        this.swordSfx = game.add.audio('swordSfx',0.3); // bullet hits bullet
+        this.blasterSfx = game.add.audio('blasterSfx', 0.2); // player shoots
         this.wilhelmSfx = game.add.audio('wilhelmSfx');
-        this.alienSfx = game.add.audio('alienSfx');
-        this.shieldSfx = game.add.audio('shieldSfx');
-        this.shieldDownSfx = game.add.audio('shieldDownSfx');
-        this.perfectSfx = game.add.audio('perfectSfx');
+        this.alienSfx = game.add.audio('alienSfx'); // enemy escapesa
+        this.alienPowerSfx = game.add.audio('alienPowerSfx'); // enemy power up to attack
+        this.shieldSfx = game.add.audio('shieldSfx'); // player shields up
+        this.shieldHitSfx = game.add.audio('shieldHitSfx',0.8); // player shield gets hit
+        this.shieldDownSfx = game.add.audio('shieldDownSfx',1.5); // player shields down
+        this.perfectSfx = game.add.audio('perfectSfx'); // complete perfect level
 
         //  Being mp3 files these take time to decode, so we can't play them instantly
         //  Using setDecodedCallback we can be notified when they're ALL ready for use.
         //  The audio files could decode in ANY order, we can never be sure which it'll be.
-        game.sound.setDecodedCallback([this.ship_explosionSfx, this.explosionSfx, this.swordSfx, this.blasterSfx, this.wilhelmSfx], this.update, this);
+        //game.sound.setDecodedCallback([this.ship_explosionSfx, this.explosionSfx, this.swordSfx, this.blasterSfx, this.wilhelmSfx], this.update, this);
         // don't put anything past here, it will be skipped by the audio callback
 
          // Popup Scores Screen
@@ -382,13 +385,11 @@ PlutoGame.prototype = {
             // keyboard input
             if (this.cursors.left.isDown || this.wasd.left.isDown) {
                 this.player.body.velocity.x = -this.setvel-levelSpeed;
-                //this.shield.body.velocity.x = -this.setvel-levelSpeed;
                 this.player.play('flyL');
                 this.player.fire = 10;
             }
             else if (this.cursors.right.isDown || this.wasd.right.isDown) {
                 this.player.body.velocity.x = this.setvel+levelSpeed;
-                //this.shield.body.velocity.x = this.setvel+levelSpeed;
                 this.player.play('flyR');
                 this.player.fire = 10;
             } else {
@@ -661,6 +662,7 @@ PlutoGame.prototype = {
                         game.physics.arcade.moveToXY(alien, game.rnd.integerInRange(0, game.width), game.height, 300);
                         alien.lives = 5;
                         alien.atacking = true;
+                        this.alienPowerSfx.play();
                     } else {
                         alien.lives -= 1;
                     }
@@ -672,6 +674,7 @@ PlutoGame.prototype = {
                             game.physics.arcade.moveToXY(alien, game.rnd.integerInRange(0+100, game.width-100), game.height, 300);
                             alien.lives = 2;
                             alien.atacking = true;
+                            this.alienPowerSfx.play();
                         } else {
                             alien.lives -= 1;
                         }
@@ -680,6 +683,8 @@ PlutoGame.prototype = {
                         if (alien.atacking == false && Math.random() < .5) { // normal kill
                             alien.kill(); // alien just dies normally
                             //  And create an explosion :)
+
+                            
                             this.explosionSfx.play();
                             var explosion = this.explosions.getFirstExists(false);
                             explosion.reset(alien.body.x, alien.body.y);
@@ -689,6 +694,7 @@ PlutoGame.prototype = {
                         } else {    // alien absorbs the energy and breaks rank
                             game.physics.arcade.moveToObject(alien, this.player, 300);
                             alien.atacking = true;
+                            this.alienPowerSfx.play();
                             alien.lives = 0;
                         }
                     }
@@ -710,20 +716,20 @@ PlutoGame.prototype = {
 
         bullet.kill();
 
-        // play cool explosion sound effect 
-        this.ship_explosionSfx.play();
-
-        //  And create an animated explosion :)
-        var explosion = this.ship_explosions.getFirstExists(false);
-        explosion.reset(this.player.x, this.player.y);
-        explosion.play('ship_kaboom', 30, false, true);
-
         if (this.player.energy < 1) { 
             // remove a player life
             this.live = this.lives.getFirstAlive();
             if (this.live) {
                 this.live.kill();
             }
+
+            // play cool explosion sound effect 
+            this.ship_explosionSfx.play();
+
+            //  And create an animated explosion :)
+            var explosion = this.ship_explosions.getFirstExists(false);
+            explosion.reset(this.player.x, this.player.y);
+            explosion.play('ship_kaboom', 30, false, true);
 
             // animate some cool text up the screen
             this.txtCaption = "AAAHHHH";
@@ -736,6 +742,15 @@ PlutoGame.prototype = {
             }, this);
         } else {
             this.player.energy = this.player.energy - 1;
+
+            // play shieldhitsfx of shield getting hit
+            //  And create an explosion :)
+            this.shieldHitSfx.play();
+            var explosion = this.bullet_explosions.getFirstExists(false);
+            explosion.reset(bullet.body.x, bullet.body.y);
+            explosion.play('bullet_kaboom', 30, false, true);
+
+
 
         }
 
