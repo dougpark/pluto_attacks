@@ -15,6 +15,11 @@ Options.prototype = {
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
         this.starfield.alpha = 0.5;
 
+        this.imagePluto = game.add.sprite(0,0, 'pluto');
+        this.imagePluto.anchor.setTo(0.7, 0.5);
+        this.imagePluto.scale.setTo(.5, .5);
+        this.place(this.imagePluto, .3, .2);
+
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
         // Game mode menu title image
@@ -90,6 +95,7 @@ Options.prototype = {
 
         this.creditsTxt = ""+
                           "Based on: phaser.io - example project\n"+
+                          "Images: NASA.gov\n"+
                           "Artwork: thegameassetsmine.com - Space Game UI\n"+
                           "Spaceship: market.envato.com - Spaceships by neogeo37\n"+
                           "Music: incompetech.com - Dangerous by Kevin MacLeod\n"+

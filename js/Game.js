@@ -30,7 +30,14 @@ PlutoGame.prototype = {
 
         //  The scrolling starfield background
         this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
-      
+        this.starfield.alpha = .3;
+
+        this.imagePluto = game.add.sprite(0,0, 'pluto');
+        this.imagePluto.anchor.setTo(0.7, 0.5);
+        this.imagePluto.scale.setTo(.5, .5);
+        this.imagePluto.alpha = .3;
+        this.place(this.imagePluto, .3, .2);
+
         // Turn on if want to show debug FPS
        //game.time.advancedTiming = true;
         
@@ -818,7 +825,7 @@ PlutoGame.prototype = {
     // Pop up the Scores panel
     hideHighScores: function () {
         game.add.tween(this.panelScores).to( { alpha: 0 }, 100, Phaser.Easing.Linear.None, true, 250, 0, false);
-        game.add.tween(this.starfield).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        game.add.tween(this.starfield).to( { alpha: .3 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         this.buttonContinue.inputEnabled = false;
         //this.panelScores.visible = false;
     },

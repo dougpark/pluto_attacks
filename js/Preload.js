@@ -46,6 +46,8 @@ Preload.prototype = {
     game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);
     game.load.spritesheet('buttonOptions', 'assets/buttons/button_options2.png', 227, 100);
 
+    game.load.image('pluto', 'assets/images/pluto.png');
+
     // Options Images
     game.load.image('options', 'assets/buttons/options.png');
     game.load.spritesheet('buttonCredits', 'assets/buttons/button_credits2.png',100,100);
@@ -129,15 +131,22 @@ Preload.prototype = {
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
 
+    this.pluto2 = game.make.sprite(0,0, 'pluto2');
+    //this.pluto2.anchor.setTo(0.5,0.5);
+    this.place(this.pluto2, 0.16, 0);
+
+
     this.loadingBar = game.make.sprite(0,0, "loading");
-    this.loadingBar.anchor.setTo(0.5, 0.5);
+    //this.loadingBar.anchor.setTo(0.5, 0.5);
     this.place(this.loadingBar, .5, .66);
+
     this.logo = game.make.sprite(0,0, 'logo');
     this.logo.anchor.setTo(0.5,0.5);
-    this.place(this.logo, 0.5, .33)
+    this.place(this.logo, 0.5, .38)
+
     this.status = game.make.text(0,0, ' ', { font: '20px HappyKiller', fill: '#dc7b00' });
     this.status.anchor.setTo(0.5,0.5);
-    this.place(this.status, 0.5, .62);
+    this.place(this.status, 0.5, .67);
 
     this.intro = game.make.text(0,0, " ", { font: '16px arial', fill: '#0099ff' });
     this.intro.setText("Unhappy Plutonians send an infinite number of drones to attack Earth.\n"+
@@ -147,11 +156,12 @@ Preload.prototype = {
   },
 
   preload: function () {
+    game.add.existing(this.pluto2).scale.setTo(1.2,1.2);
     game.add.existing(this.logo).scale.setTo(0.5);
-    game.add.existing(this.loadingBar);
+    //game.add.existing(this.loadingBar);
     game.add.existing(this.status);
-    game.add.existing(this.intro);
-    this.load.setPreloadSprite(this.loadingBar);
+    //game.add.existing(this.intro);
+    this.load.setPreloadSprite(this.pluto2);
 
     //this.loadScripts();
     this.loadImages();
@@ -223,9 +233,11 @@ Preload.prototype = {
     this.addGameStates();
     this.addGameMusic();
 
+    
     setTimeout(function () {
       game.state.start("MainMenu"); // wait on splash screen for 2 seconds then go to main menu
-    }, 2000);  
+    }, 2000); 
+    
   },
 
   // Scaling Functions
@@ -272,10 +284,10 @@ Preload.prototype = {
       obj.y = game.height - (game.height * percent);
       obj.y -= offset;
   },
-  fromTop:function(obj,percent,offet=0)
+  fromTop:function(obj,percent,offset=0)
   {
       obj.y=game.height*percent;
-      obj.y+=percent;
+      obj.y+=offset;
   },
   fromRight: function(obj, percent, offset = 0) {
       obj.x = game.width - (game.width * percent);

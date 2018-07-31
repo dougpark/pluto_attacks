@@ -17,6 +17,12 @@ MainMenu.prototype = {
         // background image
         this.starfield = game.add.tileSprite(0, 0, 800, 600, 'starfield');
         this.starfield.alpha = 0.5;
+
+        this.imagePluto = game.add.sprite(0,0, 'pluto');
+        this.imagePluto.anchor.setTo(0.7, 0.5);
+        this.imagePluto.scale.setTo(.5, .5);
+        this.place(this.imagePluto, .3, .2);
+        
         
         // Game mode menu group
         this.panelGameMode = this.add.group();

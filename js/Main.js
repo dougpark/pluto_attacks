@@ -172,6 +172,7 @@ Main.prototype = {
   preload: function () {
     game.load.image('logo', 'assets/images/povinlogo.png');
     game.load.image('loading',  'assets/images/loading.png');
+    game.load.image('pluto2',  'assets/images/pluto2.png');
     //game.load.script('Preload',  'js/Preload.js');
   },
 
