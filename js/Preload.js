@@ -34,6 +34,9 @@ Preload.prototype = {
     game.load.audio('bgm', 'assets/audio/Dangerous.mp3');
     //game.load.audio('bgm', 'assets/audio/Exit the Premises.mp3');
     //game.load.audio('bgm', 'assets/audio/Kevin_MacLeod_-_Early_Riser.mp3');
+
+    //Load json file of Pluto facts
+    game.load.json('plutoFacts', 'assets/plutofacts.json');
   },
 
  

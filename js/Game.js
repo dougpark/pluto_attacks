@@ -30,12 +30,13 @@ PlutoGame.prototype = {
 
         //  The scrolling starfield background
         this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
-        this.starfield.alpha = .3;
+        this.starfield.alpha = 1;
 
+        // Image of pluto
         this.imagePluto = game.add.sprite(0,0, 'pluto');
         this.imagePluto.anchor.setTo(0.7, 0.5);
         this.imagePluto.scale.setTo(.5, .5);
-        this.imagePluto.alpha = .3;
+        this.imagePluto.alpha = 1;
         this.place(this.imagePluto, .3, .2);
 
         // Turn on if want to show debug FPS
@@ -796,6 +797,8 @@ PlutoGame.prototype = {
                 } else if (this.score < 200000) {this.stateText.text += "\n Pretty Good.";
                 } else if (this.score > 200000) {this.stateText.text += "\n Great Job.";
                 } 
+            this.stateText.text += "\n Keep playing until the IAU says Pluto is a planet!";
+            
 
 
             //the "Tap to restart" handler
@@ -1041,10 +1044,6 @@ PlutoGame.prototype = {
         this.scoresText_rav.text += "You";
     },
 
-    parseHighScores: function(plv, aev) {
-
-        console.log("plv="+plv+" aev="+aev);
-    },
 
     addCommas: function(nStr)
     {

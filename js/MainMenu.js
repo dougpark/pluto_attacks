@@ -22,6 +22,14 @@ MainMenu.prototype = {
         this.imagePluto.anchor.setTo(0.7, 0.5);
         this.imagePluto.scale.setTo(.5, .5);
         this.place(this.imagePluto, .3, .2);
+
+        // load Pluto Facts json file
+        this.plutoFacts = game.cache.getJSON('plutoFacts');
+        var i;
+        for (i = 0; i < this.plutoFacts.facts.length; i++) {
+            console.log(this.plutoFacts.facts[i]);
+        }
+        
         
         
         // Game mode menu group
