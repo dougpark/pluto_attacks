@@ -111,7 +111,7 @@ PlutoGame.prototype = {
         
         //  The score
         this.scoreString = 'Score ';
-        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#dc7b00' });
+        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#0099ff' });
         this.place(this.scoreText,0.2075,0.03);
 
         //  Perfect Levels

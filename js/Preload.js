@@ -44,6 +44,7 @@ Preload.prototype = {
     // MainMenu Images
     game.load.image('title', 'assets/buttons/title.png');
     game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
+    game.load.image('factsHover', 'assets/buttons/factsHover.png');
     game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal2.png', 227, 100);
     game.load.spritesheet('buttonFun', 'assets/buttons/button_fun2.png', 227, 100);
     game.load.spritesheet('buttonInsane', 'assets/buttons/button_insane.png', 227, 100);

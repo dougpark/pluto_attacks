@@ -96,6 +96,7 @@ Options.prototype = {
         this.creditsTxt = ""+
                           "Based on: phaser.io - example project\n"+
                           "Images: NASA.gov\n"+
+                          "Pluto Facts: NASA.gov\n"+
                           "Artwork: thegameassetsmine.com - Space Game UI\n"+
                           "Spaceship: market.envato.com - Spaceships by neogeo37\n"+
                           "Music: incompetech.com - Dangerous by Kevin MacLeod\n"+

@@ -25,10 +25,12 @@ MainMenu.prototype = {
 
         // load Pluto Facts json file
         this.plutoFacts = game.cache.getJSON('plutoFacts');
+        /*
         var i;
         for (i = 0; i < this.plutoFacts.facts.length; i++) {
             console.log(this.plutoFacts.facts[i]);
         }
+        */
         
         
         
@@ -44,19 +46,26 @@ MainMenu.prototype = {
         //this.panelGameMode.add(this.imageGameMode_title);
         this.place(this.imageGameMode_title, .5, .1);
 
+        /*
         // Game mode menu floaters
         this.imageGameMode_floater = game.add.sprite(0,0, 'levelSelect');
+        this.imageGameMode_floater.scale.setTo(.35, .35);
         this.imageGameMode_floater.anchor.setTo(0.5, 0.5);
+        this.imageGameMode_floater.angle = 90;
         this.panelGameMode.add(this.imageGameMode_floater);
-        this.place(this.imageGameMode_floater, .5, .58);
-        var levelTween = game.add.tween(this.imageGameMode_floater.scale).to({ x: 1.05, y: 1.05 }, 2000, Phaser.Easing.Linear.None, true);
+
+        this.place(this.imageGameMode_floater, .13, .85);
+        var levelTween = game.add.tween(this.imageGameMode_floater.scale).to({ x: .4, y: .4 }, 2000, Phaser.Easing.Linear.None, true);
         levelTween.yoyo(true, 0);
         levelTween.repeat(-1);
+        */
+        
 
+        var offset = .1;
         // Game mode menu buttons
         this.buttonGameModeNormal = game.add.button(0,0, 'buttonNormal', this.actionOnClickGameMode, this, 2, 1, 0);
         this.buttonGameModeNormal.anchor.setTo(0.5, 0.5);
-        this.place(this.buttonGameModeNormal, .5, .58);
+        this.place(this.buttonGameModeNormal, .5, .58-offset);
         this.buttonGameModeNormal.events.onInputDown.add(this.onInputDownGameMode, this);
         this.buttonGameModeNormal.events.onInputUp.add(this.onInputUpGameMode, this);
         this.buttonGameModeNormal.gameMode = 1;
@@ -64,7 +73,7 @@ MainMenu.prototype = {
 
         this.buttonGameModeFun = game.add.button(game.world.centerX, 345, 'buttonFun', this.actionOnClickGameMode, this, 2, 1, 0);
         this.buttonGameModeFun.anchor.setTo(0.5, 0.5);
-        this.place(this.buttonGameModeFun, .5, .40);
+        this.place(this.buttonGameModeFun, .5, .40-offset);
         this.buttonGameModeFun.events.onInputDown.add(this.onInputDownGameMode, this);
         this.buttonGameModeFun.events.onInputUp.add(this.onInputUpGameMode, this);
         this.buttonGameModeFun.gameMode = 2;
@@ -82,10 +91,55 @@ MainMenu.prototype = {
         this.buttonOptions = game.add.button(0,0, 'buttonOptions', this.actionOnClickOptions, this, 2, 1, 0);
         this.buttonOptions.anchor.setTo(0.5, 0.5);
         //this.buttonOptions.scale.setTo(1,1);
-        this.place(this.buttonOptions, .5, .76);
+        this.place(this.buttonOptions, .5, .76-offset);
         this.buttonOptions.events.onInputDown.add(this.onInputDownOptions, this);
         this.buttonOptions.events.onInputUp.add(this.onInputUpOptions, this);
         this.panelGameMode.add(this.buttonOptions);
+
+        // Pluto Facts
+
+        // Facts Hover image Left
+        this.imageFactsHover = game.add.sprite(0,0, 'factsHover');
+        this.imageFactsHover.scale.setTo(.35, .35);
+        this.imageFactsHover.anchor.setTo(0.5, 0.5);
+        this.imageFactsHover.angle = -90;
+        this.panelGameMode.add(this.imageFactsHover);
+
+        this.place(this.imageFactsHover, .05, .85);
+        var factsHoverTween = game.add.tween(this.imageFactsHover.scale).to({ x: .4, y: .4 }, 2000, Phaser.Easing.Linear.None, true);
+        factsHoverTween.yoyo(true, 0);
+        factsHoverTween.repeat(-1);
+
+        // Facts Hover image Right
+        this.imageFactsHoverR = game.add.sprite(0,0, 'factsHover');
+        this.imageFactsHoverR.scale.setTo(.35, .35);
+        this.imageFactsHoverR.anchor.setTo(0.5, 0.5);
+        this.imageFactsHoverR.angle = 90;
+        this.panelGameMode.add(this.imageFactsHoverR);
+
+        this.place(this.imageFactsHoverR, .95, .85);
+        var factsHoverRTween = game.add.tween(this.imageFactsHoverR.scale).to({ x: .4, y: .4 }, 2000, Phaser.Easing.Linear.None, true);
+        factsHoverRTween.yoyo(true, 0);
+        factsHoverRTween.repeat(-1);
+
+        /* this.panelFacts = game.add.sprite(0,0, 'score_panel');
+        this.panelFacts.anchor.setTo(0.5, 0.5);
+        this.panelFacts.scale.setTo(2,0.4);
+        this.place(this.panelFacts, 0.5, 0.85);
+        this.panelGameMode.add(this.panelFacts); */
+
+        var r = game.rnd.between(0,this.plutoFacts.facts.length);
+        this.factsString = this.plutoFacts.facts[r];
+        this.factsText = game.add.text(0,0, this.factsString, { font: '24px Arial', fill: '#dc7b00', wordWrap: true, wordWrapWidth: game.width*.8, align: 'center' });
+        this.factsText.anchor.setTo(0.5, 0.5);
+        this.place(this.factsText,0.5,0.85);
+        this.panelGameMode.add(this.factsText);
+        this.factsText.inputEnabled = true;
+        this.factsText.events.onInputDown.add(this.factsTextClick, this);
+
+        var factsTween = game.add.tween(this.factsText.scale).to({ x: 1.05, y: 1.05 }, 2000, Phaser.Easing.Linear.None, true);
+        factsTween.yoyo(true, 0);
+        factsTween.repeat(-1);
 
        
         // Popup Game level menu
@@ -172,6 +226,8 @@ MainMenu.prototype = {
             this.showIntro();
             Povin.setReadIntroVer();
         }
+
+        
         
     },
 
@@ -197,6 +253,11 @@ MainMenu.prototype = {
         game.add.tween(this.panelIntro).to( { alpha: 0 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         game.add.tween(this.panelGameMode).to( { alpha: 1 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
         //this.panelGameMode.alpha = 1;
+    },
+
+    factsTextClick: function () {
+        var r = game.rnd.between(0,this.plutoFacts.facts.length);
+        this.factsText.text = this.plutoFacts.facts[r];
     },
 
     update: function() {
