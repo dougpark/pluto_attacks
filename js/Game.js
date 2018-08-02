@@ -172,9 +172,17 @@ PlutoGame.prototype = {
         this.buttonHome = game.add.button(0,0, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
         this.buttonHome.scale.setTo(.8, .8);
-        this.place(this.buttonHome, 0.05, 0.066);
+        this.place(this.buttonHome, 0.05, 0.08);
         this.buttonHome.events.onInputDown.add(this.onInputDownHome, this);
         this.buttonHome.events.onInputUp.add(this.onInputUpHome, this);
+
+        // Speaker button to start/stop the background music
+        this.buttonSpeaker = game.add.button(0,0, 'buttonSpeaker', this.actionOnClickSpeaker, this, 2, 1, 0);
+        this.buttonSpeaker.anchor.setTo(0.5, 0.5);
+        this.buttonSpeaker.scale.setTo(.6, .6);
+        this.place(this.buttonSpeaker, 0.97, 0.05   );
+        this.buttonSpeaker.events.onInputDown.add(this.onInputDownSpeaker, this);
+        this.buttonSpeaker.events.onInputUp.add(this.onInputUpSpeaker, this);
    
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
@@ -274,6 +282,25 @@ PlutoGame.prototype = {
         game.add.tween(target.scale).to({
             x: .8,
             y: .8
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    // Action when click on the speaker button
+    actionOnClickSpeaker: function () {
+        Povin.musicToggle();
+    },
+
+    onInputDownSpeaker: function(target) {
+        game.add.tween(target.scale).to({
+            x: 0.4,
+            y: 0.4
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+     onInputUpSpeaker: function(target) {
+        game.add.tween(target.scale).to({
+            x: .6,
+            y: .6
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 

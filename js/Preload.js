@@ -88,7 +88,7 @@ Preload.prototype = {
     game.load.spritesheet('playerEnergy', 'assets/buttons/player_energy.png');
     game.load.spritesheet('buttonHome', 'assets/buttons/button_home1a.png',100,100);
     game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
-    game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker.png');
+    game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker2.png');
     game.load.spritesheet('buttonMusic', 'assets/buttons/button_music2.png',100,100);
     game.load.spritesheet('buttonMusicOn', 'assets/buttons/button_music_on.png',100,100);
     game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png',100,100);
@@ -193,7 +193,7 @@ Preload.prototype = {
             }
     Povin.bgMusic = game.add.audio('bgm');
     Povin.bgMusic.loop = true;
-    //if (Povin.musicEnabled == 1) {Povin.bgMusic.play();}
+    
   },
 
   getLocalStorage: function() {

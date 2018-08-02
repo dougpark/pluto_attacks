@@ -152,21 +152,15 @@ Options.prototype = {
 
     // Action when click on the music button
     actionOnClickMusic: function (target) {
-        if (Povin.bgMusic.isPlaying == true) {
-            Povin.bgMusic.pause();
-            Povin.musicEnabled = 0;
-            localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-            //target.frame = 0; // button image music off
-            target.loadTexture('buttonMusicOff');
-        }
-        else {
-            Povin.bgMusic.stop();
-            Povin.bgMusic.play();
-            Povin.musicEnabled = 1;
-            localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-            //target.frame = 1; // button image music on
+
+        Povin.musicToggle();
+
+        if (Povin.musicStatus() == true) {
             target.loadTexture('buttonMusicOn');
-        };
+
+        } else {
+            target.loadTexture('buttonMusicOff'); 
+        }      
     },
 
      onInputDownMusic: function(target) {
