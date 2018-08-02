@@ -19,6 +19,7 @@ require('utility.php');
 //$debug->msg('$_SERVER["REMOTE_ADDR"]', $_SERVER );
 
 showHeader();
+showLinks();
 
 // creates a new instance of the api class
 $api = new api();
@@ -64,9 +65,79 @@ function showTable($title, $result) {
 
 }
 
+function showLinks() {
+
+    $links = '
+
+    <div class="fixedLeft">
+    <h1>
+    <a href="http://dougs-mbp-touchbar.local/plutoattacks/">Development Game</a>
+    </h1>
+    </div>
+
+    <div class="fixedLeft2">
+    <h1>
+    <a href="http://dougs-mbp-touchbar.local/plutoattacks/dash.php">Development Dash</a>
+    </h1>
+    </div>
+
+    <div class="fixedRight">
+    <h1>
+    <a href="https://povingames.com/plutoattacks/">Production Game</a>
+    </h1>
+    </div>
+    
+    <div class="fixedRight2">
+    <h1>
+    <a href="https://povingames.com/plutoattacks/dash.php">Production Dash</a>
+    </h1>
+    </div>
+    ';
+
+    echo $links;
+}
+
 function showHeader() {
     $header = '<head>
     <title>Dashboard</title>
+
+    <style>
+    div.fixedLeft {
+        position: fixed;
+        top: 0px;
+        left: 00px;
+        width: 300px;
+        
+        background: #f4fbff;
+    }
+
+    div.fixedLeft2 {
+        position: fixed;
+        top: 100px;
+        left: 00px;
+        width: 300px;
+        
+        background: #f4fbff;
+    }
+    div.fixedRight {
+        position: fixed;
+        top: 0px;
+        right: 00px;
+        width: 300px;
+        
+        background: #f4fbff;
+    }
+
+    div.fixedRight2 {
+        position: fixed;
+        top: 100px;
+        right: 00px;
+        width: 300px;
+        
+        background: #f4fbff;
+    }
+    </style>
+
     <style type="text/css">
         body {
             font-size: 15px;
