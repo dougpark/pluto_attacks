@@ -183,6 +183,7 @@ PlutoGame.prototype = {
         this.place(this.buttonSpeaker, 0.97, 0.05   );
         this.buttonSpeaker.events.onInputDown.add(this.onInputDownSpeaker, this);
         this.buttonSpeaker.events.onInputUp.add(this.onInputUpSpeaker, this);
+        this.setSpeakerTexture(this.buttonSpeaker);
    
         // Game Speed
         this.gameSpeedText = game.add.text(0,0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
@@ -286,8 +287,20 @@ PlutoGame.prototype = {
     },
 
     // Action when click on the speaker button
-    actionOnClickSpeaker: function () {
+    actionOnClickSpeaker: function (target) {
         Povin.musicToggle();
+        this.setSpeakerTexture(target);
+         
+    },
+
+    setSpeakerTexture(target) {
+        if (Povin.musicStatus() == true) {
+            target.loadTexture('buttonSpeaker');
+
+        } else {
+            target.loadTexture('buttonSpeakerOff'); 
+        } 
+
     },
 
     onInputDownSpeaker: function(target) {

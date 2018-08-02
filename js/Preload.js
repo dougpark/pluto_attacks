@@ -89,6 +89,7 @@ Preload.prototype = {
     game.load.spritesheet('buttonHome', 'assets/buttons/button_home1a.png',100,100);
     game.load.spritesheet('buttonPause', 'assets/buttons/button_pause.png');
     game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker2.png');
+    game.load.spritesheet('buttonSpeakerOff', 'assets/buttons/button_speaker2_off.png');
     game.load.spritesheet('buttonMusic', 'assets/buttons/button_music2.png',100,100);
     game.load.spritesheet('buttonMusicOn', 'assets/buttons/button_music_on.png',100,100);
     game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png',100,100);
@@ -188,7 +189,6 @@ Preload.prototype = {
                 function enableTheSound() {
                     dummySound.play();
                 };
-                console.log("ready");
                 game.input.onDown.addOnce(enableTheSound, this);
             }
     Povin.bgMusic = game.add.audio('bgm');
@@ -206,7 +206,6 @@ Preload.prototype = {
   notifyServer: function() {
     // Notify the sever that a new game is starting
     var d = new Date();
-    //var n = d.toJSON();
     var w = window.innerWidth
     || document.documentElement.clientWidth
     || document.body.clientWidth;
@@ -222,7 +221,6 @@ Preload.prototype = {
     xmlhttp.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
             console.log("notifyServerResponse= " + this.responseText);
-            //var rspText = this.responseText;
         }
     };
     xmlhttp.open("GET", "sethighscore.php?q=" + localPAJSON, true);
@@ -231,11 +229,12 @@ Preload.prototype = {
   },
 
   create: function() {
-    this.status.setText('Ready!');
+    
     this.notifyServer();
     this.getLocalStorage();
     this.addGameStates();
     this.addGameMusic();
+    this.status.setText('Ready!');
 
     
     setTimeout(function () {
