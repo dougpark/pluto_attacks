@@ -148,17 +148,13 @@ var Povin = {
         if (Povin.bgMusic.isPlaying == true) {
           Povin.bgMusic.pause();
           Povin.musicEnabled = 0;
-          localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-          //target.frame = 0; // button image music off
-          
+          localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled); 
         }
         else {
             Povin.bgMusic.stop();
             Povin.bgMusic.play();
             Povin.musicEnabled = 1;
-            localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);
-            //target.frame = 1; // button image music on
-            
+            localStorage.setItem("PlutoAttacksMusicEnabled", Povin.musicEnabled);  
         };
       },
 
