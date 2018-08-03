@@ -162,6 +162,7 @@ PlutoGame.prototype = {
           };
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.fireButtonNow = game.input.keyboard.addKey(Phaser.Keyboard.F);
+        this.menuButton = game.input.keyboard.addKey(Phaser.Keyboard.M);
     
         // HUD
         this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background')
@@ -338,15 +339,11 @@ PlutoGame.prototype = {
  
     // Kill the aliens when they leave the screen
     alienOut: function(alien) {
-        // show a  text floating up the screen
-        this.txtAlien = "-999";
-        var txtAlien2 = game.add.text(alien.body.x, game.world.height, this.txtAlien, { font: '36px HappyKiller', fill: '#ff0000', align: 'center' });
-        game.time.events.add(100, function () {
-            game.add.tween(txtAlien2).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .5 }, 2000, Phaser.Easing.Linear.None, true);
-        }, this);
-        game.time.events.add(2000, function () {
-            txtAlien2.destroy();
-        }, this);
+        // show a text floating up the screen
+        var txtAlienT = "-999";
+        var txtAlien = game.add.text(alien.body.x, game.world.height, txtAlienT, { font: '36px HappyKiller', fill: '#ff0000', align: 'center' });
+        var txtAlienTween = game.add.tween(txtAlien).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .5 }, 2000, Phaser.Easing.Exponential.In, true);
+        txtAlienTween.onComplete.add(function(){txtAlien.destroy();}, this);
 
         this.alienSfx.play();
 
@@ -377,10 +374,11 @@ PlutoGame.prototype = {
         this.aliens.y = 150;
 
         //  All this does is basically start the invaders moving. Notice we're moving the Group they belong to, rather than the invaders directly.
-        this.tween2 = game.add.tween(this.aliens).to({ x: 300 }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
+        this.aliensTween = game.add.tween(this.aliens).to({ x: 300 }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
         //  When the tween loops it calls descend
-        this.tween2.onLoop.add(this.descend, this);
+        this.aliensTween.onLoop.add(this.descend, this);
+
     },
 
     
@@ -405,8 +403,9 @@ PlutoGame.prototype = {
     },
 
     // not working, supposed to move the aliens down after each pass
-    descend: function () {
-        this.aliens.y += 100;
+    descend: function (me) {
+        me.aliens.y += 100;
+        console.log('descend');
     },
 
 // **************************************************************************************
@@ -415,6 +414,12 @@ PlutoGame.prototype = {
    
     // main game loop
     update: function () {
+
+        // Press M to return to main menu
+        if (this.menuButton.isDown) {
+            this.actionOnClickHome();
+        }
+
         // FPS
         //this.txtFPS.text = "FPS: " + game.time.fps;
 
@@ -427,8 +432,6 @@ PlutoGame.prototype = {
         if (this.player.alive) {
             //  Reset the player, then check for movement keys
             this.player.body.velocity.setTo(0, 0);
-            //this.player.fire = 0;
-
 
             // keyboard input
             if (this.cursors.left.isDown || this.wasd.left.isDown) {
@@ -456,6 +459,8 @@ PlutoGame.prototype = {
                 this.shield.y = this.player.y;
             }
 
+
+            // Rules change once the player has energy
             if (this.player.energy > 0) {
                 this.player.fire += 1;
 
@@ -575,44 +580,30 @@ PlutoGame.prototype = {
             this.enemyBullets.callAll('kill', this);
 
             // show a Level text floating up the screen
-            this.txtCaption = "Level " + this.level;
-            var txtAddition = game.add.text(game.world.centerX - (game.world.centerX*.30), game.world.centerY, this.txtCaption, { font: '36px HappyKiller', fill: '#0099ff' });
-            game.time.events.add(100, function () {
-                game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
-            }, this);
-            game.time.events.add(2000, function () {
-                txtAddition.destroy();
-            }, this);
-
-            
+            var txtLevelT = "Level " + this.level;
+            var txtLevel = game.add.text(game.world.centerX - (game.world.centerX*.30), game.world.centerY, txtLevelT, { font: '36px HappyKiller', fill: '#0099ff' });
+            var txtLevelTween = game.add.tween(txtLevel).to({ y: 0, alpha: 0 }, 2000, Phaser.Easing.Linear.None, true);
+            txtLevelTween.onComplete.add(function(){txtLevel.destroy();}, this);
+                     
             this.levelTimer = game.time.now + 2000; // wait n seconds to start next level
             
             // Perfect Level
             if (this.alienEscape == 0 ) {
                 this.totalPerfectLevel += 1;
 
-                var txtPerfect = "Perfect Level";
-
                 this.perfectSfx.play();
-                
-                var txtPerfect2 = game.add.text(game.world.centerX, game.world.height, txtPerfect, { font: '36px HappyKiller', fill: '#30acfc', align: 'center' });
-                txtPerfect2.anchor.setTo(0.5, 0.5);
-                game.time.events.add(100, function () {
-                    game.add.tween(txtPerfect2).to({ y:game.world.height/2, alpha: 1 }, 2500, Phaser.Easing.Quadratic.Out, true);
-                }, this);
-                game.time.events.add(2500, function () {
-                    txtPerfect2.destroy();
-                }, this);
 
-                var txtPerfect3 = "+9,999";
-                var txtPerfect4 = game.add.text(game.world.centerX, game.world.height, txtPerfect3, { font: '24px HappyKiller', fill: '#dc7b00', align: 'center' });
-                txtPerfect4.anchor.setTo(0.5, 0.5);
-                game.time.events.add(100, function () {
-                    game.add.tween(txtPerfect4).to({ x: this.fromLeft2(0.25), y: this.fromTop2(.10), alpha: .5 }, 2000, Phaser.Easing.Quadratic.Out, true);
-                }, this);
-                game.time.events.add(2000, function () {
-                    txtPerfect4.destroy();
-                }, this);
+                var txtPerfectT = "Perfect Level";
+                var txtPerfect = game.add.text(game.world.centerX, game.world.height, txtPerfectT, { font: '36px HappyKiller', fill: '#30acfc', align: 'center' });
+                txtPerfect.anchor.setTo(0.5, 0.5);
+                var txtPerfectTween = game.add.tween(txtPerfect).to({ y:game.world.height/2, alpha: 1 }, 2500, Phaser.Easing.Quadratic.Out, true);
+                txtPerfectTween.onComplete.add(function(){txtPerfect.destroy();}, this);
+
+                var txtPerfectBonusT = "+9,999";
+                var txtPerfectBonus = game.add.text(game.world.centerX, game.world.height, txtPerfectBonusT, { font: '24px HappyKiller', fill: '#dc7b00', align: 'center' });
+                txtPerfectBonus.anchor.setTo(0.5, 0.5);
+                var txtPerfectBonusTween = game.add.tween(txtPerfectBonus).to({ x: this.fromLeft2(0.25), y: this.fromTop2(.10), alpha: .5 }, 2000, Phaser.Easing.Quadratic.Out, true);
+                txtPerfectBonusTween.onComplete.add(function(){txtPerfectBonus.destroy();}, this);
 
                 this.score += 9999;
                 this.showScores();
@@ -663,15 +654,11 @@ PlutoGame.prototype = {
                 this.player.energy = 27; // temp
             } 
 
-            // show a Bonus text floating up the screen
-            this.txtCaption = "+" + this.player.bonusPoints;
-            var txtAddition = game.add.text(enemyBullet.body.x, enemyBullet.body.y, this.txtCaption, { font: '18px HappyKiller', fill: '#00ddff' });
-            game.time.events.add(100, function () {
-                game.add.tween(txtAddition).to({ x: this.fromLeft2(0.6875), y: this.fromTop2(.10), alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-            }, this);
-            game.time.events.add(1000, function () {
-                txtAddition.destroy();
-            }, this);
+            // show a energyBonus points text floating up the screen
+            var txtEnergyBonusT = "+" + this.player.bonusPoints;
+            var txtEnergyBonus = game.add.text(enemyBullet.body.x, enemyBullet.body.y, txtEnergyBonusT, { font: '18px HappyKiller', fill: '#00ddff' });
+            var txtEnergyBonusTween = game.add.tween(txtEnergyBonus).to({ x: this.fromLeft2(0.6875), y: this.fromTop2(.10), alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+            txtEnergyBonusTween.onComplete.add(function(){txtEnergyBonus.destroy();}, this);
 
             // removed score point for hitting alien bullets, only get enery points
             //this.score += this.player.bonusPoints;
@@ -694,14 +681,12 @@ PlutoGame.prototype = {
             var explosion = this.explosions.getFirstExists(false);
             explosion.reset(alien.body.x, alien.body.y);
             explosion.play('kaboom', 30, false, true);
-            var txtPts = "+81";
-            var txtPts2 = game.add.text(alien.body.x, alien.body.y, txtPts, { font: '18px HappyKiller', fill: '#0099ff' });
-            game.time.events.add(100, function () {
-                game.add.tween(txtPts2).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .25 }, 2000, Phaser.Easing.Linear.None, true);
-            }, this);
-            game.time.events.add(2000, function () {
-                txtPts2.destroy();
-            }, this);
+
+            var txtPtsT = "+81";
+            var txtPts = game.add.text(alien.body.x, alien.body.y, txtPtsT, { font: '18px HappyKiller', fill: '#0099ff' });
+            var txtPtsTween = game.add.tween(txtPts).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .25 }, 2000, Phaser.Easing.Linear.None, true);
+            txtPtsTween.onComplete.add(function(){txtPts.destroy();}, this);
+            
         } else { // player has energy
 
                 if (this.level >= 27) {
@@ -780,14 +765,11 @@ PlutoGame.prototype = {
             explosion.play('ship_kaboom', 30, false, true);
 
             // animate some cool text up the screen
-            this.txtCaption = "AAAHHHH";
-            var txtAddition = game.add.text(this.player.body.x, this.player.body.y, this.txtCaption, { font: '12px HappyKiller', fill: '#ff3333' });
-            game.time.events.add(100, function () {
-                game.add.tween(txtAddition).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
-            }, this);
-            game.time.events.add(2000, function () {
-                txtAddition.destroy();
-            }, this);
+            var txtAhhT = "AAAHHHH";
+            var txtAhh = game.add.text(this.player.body.x, this.player.body.y, txtAhhT, { font: '12px HappyKiller', fill: '#ff3333' });
+            var txtAhhTween = game.add.tween(txtAhh).to({ y: 0, alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+            txtAhhTween.onComplete.add(function(){txtAhh.destroy();}, this);
+
         } else {
             this.player.energy = this.player.energy - 1;
 
