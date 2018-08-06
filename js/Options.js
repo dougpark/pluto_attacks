@@ -102,9 +102,10 @@ Options.prototype = {
                           "Music: incompetech.com - Dangerous by Kevin MacLeod\n"+
                           "Font: dafont.com - Happy-Killer.font\n"+
                           "Sound Effects: GameBurp.com\n"+
-                          "Scream: wilhelmscream.net - Wilhelm Scream";
+                          "Scream: wilhelmscream.net - Wilhelm Scream\n"+
+                          "->This site uses cookies and saves score data on Povingames.com";
         this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
-        this.place(this.creditsText,0.2,0.40);
+        this.place(this.creditsText,0.2,0.30);
         this.panelCredits.add(this.creditsText);
 
         this.panelCredits.add(this.buttonContinue);
