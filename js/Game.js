@@ -377,7 +377,7 @@ PlutoGame.prototype = {
         this.aliensTween = game.add.tween(this.aliens).to({ x: 300 }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
         //  When the tween loops it calls descend
-        this.aliensTween.onLoop.add(this.descend, this);
+        //this.aliensTween.onRepeat.add(this.descend, this);
 
     },
 
@@ -404,7 +404,7 @@ PlutoGame.prototype = {
 
     // not working, supposed to move the aliens down after each pass
     descend: function (me) {
-        me.aliens.y += 100;
+        this.aliens.y += 10;
         console.log('descend');
     },
 
@@ -594,13 +594,13 @@ PlutoGame.prototype = {
                 this.perfectSfx.play();
 
                 var txtPerfectT = "Perfect Level";
-                var txtPerfect = game.add.text(game.world.centerX, game.world.height, txtPerfectT, { font: '36px HappyKiller', fill: '#30acfc', align: 'center' });
+                var txtPerfect = game.add.text(game.world.centerX, game.world.height, txtPerfectT, { font: '36px HappyKiller', fill: '#30acfc', boundsAlignH: 'center' });
                 txtPerfect.anchor.setTo(0.5, 0.5);
                 var txtPerfectTween = game.add.tween(txtPerfect).to({ y:game.world.height/2, alpha: 1 }, 2500, Phaser.Easing.Quadratic.Out, true);
                 txtPerfectTween.onComplete.add(function(){txtPerfect.destroy();}, this);
 
                 var txtPerfectBonusT = "+9,999";
-                var txtPerfectBonus = game.add.text(game.world.centerX, game.world.height, txtPerfectBonusT, { font: '24px HappyKiller', fill: '#dc7b00', align: 'center' });
+                var txtPerfectBonus = game.add.text(game.world.centerX, game.world.height, txtPerfectBonusT, { font: '24px HappyKiller', fill: '#dc7b00', boundsAlignH: 'center' });
                 txtPerfectBonus.anchor.setTo(0.5, 0.5);
                 var txtPerfectBonusTween = game.add.tween(txtPerfectBonus).to({ x: this.fromLeft2(0.25), y: this.fromTop2(.10), alpha: .5 }, 2000, Phaser.Easing.Quadratic.Out, true);
                 txtPerfectBonusTween.onComplete.add(function(){txtPerfectBonus.destroy();}, this);
@@ -672,6 +672,8 @@ PlutoGame.prototype = {
         //  When a bullet hits an alien we kill the bullet
         bullet.kill();
 
+
+        // Player does NOT have energy
         if (this.player.energy == 0 || alien.lives < 1) {
             alien.atacking = false;
             alien.lives = 1;
@@ -779,9 +781,6 @@ PlutoGame.prototype = {
             var explosion = this.bullet_explosions.getFirstExists(false);
             explosion.reset(bullet.body.x, bullet.body.y);
             explosion.play('bullet_kaboom', 30, false, true);
-
-
-
         }
 
         // When the player dies
@@ -821,8 +820,6 @@ PlutoGame.prototype = {
                 } 
             this.stateText.text += "\n Keep playing until the IAU says Pluto is a planet!";
             
-
-
             //the "Tap to restart" handler
             this.fireButton.onDown.addOnce(this.restartGame, this);
             //game.input.onTap.addOnce(this.restartGame, this);
@@ -861,7 +858,6 @@ PlutoGame.prototype = {
         // Increase speed based on level
         var levelSpeed = this.level * 10 * (1+ this.level/30);
         
-
         //  Grab the first bullet we can from the pool
         this.enemyBullet = this.enemyBullets.getFirstExists(false);
 

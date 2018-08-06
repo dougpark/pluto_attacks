@@ -128,7 +128,7 @@ MainMenu.prototype = {
         this.place(this.panelFacts, 0.5, 0.85);
         this.panelGameMode.add(this.panelFacts); */
 
-        var r = game.rnd.between(0,this.plutoFacts.facts.length);
+        var r = game.rnd.between(0,this.plutoFacts.facts.length-1);
         this.factsString = this.plutoFacts.facts[r];
         this.factsText = game.add.text(0,0, this.factsString, { font: '24px Arial', fill: '#dc7b00', wordWrap: true, wordWrapWidth: game.width*.8, align: 'center' });
         this.factsText.anchor.setTo(0.5, 0.5);
@@ -256,7 +256,7 @@ MainMenu.prototype = {
     },
 
     factsTextClick: function () {
-        var r = game.rnd.between(0,this.plutoFacts.facts.length);
+        var r = game.rnd.between(0,this.plutoFacts.facts.length-1);
         this.factsText.text = this.plutoFacts.facts[r];
     },
 

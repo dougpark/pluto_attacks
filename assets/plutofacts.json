@@ -1,7 +1,7 @@
 {
     "facts":[
     "Pluto is currently defined as a dwarf planet by the IAU",
-    "Light from the Sun takes about 280 minutes to reach Pluto",
+    "Light from the Sun takes about 280 minutes to reach Pluto, a little over 8 minutes to reach Earth",
     "Pluto is smaller than Earth's moon",
     "Pluto has a heart shaped glacier the size of Texas and Oklahoma combined",
     "The snow on Pluto is red",
@@ -16,7 +16,7 @@
     "Pluto is about 1,400 miles (2,380 km) wide",
     "Pluto is about half the width of the United States",
     "Pluto is about 2/3 the width of Earth's moon",
-    "Pluto orbits the Sun at about 3.6 billion miles (5.8 billion km)",
+    "Pluto orbits the Sun at about 3.6 billion miles\n (5.8 billion km)",
     "Pluto is about 40 times as far as Earth from the Sun",
     "Pluto is in a region called the Kuiper Belt",
     "A year on Pluto is 248 Earth years",
@@ -28,7 +28,7 @@
     "A year on Pluto lasts 90,530 Earth days",
     "Pluto has no ring system",
     "The only spacecraft to visit Pluto is NASA’s New Horizons",
-    "Pluto’s surface is cold, -378 to -396 degrees F (-228 to -238 C)",
+    "Pluto’s surface is cold, -378 to -396 degrees F \n(-228 to -238 C)",
     "Pluto was named in 1930",
     "Pluto was named by an 11 year old girl",
     "Pluto was named by Venetia Burney of Oxford, England",
@@ -48,6 +48,10 @@
     "New Horizons swung past Jupiter for a gravity boost in February 2007",
     "New Horizons was launched on a Lockheed Martin Atlas V-551 rocket",
     "New Horizons approached Pluto at 31,300 miles per hour",
-    "Pluto was approximately 4.92 billion kilometers (3.06 billion miles) from Earth in July 2015"    
+    "Pluto was approximately 4.92 billion kilometers (3.06 billion miles) from Earth in July 2015",
+    "On July 14, 2015, at 11:49 UTC, New Horizons flew 12,500 km (7,800 mi) above the surface of Pluto",
+    "New Horizons collected 6.25 gigabytes of information",
+    "Look for the photo of Pluto as New Horizons left the system, catching the Sun's rays passing through Pluto's atmosphere, forming a blue ring",
+    "New Horizons download of the complete data set took just over 15 months" 
     ]
   }
