@@ -5,8 +5,12 @@
  * @version 2018-07-22
  * Based On https://github.com/memaker/webservice-php-json/blob/master/api.php
  */
+
+session_start();
+
 class api
 {
+    
     private $db;
     private $type;
 	/**
@@ -45,7 +49,7 @@ class api
         . "`id`, `Type`, `Game`, `Date`, `WinWidth`, "
         . "`WinHeight`, `GameMode`, `GameLevel`,`EndLevel`, "
         . "`PerfectLevels`, `AliensEscaped`, "
-        . "`Score`, `UserName`, `IpAddress`, `Browser`)"
+        . "`Score`, `UserName`, `SessionID`, `IpAddress`, `Browser`)"
         . " VALUES (NULL, "
         . "'" . $this->type . "',"
         . "'" . $params["Game"] . "',"
@@ -59,6 +63,7 @@ class api
         . "'" . $params["AliensEscaped"] . "',"
         . "'" . $params["Score"] . "',"
         . "'" . $params["UserName"] . "',"
+        . "'" . session_id() . "',"
         . "'" . $_SERVER["REMOTE_ADDR"] . "',"
         . "'" . $params["Browser"] . "')"
         ;
@@ -137,7 +142,7 @@ class api
         $query = 'SELECT Time, Score, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
         . ' GameLevel, EndLevel, '
         . ' (PerfectLevels / (EndLevel-GameLevel))*100 as Percent,'
-        . ' IpAddress'
+        . ' SessionID, IpAddress'
         . ' FROM highscore'
         . ' where GameLevel > 0 and type = "prod" '
         . ' and Date(Time) = CURDATE() '
@@ -167,6 +172,26 @@ class api
         return $result;        
     }
 
+    /**
+	 * Get count of players (by SessionID) played today
+	 *
+	 * @param none 
+	 * @return result set
+	 */
+	function playersToday($params)
+    {
+        $query = "SELECT count(DISTINCT(SessionID)) as PlayerCount\n"
+
+        . "         from highscore  \n"
+
+        . "         where GameLevel >0 and type = \"prod\" \n"
+
+        . "        and Date(Time) = CURDATE()";
+        $result = $this->db->query($query);
+            
+        return $result;        
+    }
+
 	/**
 	 * Get the high scores
 	 *
@@ -178,7 +203,7 @@ class api
         $query = 'SELECT Time, Score, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
         . ' GameLevel, EndLevel, '
         . ' (PerfectLevels / (EndLevel-GameLevel))*100 as Percent,'
-        . ' IpAddress'
+        . ' SessionID, IpAddress'
         . ' FROM highscore'
         . ' where GameLevel > 0 and type = "prod" '
 		. ' ORDER BY Score DESC, PerfectLevels DESC, Percent DESC Limit 10'
@@ -200,7 +225,7 @@ class api
         $query = 'SELECT Time, Score, PerfectLevels, AliensEscaped, GameMode, (EndLevel - GameLevel) as LevelsCompleted,' 
         . ' GameLevel, EndLevel, '
         . ' (PerfectLevels / (EndLevel-GameLevel))*100 as Percent,'
-        . ' IpAddress'
+        . ' SessionID, IpAddress'
         . ' FROM highscore'
         . ' where UserName != "" '
         . ' and type = "prod" '
