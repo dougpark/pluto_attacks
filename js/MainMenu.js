@@ -3,7 +3,7 @@
 * @author Doug Park
 * @version v1.0
 * @desc Display Menu Options, show Intro Text, show Pluto Facts
-* @date 2018-07-022
+* @date 2018-07-22
 **************************************************************************************/
 "use strict";
 
