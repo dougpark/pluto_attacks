@@ -1,9 +1,18 @@
-// **************************************************************************************
-// Game
-// **************************************************************************************
+/**************************************************************************************
+* Game State
+* @author Doug Park
+* @version v1.0
+* @desc Play the Pluto Attacks game
+* @date 2018-07-022
+**************************************************************************************/
 "use strict";
 
-var PlutoGame = function () {};
+var PlutoGame = {};
+
+PlutoGame = function (game) {
+    // state level properties go here
+
+};
 
 PlutoGame.prototype = {
 
@@ -28,9 +37,20 @@ PlutoGame.prototype = {
         this.totalPerfectLevel = 0;
         this.totalAlienEscape = 0;
 
+        
+
         //  The scrolling starfield background
         this.starfield = game.add.tileSprite(0,0,this.world.width,this.world.height, 'starfield');
         this.starfield.alpha = 1;
+
+        /*
+        this.background2 = this.game.add.graphics(0,0)
+        //background.beginFill(0xE09E91, 1)
+        this.background2.endFill();
+        this.background2.lineStyle(20, 0x0000FF, 1);
+        //this.background2.drawRect(400, 400, this.game.width, this.game.height)
+        this.background2.drawRect(400,40, 500,500)
+        */
 
         // Image of pluto
         this.imagePluto = game.add.sprite(0,0, 'pluto');
@@ -611,6 +631,10 @@ PlutoGame.prototype = {
             
         }
 
+        //this.background2.lineStyle(20, 0x0000FF, 1);
+        //this.background2.drawRect(0, 0, this.game.width, this.game.height)
+        
+
         // Delay before starting the next level
         if (this.levelTimer > 0 && game.time.now > this.levelTimer) {
             this.levelTimer = 0;
@@ -803,6 +827,7 @@ PlutoGame.prototype = {
             // retrieve high scores from server
             this.retrieveHighScores();
 
+            // !! move to highscore state
             // show the high score hud
             this.showHighScores();
           
@@ -836,6 +861,7 @@ PlutoGame.prototype = {
         this.restart();
     },
 
+    // !! move to highscores state
     // Pop up the Scores panel
     showHighScores: function () {
         game.add.tween(this.panelScores).to( { alpha: 0.95 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
@@ -844,6 +870,7 @@ PlutoGame.prototype = {
         //this.panelScores.visible = true;
     },
 
+    // !! move to highscore state
     // Pop up the Scores panel
     hideHighScores: function () {
         game.add.tween(this.panelScores).to( { alpha: 0 }, 100, Phaser.Easing.Linear.None, true, 250, 0, false);
@@ -948,6 +975,7 @@ PlutoGame.prototype = {
         this.showScores();
     }, 
 
+    // !! move to Povin
     // Scaling Functions
     getScaleToGameW: function(obj)
     {	
@@ -1022,6 +1050,7 @@ PlutoGame.prototype = {
         obj.x -= obj.width / 2;
     },
 
+    // !! move to highscore state
     // retrieve high scores from the score server    
     retrieveHighScores: function() {
         self = this;
@@ -1037,6 +1066,7 @@ PlutoGame.prototype = {
 
     },
 
+    // !! move to highscore state
     // process the high scores from the score server
     processHighScores: function(highScores) {
 
@@ -1063,6 +1093,7 @@ PlutoGame.prototype = {
     },
 
 
+    // !! move to Povin
     addCommas: function(nStr)
     {
         nStr += '';

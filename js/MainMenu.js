@@ -1,9 +1,18 @@
-// **************************************************************************************
-// Main Menu
-// **************************************************************************************
+/**************************************************************************************
+* MainMenu State
+* @author Doug Park
+* @version v1.0
+* @desc Display Menu Options, show Intro Text, show Pluto Facts
+* @date 2018-07-022
+**************************************************************************************/
 "use strict";
 
-var MainMenu = function () {};
+var MainMenu = {};
+
+MainMenu = function (game) {
+    // state level properties go here
+
+};
 
 MainMenu.prototype = {
 
@@ -25,14 +34,6 @@ MainMenu.prototype = {
 
         // load Pluto Facts json file
         this.plutoFacts = game.cache.getJSON('plutoFacts');
-        /*
-        var i;
-        for (i = 0; i < this.plutoFacts.facts.length; i++) {
-            console.log(this.plutoFacts.facts[i]);
-        }
-        */
-        
-        
         
         // Game mode menu group
         this.panelGameMode = this.add.group();
@@ -225,13 +226,30 @@ MainMenu.prototype = {
         if (Povin.showIntroText() == true) {
             this.showIntro();
             Povin.setReadIntroVer();
-        }
+        }  
+        
+    }, // end create:
 
-        
-        
+    update: function() {
+        //  Scroll the background
+        this.starfield.tilePosition.y += 2;
     },
 
-    // Pop up the Intro panel
+    render: function() {
+        /* var debug = this.game.debug;
+        debug.text('height ' + game.world.height,10,120);
+        debug.text('gameLevel '+ Povin.gameLevel,10,140);
+        debug.text('Povin '+ Povin,10,160);
+
+        debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
+        */
+    },
+
+    nextState: function () {
+        this.state.start('PlutoGame', true, false, Povin.gameMode, Povin.gameLevel);
+    },
+
+    // Pop up the Intro Text panel
     showIntro: function () {
         this.buttonGameModeNormal.inputEnabled = false;
         this.buttonGameModeFun.inputEnabled = false;
@@ -245,7 +263,7 @@ MainMenu.prototype = {
         game.input.onTap.addOnce(this.hideIntro, this);
     },
 
-    // Pop up the Scores panel
+    // Hide the Intro Text Panel
     hideIntro: function () {
         this.buttonGameModeNormal.inputEnabled = true;
         this.buttonGameModeFun.inputEnabled = true;
@@ -255,18 +273,11 @@ MainMenu.prototype = {
         //this.panelGameMode.alpha = 1;
     },
 
+    // Show another fact on click
     factsTextClick: function () {
         var r = game.rnd.between(0,this.plutoFacts.facts.length-1);
         this.factsText.text = this.plutoFacts.facts[r];
     },
-
-    update: function() {
-
-        //  Scroll the background
-        this.starfield.tilePosition.y += 2;
-        
-
-   },
 
     // Action when click on the Options button
     actionOnClickOptions: function () {
@@ -280,14 +291,12 @@ MainMenu.prototype = {
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
-     onInputUpOptions: function(target) {
+    onInputUpOptions: function(target) {
         game.add.tween(target.scale).to({
             x: 1,
             y: 1
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
-
-    
 
     // Pop up the GameLevel select panel
     selectGameLevel: function() {
@@ -312,12 +321,11 @@ MainMenu.prototype = {
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
-     onInputUpGameMode: function(target) {
+    onInputUpGameMode: function(target) {
         game.add.tween(target.scale).to({
             x: 1,
             y: 1
         }, 100, Phaser.Easing.Cubic.Out, true);
-       // this.nextState();
     },
 
     // Select Game Level 
@@ -333,7 +341,7 @@ MainMenu.prototype = {
         }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
-     onInputUpGameLevel: function(target) {
+    onInputUpGameLevel: function(target) {
         game.add.tween(target.scale).to({
             x: 1,
             y: 1
@@ -341,16 +349,7 @@ MainMenu.prototype = {
         this.nextState();
     },
 
-    render: function() {
-        /* var debug = this.game.debug;
-        debug.text('height ' + game.world.height,10,120);
-        debug.text('gameLevel '+ Povin.gameLevel,10,140);
-        debug.text('Povin '+ Povin,10,160);
-
-        debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
-        */
-    },
-
+    // !! These should be moved to Povin object
     // Scaling Functions
     getScaleToGameW: function(obj)
     {	
@@ -416,9 +415,6 @@ MainMenu.prototype = {
     fromCenterV: function(obj, percent) {
         obj.x = game.width / 2 - (game.width * percent);
         obj.x -= obj.width / 2;
-    },
-
-    nextState: function () {
-        this.state.start('PlutoGame', true, false, Povin.gameMode, Povin.gameLevel);
     }
+
 };

@@ -4,6 +4,7 @@
  * @author Doug Park
  * @version v1.0
  * @return JSON message with the status
+ * @desc 
  * @date 2018-07-022
  * Based On https://github.com/memaker/webservice-php-json/blob/master/api.php
  */
