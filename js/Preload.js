@@ -27,25 +27,25 @@ Preload.prototype = {
     
         this.pluto2 = game.make.sprite(0,0, 'pluto2');
         //this.pluto2.anchor.setTo(0.5,0.5);
-        this.place(this.pluto2, 0.16, 0);
+        Povin.place(this.pluto2, 0.16, 0);
     
         this.loadingBar = game.make.sprite(0,0, "loading");
         //this.loadingBar.anchor.setTo(0.5, 0.5);
-        this.place(this.loadingBar, .5, .66);
+        Povin.place(this.loadingBar, .5, .66);
     
         this.logo = game.make.sprite(0,0, 'logo');
         this.logo.anchor.setTo(0.5,0.5);
-        this.place(this.logo, 0.5, .38)
+        Povin.place(this.logo, 0.5, .38)
     
         this.status = game.make.text(0,0, ' ', { font: '20px HappyKiller', fill: '#dc7b00' });
         this.status.anchor.setTo(0.5,0.5);
-        this.place(this.status, 0.5, .67);
+        Povin.place(this.status, 0.5, .67);
     
         this.intro = game.make.text(0,0, " ", { font: '16px arial', fill: '#0099ff' });
         this.intro.setText("Unhappy Plutonians send an infinite number of drones to attack Earth.\n"+
                            "                      The action really begins at Fun Level 9");
         this.intro.anchor.setTo(0.5,0.5);
-        this.place(this.intro, 0.5, .75);
+        Povin.place(this.intro, 0.5, .75);
     },
     
     preload: function () {
@@ -252,71 +252,4 @@ Preload.prototype = {
 
     },
 
-    // !! These should be moved to Povin object
-    // Scaling Functions
-    getScaleToGameW: function(obj)
-    {	
-        console.log(obj.width/game.width);
-    },
-    scaleToGameW: function(obj,percent)
-    {
-        obj.width=game.width*percent;
-        obj.scale.y=obj.scale.x;
-    },
-    place: function(obj,xPercent, yPercent) {
-        
-        this.fromTop(obj,yPercent);
-        this.fromLeft(obj,xPercent);
-        
-    },
-    center: function(obj) {
-        obj.x = game.width / 2;
-        obj.y = game.height / 2;
-    },
-    centerH: function(obj) {
-        obj.x = game.width / 2;
-    },
-    centerV: function(obj) {
-        obj.y = game.height / 2;
-    },
-    centerGroup: function(obj) {
-        obj.x = game.width / 2 - obj.width / 2;
-        obj.y = game.height / 2 - obj.height / 2;
-    },
-    centerGroupH: function(obj) {
-        obj.y = game.height / 2 - obj.height / 2;
-    },
-    centerGroupW: function(obj) {
-        obj.x = game.width / 2 - obj.width / 2;
-    },
-    alignToBottom: function(obj, offset = 0) {
-        obj.y = game.height - obj.height / 2;
-        obj.y+= offset;
-    },
-    fromBottom: function(obj, percent, offset=0) {
-        obj.y = game.height - (game.height * percent);
-        obj.y -= offset;
-    },
-    fromTop:function(obj,percent,offset=0)
-    {
-        obj.y=game.height*percent;
-        obj.y+=offset;
-    },
-    fromRight: function(obj, percent, offset = 0) {
-        obj.x = game.width - (game.width * percent);
-        obj.x -= offset;
-        //obj.x -= obj.width / 2;
-    },
-    fromLeft: function(obj, percent, offset = 0) {
-        obj.x = game.width * percent;
-        obj.x += offset;
-    },
-    fromCenterH: function(obj, percent) {
-        obj.x = game.width / 2 - (game.width * percent);
-        obj.x -= obj.width / 2;
-    },
-    fromCenterV: function(obj, percent) {
-        obj.x = game.width / 2 - (game.width * percent);
-        obj.x -= obj.width / 2;
-    }
 };

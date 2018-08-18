@@ -57,7 +57,7 @@ PlutoGame.prototype = {
         this.imagePluto.anchor.setTo(0.7, 0.5);
         this.imagePluto.scale.setTo(.5, .5);
         this.imagePluto.alpha = 1;
-        this.place(this.imagePluto, .3, .2);
+        Povin.place(this.imagePluto, .3, .2);
 
         // Turn on if want to show debug FPS
        //game.time.advancedTiming = true;
@@ -101,7 +101,7 @@ PlutoGame.prototype = {
         this.player = game.add.sprite(0,0, 'shipLR');
         this.player.anchor.setTo(0.5, 0.5);
         this.player.scale.setTo(.3, .3); 
-        this.place(this.player,0.5, 0.91);
+        Povin.place(this.player,0.5, 0.91);
         game.physics.enable(this.player, Phaser.Physics.ARCADE);
         this.player.body.collideWorldBounds = true;
         this.player.animations.add('flyL', [3,4,3], 20, true);
@@ -132,17 +132,17 @@ PlutoGame.prototype = {
         //  The score
         this.scoreString = 'Score ';
         this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#0099ff' });
-        this.place(this.scoreText,0.2075,0.03);
+        Povin.place(this.scoreText,0.2075,0.03);
 
         //  Perfect Levels
         this.perfectLevelsString = 'Perfect: ';
         this.perfectLevelsText = game.add.text(0,0, this.perfectLevelsString + "" +this.totalPerfectLevel, { font: '16px HappyKiller', fill: '#dc7b00' });
-        this.place(this.perfectLevelsText,.17,.95);
+        Povin.place(this.perfectLevelsText,.17,.95);
 
         //  Aliens Escaped
         this.aliensEscapedString = 'Escaped: ';
         this.aliensEscapedText = game.add.text(0,0, this.aliensEscapedString + "" +this.totalAlienEscape, { font: '16px HappyKiller', fill: '#dc7b00' });
-        this.place(this.aliensEscapedText,.64,.95);
+        Povin.place(this.aliensEscapedText,.64,.95);
 
         //  Lives
         this.lives = game.add.group();
@@ -151,7 +151,7 @@ PlutoGame.prototype = {
         for (var i = 0; i < 3; i++) {
             var ship = this.lives.create(game.world.width - 240 + (30 * i), 40, 'ship');
             ship.anchor.setTo(0.5, 0.5);
-            //this.place(ship, x, 0.066);
+            //Povin.place(ship, x, 0.066);
             ship.angle = 90;
             ship.alpha = 1;
             ship.scale.setTo(0.8, 0.8);
@@ -193,7 +193,7 @@ PlutoGame.prototype = {
         this.buttonHome = game.add.button(0,0, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
         this.buttonHome.scale.setTo(.8, .8);
-        this.place(this.buttonHome, 0.05, 0.08);
+        Povin.place(this.buttonHome, 0.05, 0.08);
         this.buttonHome.events.onInputDown.add(this.onInputDownHome, this);
         this.buttonHome.events.onInputUp.add(this.onInputUpHome, this);
 
@@ -201,7 +201,7 @@ PlutoGame.prototype = {
         this.buttonSpeaker = game.add.button(0,0, 'buttonSpeaker', this.actionOnClickSpeaker, this, 2, 1, 0);
         this.buttonSpeaker.anchor.setTo(0.5, 0.5);
         this.buttonSpeaker.scale.setTo(.6, .6);
-        this.place(this.buttonSpeaker, 0.97, 0.05   );
+        Povin.place(this.buttonSpeaker, 0.97, 0.05   );
         this.buttonSpeaker.events.onInputDown.add(this.onInputDownSpeaker, this);
         this.buttonSpeaker.events.onInputUp.add(this.onInputUpSpeaker, this);
         this.setSpeakerTexture(this.buttonSpeaker);
@@ -212,7 +212,7 @@ PlutoGame.prototype = {
 
         // Energy
         this.player.energyTxtAddition = game.add.text(0,0, "Energy 00", { font: '12px HappyKiller', fill: '#dc7b00' });
-        this.place(this.player.energyTxtAddition, 0.6875, 0.1);
+        Povin.place(this.player.energyTxtAddition, 0.6875, 0.1);
         this.player.energyTxtAddition.visible = false;
 
         // Audio
@@ -242,30 +242,30 @@ PlutoGame.prototype = {
          this.panelScores_title = game.add.sprite(0,0, 'score_panel');
          this.panelScores_title.anchor.setTo(0.5, 0.5);
          this.panelScores_title.scale.setTo(1.75,2.0);
-         this.place(this.panelScores_title, 0.5, 0.55);
+         Povin.place(this.panelScores_title, 0.5, 0.55);
          this.panelScores.add(this.panelScores_title);
 
         //  High Scores Title
         this.scoresTitle = game.add.text(0,0, 'High Scores', { font: '24px arial', fill: '#0099ff' }); 
         this.scoresTitle.anchor.setTo(0.5, 0.5);
         this.panelScores.add(this.scoresTitle);
-        this.place(this.scoresTitle, 0.5, 0.25);
+        Povin.place(this.scoresTitle, 0.5, 0.25);
 
         //  Rank Text
         this.scoresText_ra = game.add.text(0,0, 'Rank\tScore\tPerfect\tEscaped\tPlayer', { font: '20px arial', fill: '#dc7b00', tabs: [80, 100,100,100,100] }); 
         this.panelScores.add(this.scoresText_ra);
-        this.place(this.scoresText_ra, 0.20, 0.29);
+        Povin.place(this.scoresText_ra, 0.20, 0.29);
 
         //  Rank Value
         this.scoresText_rav = game.add.text(0,0, '1st', { font: '20px arial', fill: '#0099ff', align: 'left', tabs: [80, 120,100,80,100] }); 
         //this.scoresText_rav.anchor.setTo(0.5, 0);
         this.panelScores.add(this.scoresText_rav);
-        this.place(this.scoresText_rav, 0.20, 0.34);
+        Povin.place(this.scoresText_rav, 0.20, 0.34);
 
          //  Scores Text
         this.stateText = game.add.text(0,0, '', { font: '20px arial', fill: '#0099ff' });
         this.stateText.anchor.setTo(0.5, 0.5);
-        this.place(this.stateText,0.5, 0.69);
+        Povin.place(this.stateText,0.5, 0.69);
         this.stateText.align = 'center';
         this.stateText.visible = true;
         this.panelScores.add(this.stateText);
@@ -274,13 +274,13 @@ PlutoGame.prototype = {
         //this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#dc7b00' }); 
         //this.scoresText_pa.anchor.setTo(0.5, 0.5);
         //this.panelScores.add(this.scoresText_pa);
-        //this.place(this.scoresText_pa, 0.5, 0.85);
+        //Povin.place(this.scoresText_pa, 0.5, 0.85);
 
         // Continue Button
         this.buttonContinue = game.add.button(0,0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
         this.buttonContinue.anchor.setTo(0.5, 0.5);
         this.buttonContinue.scale.setTo(.75,.75);
-        this.place(this.buttonContinue, 0.5, 0.85);
+        Povin.place(this.buttonContinue, 0.5, 0.85);
         this.panelScores.add(this.buttonContinue);
         this.buttonContinue.inputEnabled = false;
         this.buttonContinue.events.onInputDown.add(this.onInputDownContinue, this);
@@ -362,7 +362,7 @@ PlutoGame.prototype = {
         // show a text floating up the screen
         var txtAlienT = "-999";
         var txtAlien = game.add.text(alien.body.x, game.world.height, txtAlienT, { font: '36px HappyKiller', fill: '#ff0000', align: 'center' });
-        var txtAlienTween = game.add.tween(txtAlien).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .5 }, 2000, Phaser.Easing.Exponential.In, true);
+        var txtAlienTween = game.add.tween(txtAlien).to({ x: Povin.fromLeft2(0.20), y: Povin.fromTop2(.05), alpha: .5 }, 2000, Phaser.Easing.Exponential.In, true);
         txtAlienTween.onComplete.add(function(){txtAlien.destroy();}, this);
 
         this.alienSfx.play();
@@ -622,7 +622,7 @@ PlutoGame.prototype = {
                 var txtPerfectBonusT = "+9,999";
                 var txtPerfectBonus = game.add.text(game.world.centerX, game.world.height, txtPerfectBonusT, { font: '24px HappyKiller', fill: '#dc7b00', boundsAlignH: 'center' });
                 txtPerfectBonus.anchor.setTo(0.5, 0.5);
-                var txtPerfectBonusTween = game.add.tween(txtPerfectBonus).to({ x: this.fromLeft2(0.25), y: this.fromTop2(.10), alpha: .5 }, 2000, Phaser.Easing.Quadratic.Out, true);
+                var txtPerfectBonusTween = game.add.tween(txtPerfectBonus).to({ x: Povin.fromLeft2(0.25), y: Povin.fromTop2(.10), alpha: .5 }, 2000, Phaser.Easing.Quadratic.Out, true);
                 txtPerfectBonusTween.onComplete.add(function(){txtPerfectBonus.destroy();}, this);
 
                 this.score += 9999;
@@ -681,7 +681,7 @@ PlutoGame.prototype = {
             // show a energyBonus points text floating up the screen
             var txtEnergyBonusT = "+" + this.player.bonusPoints;
             var txtEnergyBonus = game.add.text(enemyBullet.body.x, enemyBullet.body.y, txtEnergyBonusT, { font: '18px HappyKiller', fill: '#00ddff' });
-            var txtEnergyBonusTween = game.add.tween(txtEnergyBonus).to({ x: this.fromLeft2(0.6875), y: this.fromTop2(.10), alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
+            var txtEnergyBonusTween = game.add.tween(txtEnergyBonus).to({ x: Povin.fromLeft2(0.6875), y: Povin.fromTop2(.10), alpha: 0 }, 1000, Phaser.Easing.Linear.None, true);
             txtEnergyBonusTween.onComplete.add(function(){txtEnergyBonus.destroy();}, this);
 
             // removed score point for hitting alien bullets, only get enery points
@@ -710,7 +710,7 @@ PlutoGame.prototype = {
 
             var txtPtsT = "+81";
             var txtPts = game.add.text(alien.body.x, alien.body.y, txtPtsT, { font: '18px HappyKiller', fill: '#0099ff' });
-            var txtPtsTween = game.add.tween(txtPts).to({ x: this.fromLeft2(0.20), y: this.fromTop2(.05), alpha: .25 }, 2000, Phaser.Easing.Linear.None, true);
+            var txtPtsTween = game.add.tween(txtPts).to({ x: Povin.fromLeft2(0.20), y: Povin.fromTop2(.05), alpha: .25 }, 2000, Phaser.Easing.Linear.None, true);
             txtPtsTween.onComplete.add(function(){txtPts.destroy();}, this);
             
         } else { // player has energy
@@ -975,81 +975,7 @@ PlutoGame.prototype = {
         this.showScores();
     }, 
 
-    // !! move to Povin
-    // Scaling Functions
-    getScaleToGameW: function(obj)
-    {	
-        console.log(obj.width/game.width);
-    },
-    scaleToGameW: function(obj,percent)
-    {
-        obj.width=game.width*percent;
-        obj.scale.y=obj.scale.x;
-    },
-    place: function(obj,xPercent, yPercent) {
-        this.fromTop(obj,yPercent);
-        this.fromLeft(obj,xPercent);
-        
-    },
-    center: function(obj) {
-        obj.x = game.width / 2;
-        obj.y = game.height / 2;
-    },
-    centerH: function(obj) {
-        obj.x = game.width / 2;
-    },
-    centerV: function(obj) {
-        obj.y = game.height / 2;
-    },
-    centerGroup: function(obj) {
-        obj.x = game.width / 2 - obj.width / 2;
-        obj.y = game.height / 2 - obj.height / 2;
-    },
-    centerGroupH: function(obj) {
-        obj.y = game.height / 2 - obj.height / 2;
-    },
-    centerGroupW: function(obj) {
-        obj.x = game.width / 2 - obj.width / 2;
-    },
-    alignToBottom: function(obj, offset = 0) {
-        obj.y = game.height - obj.height / 2;
-        obj.y+= offset;
-    },
-    fromBottom: function(obj, percent, offset=0) {
-        obj.y = game.height - (game.height * percent);
-        obj.y -= offset;
-    },
-    fromTop:function(obj,percent,offet=0)
-    {
-        obj.y=game.height*percent;
-        obj.y+=percent;
-    },
-    fromTop2: function(percent)
-    {
-        return game.height*percent;
-    },
-    fromRight: function(obj, percent, offset = 0) {
-        obj.x = game.width - (game.width * percent);
-        obj.x -= offset;
-        //obj.x -= obj.width / 2;
-    },
-    fromLeft: function(obj, percent, offset = 0) {
-        obj.x = game.width * percent;
-        obj.x += offset;
-    },
-    fromLeft2: function(percent) 
-    {
-        return game.width * percent;
-    },
-    fromCenterH: function(obj, percent) {
-        obj.x = game.width / 2 - (game.width * percent);
-        obj.x -= obj.width / 2;
-    },
-    fromCenterV: function(obj, percent) {
-        obj.x = game.width / 2 - (game.width * percent);
-        obj.x -= obj.width / 2;
-    },
-
+    
     // !! move to highscore state
     // retrieve high scores from the score server    
     retrieveHighScores: function() {

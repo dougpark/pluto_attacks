@@ -27,7 +27,7 @@ Options.prototype = {
         this.imagePluto = game.add.sprite(0,0, 'pluto');
         this.imagePluto.anchor.setTo(0.7, 0.5);
         this.imagePluto.scale.setTo(.5, .5);
-        this.place(this.imagePluto, .3, .2);
+        Povin.place(this.imagePluto, .3, .2);
 
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -35,24 +35,24 @@ Options.prototype = {
         this.imageGameMode_title = game.add.sprite(0,0, 'title');
         this.imageGameMode_title.anchor.setTo(0.5, 0.5);
         this.imageGameMode_title.scale.setTo(1.25, .80);
-        this.place(this.imageGameMode_title, .5, .1);
+        Povin.place(this.imageGameMode_title, .5, .1);
         
         // Option menu title image
         //this.title = game.add.sprite(0,0, 'options');
         //this.title.anchor.setTo(0.5, 0.5);
         //this.title.scale.setTo(1.2, .80);
-        //this.place(this.title, .5, .10);
+        //Povin.place(this.title, .5, .10);
 
         this.options_title = game.add.sprite(0,0, 'options_title');
         this.options_title.anchor.setTo(0.5, 0.5)
         this.options_title.scale.setTo(1, .75);
-        this.place(this.options_title, 0.5, 0.55);
+        Povin.place(this.options_title, 0.5, 0.55);
 
         // Music Button
         this.buttonMusic = game.add.button(0,0, 'buttonMusicOn', this.actionOnClickMusic, this, 2, 1, 0);
         this.buttonMusic.anchor.setTo(0.5, 0.5);
         this.buttonMusic.scale.setTo(1, 1);
-        this.place(this.buttonMusic, 0.5, 0.48);
+        Povin.place(this.buttonMusic, 0.5, 0.48);
         this.buttonMusic.events.onInputDown.add(this.onInputDownMusic, this);
         this.buttonMusic.events.onInputUp.add(this.onInputUpMusic, this);
         //this.buttonMusic.frame = Povin.musicEnabled; 
@@ -61,7 +61,7 @@ Options.prototype = {
         this.buttonCredits = game.add.button(0,0, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
         this.buttonCredits.anchor.setTo(0.5, 0.5);
         this.buttonCredits.scale.setTo(1,1);
-        this.place(this.buttonCredits, 0.5, 0.7);
+        Povin.place(this.buttonCredits, 0.5, 0.7);
         this.buttonCredits.events.onInputDown.add(this.onInputDownCredits, this);
         this.buttonCredits.events.onInputUp.add(this.onInputUpCredits, this);
   
@@ -69,7 +69,7 @@ Options.prototype = {
         this.buttonBack = game.add.button(0,0, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
         this.buttonBack.anchor.setTo(0.5, 0.5);
         this.buttonBack.scale.setTo(.5,.5);
-        this.place(this.buttonBack, 0.1, 0.10);
+        Povin.place(this.buttonBack, 0.1, 0.10);
         this.buttonBack.events.onInputDown.add(this.onInputDownBack, this);
         this.buttonBack.events.onInputUp.add(this.onInputUpBack, this);
 
@@ -77,7 +77,7 @@ Options.prototype = {
         this.buttonContinue = game.add.button(0,0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
         this.buttonContinue.anchor.setTo(0.5, 0.5);
         this.buttonContinue.scale.setTo(.5,.5);
-        this.place(this.buttonContinue, 0.5, 0.85);
+        Povin.place(this.buttonContinue, 0.5, 0.85);
         //this.buttonContinue.alpha = 0;
         this.buttonContinue.inputEnabled = false;
         this.buttonContinue.events.onInputDown.add(this.onInputDownContinue, this);
@@ -93,14 +93,14 @@ Options.prototype = {
         this.panelCredits_title = game.add.sprite(0,0, 'score_panel');
         this.panelCredits_title.anchor.setTo(0.5, 0.5);
         this.panelCredits_title.scale.setTo(1.75,2.0);
-        this.place(this.panelCredits_title, 0.5, 0.55);
+        Povin.place(this.panelCredits_title, 0.5, 0.55);
         this.panelCredits.add(this.panelCredits_title);
 
         //  Credits Title
         this.creditsTitle = game.add.text(0,0, 'Credits', { font: '24px arial', fill: '#dc7b00' }); 
         this.creditsTitle.anchor.setTo(0.5, 0.5);
         this.panelCredits.add(this.creditsTitle);
-        this.place(this.creditsTitle, 0.5, 0.25);
+        Povin.place(this.creditsTitle, 0.5, 0.25);
 
         this.creditsTxt = ""+
                           "Based on: phaser.io - example project\n"+
@@ -114,7 +114,7 @@ Options.prototype = {
                           "Scream: wilhelmscream.net - Wilhelm Scream\n"+
                           "->This site uses cookies and saves score data on Povingames.com";
         this.creditsText = game.add.text(0,0, this.creditsTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });    
-        this.place(this.creditsText,0.2,0.30);
+        Povin.place(this.creditsText,0.2,0.30);
         this.panelCredits.add(this.creditsText);
 
         this.panelCredits.add(this.buttonContinue);
@@ -123,7 +123,7 @@ Options.prototype = {
         //this.creditsText_pa = game.add.text(0,0, 'Tap To Return', { font: '20px arial', fill: '#dc7b00' }); 
         //this.creditsText_pa.anchor.setTo(0.5, 0.5);
         //this.panelCredits.add(this.creditsText_pa);
-        //this.place(this.creditsText_pa, 0.5, 0.85);
+        //Povin.place(this.creditsText_pa, 0.5, 0.85);
 
     },
 
@@ -289,73 +289,6 @@ Options.prototype = {
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
      */
     },
-
-    // Scaling Functions
-    getScaleToGameW: function(obj)
-    {	
-        console.log(obj.width/game.width);
-    },
-    scaleToGameW: function(obj,percent)
-    {
-        obj.width=game.width*percent;
-        obj.scale.y=obj.scale.x;
-    },
-    place: function(obj,xPercent, yPercent) {
-        this.fromTop(obj,yPercent);
-        this.fromLeft(obj,xPercent);
-        
-    },
-    center: function(obj) {
-        obj.x = game.width / 2;
-        obj.y = game.height / 2;
-    },
-    centerH: function(obj) {
-        obj.x = game.width / 2;
-    },
-    centerV: function(obj) {
-        obj.y = game.height / 2;
-    },
-    centerGroup: function(obj) {
-        obj.x = game.width / 2 - obj.width / 2;
-        obj.y = game.height / 2 - obj.height / 2;
-    },
-    centerGroupH: function(obj) {
-        obj.y = game.height / 2 - obj.height / 2;
-    },
-    centerGroupW: function(obj) {
-        obj.x = game.width / 2 - obj.width / 2;
-    },
-    alignToBottom: function(obj, offset = 0) {
-        obj.y = game.height - obj.height / 2;
-        obj.y+= offset;
-    },
-    fromBottom: function(obj, percent, offset=0) {
-        obj.y = game.height - (game.height * percent);
-        obj.y -= offset;
-    },
-    fromTop:function(obj,percent,offet=0)
-    {
-        obj.y=game.height*percent;
-        obj.y+=percent;
-    },
-    fromRight: function(obj, percent, offset = 0) {
-        obj.x = game.width - (game.width * percent);
-        obj.x -= offset;
-        //obj.x -= obj.width / 2;
-    },
-    fromLeft: function(obj, percent, offset = 0) {
-        obj.x = game.width * percent;
-        obj.x += offset;
-    },
-    fromCenterH: function(obj, percent) {
-        obj.x = game.width / 2 - (game.width * percent);
-        obj.x -= obj.width / 2;
-    },
-    fromCenterV: function(obj, percent) {
-        obj.x = game.width / 2 - (game.width * percent);
-        obj.x -= obj.width / 2;
-    },
-
 
     nextState: function () {
         this.state.start('MainMenu', true, false);
