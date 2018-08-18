@@ -17,14 +17,7 @@ Preloader = function (game) {
 Preloader.prototype = { 
 
     init: function () {
-        this.physics.startSystem(Phaser.Physics.ARCADE);
-        this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-        //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
         
-        this.scale.setMinMax(400, 300, 1200, 900);
-        this.scale.pageAlignHorizontally = true;
-        this.scale.pageAlignVertically = true;
-    
         this.pluto2 = game.make.sprite(0,0, 'pluto2');
         //this.pluto2.anchor.setTo(0.5,0.5);
         Povin.place(this.pluto2, 0.16, 0);

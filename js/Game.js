@@ -1,6 +1,7 @@
 /**************************************************************************************
 * Game State
-* @author Doug Park
+* @author Doug Park, Povingames.com
+* @email doug@povingames.com
 * @version v1.0
 * @desc Play the Pluto Attacks game
 * @date 2018-07-22
