@@ -1,20 +1,20 @@
 /**************************************************************************************
-* Preload State
+* Preloader State
 * @author Doug Park
 * @version v1.0
-* @desc Preload all game assets while displaying a loading screen
+* @desc Preloader all game assets while displaying a loading screen
 * @date 2018-07-022
 **************************************************************************************/
 "use strict";
 
-var Preload = {};
+var Preloader = {};
 
-Preload = function (game) {
+Preloader = function (game) {
     // state level properties go here
 
 };
 
-Preload.prototype = { 
+Preloader.prototype = { 
 
     init: function () {
         this.physics.startSystem(Phaser.Physics.ARCADE);

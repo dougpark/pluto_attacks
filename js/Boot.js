@@ -47,12 +47,11 @@ Boot.prototype = {
     game.load.image('logo', 'assets/images/povinlogo.png');
     game.load.image('loading',  'assets/images/loading.png');
     game.load.image('pluto2',  'assets/images/pluto2.png');
-    //game.load.script('Preload',  'js/Preload.js');
   },
 
   create: function () {
-    game.state.add('Preload', Preload);
-    game.state.start('Preload');
+    game.state.add('Preloader', Preloader);
+    game.state.start('Preloader');
   }
 
 };
