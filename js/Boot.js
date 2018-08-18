@@ -1,5 +1,5 @@
 /**************************************************************************************
-* Main State
+* Boot State
 * @author Doug Park
 * @version v1.0
 * @desc Bootstrap new game
@@ -15,14 +15,14 @@ winH = 600;
 
 var game = new Phaser.Game(winW, winH, Phaser.AUTO, 'PlutoAttacks');
 
-var Main = {};
+var Boot = {};
 
-Main = function (game) {
+Boot = function (game) {
     // state level properties go here
 
 };
   
-Main.prototype = {
+Boot.prototype = {
 
   init: function() {
 
@@ -57,8 +57,8 @@ Main.prototype = {
 
 };
 
-game.state.add('Main', Main);
-game.state.start('Main');
+game.state.add('Boot', Boot);
+game.state.start('Boot');
 
 
 
