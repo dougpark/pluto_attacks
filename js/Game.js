@@ -1078,7 +1078,7 @@ PlutoGame.prototype = {
         { 
             j = i+1;
             this.scoresText_rav.text += j+'\t';
-            this.scoresText_rav.text += this.addCommas(scores[i].Score) + "\t";
+            this.scoresText_rav.text += util.addCommas(scores[i].Score) + "\t";
             this.scoresText_rav.text += scores[i].PerfectLevels + "\t";
             this.scoresText_rav.text += scores[i].AliensEscaped + "\t";
             this.scoresText_rav.text += "Player "+j+"\n";
@@ -1086,25 +1086,13 @@ PlutoGame.prototype = {
 
         // add Your scores to end of the list
         this.scoresText_rav.text += "n" + "\t" ;
-        this.scoresText_rav.text += this.addCommas(this.score) + "\t";
+        this.scoresText_rav.text += util.addCommas(this.score) + "\t";
         this.scoresText_rav.text += this.totalPerfectLevel + "\t";
         this.scoresText_rav.text += this.totalAlienEscape + "\t";
         this.scoresText_rav.text += "You";
     },
 
 
-    // !! move to Povin
-    addCommas: function(nStr)
-    {
-        nStr += '';
-        var x = nStr.split('.');
-        var x1 = x[0];
-        var x2 = x.length > 1 ? '.' + x[1] : '';
-        var rgx = /(\d+)(\d{3})/;
-        while (rgx.test(x1)) {
-            x1 = x1.replace(rgx, '$1' + ',' + '$2');
-        }
-        return x1 + x2;
-}   
+    
 
 };
