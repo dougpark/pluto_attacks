@@ -23,6 +23,7 @@ PlutoGame.prototype = {
         this.gameMode = gameMode;
         this.trainingLevel = trainingLevel;
         this.level = this.trainingLevel;
+        Povin.firstRun = true;
     },
 
 // **************************************************************************************
@@ -132,7 +133,7 @@ PlutoGame.prototype = {
         
         //  The score
         this.scoreString = 'Score ';
-        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#0099ff' });
+        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#dc7b00' });
         Povin.place(this.scoreText,0.2075,0.03);
 
         //  Perfect Levels
@@ -222,12 +223,13 @@ PlutoGame.prototype = {
         this.swordSfx = game.add.audio('swordSfx',0.3); // bullet hits bullet
         this.blasterSfx = game.add.audio('blasterSfx', 0.2); // player shoots
         this.wilhelmSfx = game.add.audio('wilhelmSfx');
-        this.alienSfx = game.add.audio('alienSfx'); // enemy escapesa
+        this.alienSfx = game.add.audio('alienSfx',2); // enemy escapesa
         this.alienPowerSfx = game.add.audio('alienPowerSfx'); // enemy power up to attack
         this.shieldSfx = game.add.audio('shieldSfx'); // player shields up
         this.shieldHitSfx = game.add.audio('shieldHitSfx',0.8); // player shield gets hit
         this.shieldDownSfx = game.add.audio('shieldDownSfx',1.5); // player shields down
         this.perfectSfx = game.add.audio('perfectSfx'); // complete perfect level
+        this.getReadySfx = game.add.audio('getReadySfx',0.3); // get ready for level
 
         //  Being mp3 files these take time to decode, so we can't play them instantly
         //  Using setDecodedCallback we can be notified when they're ALL ready for use.
@@ -341,7 +343,7 @@ PlutoGame.prototype = {
 
     // button Continue
     actionOnClickContinue: function () {
-        this.restartGame();
+        this.countDown();
       },
 
     onInputDownContinue: function(target) {
@@ -398,12 +400,11 @@ PlutoGame.prototype = {
         this.aliensTween = game.add.tween(this.aliens).to({ x: 300 }, 3000, Phaser.Easing.Linear.None, true, 0, 1000, true);
 
         //  When the tween loops it calls descend
-        //this.aliensTween.onRepeat.add(this.descend, this);
+        this.aliensTween.onRepeat.add(this.descend, this);
 
     },
 
     
-
     setupBullet: function (bullet) {
         bullet.anchor.x = 0.5;
         bullet.anchor.y = 0.5;
@@ -423,10 +424,10 @@ PlutoGame.prototype = {
         invader.animations.add('kaboom');
     },
 
-    // not working, supposed to move the aliens down after each pass
+    // move the aliens down after each pass
     descend: function (me) {
         this.aliens.y += 10;
-        console.log('descend');
+        //console.log('descend');
     },
 
 // **************************************************************************************
@@ -435,6 +436,16 @@ PlutoGame.prototype = {
    
     // main game loop
     update: function () {
+
+        // countdown the first run
+        if (Povin.firstRun == true) {
+            this.countDown();
+        }
+
+        // no upates while in coundown to restart mode
+        if (Povin.restarting == true) {
+            return;
+        }
 
         // Press M to return to main menu
         if (this.menuButton.isDown) {
@@ -810,55 +821,91 @@ PlutoGame.prototype = {
 
         // When the player dies
         if (this.lives.countLiving() < 1) {
-
-            // hide the shield
-            this.shield.visible = false;
-
-            // play scream
-            this.wilhelmSfx.play();
-
-            this.player.kill();
-            this.enemyBullets.callAll('kill');
-
-            this.stateText.text = "";
-
-            // save your current score to the score server
-            Povin.saveHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score);
-
-            // retrieve high scores from server
-            this.retrieveHighScores();
-
-            // !! move to highscore state
-            // show the high score hud
-            this.showHighScores();
-          
-            //if (Povin.compareHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score)) {
-            //    this.stateText.text += "New High Score!";
-            //} 
-
-            this.stateText.text += "\n A message from your commander:"
-
-            if (this.score <=0) {this.stateText.text +=                 "\n Pluto ate your lunch.";
-                } else if (this.score < 10000) {this.stateText.text +=  "\n Nice Try.";
-                } else if (this.score < 100000) {this.stateText.text += "\n Not Bad.";
-                } else if (this.score < 200000) {this.stateText.text += "\n Pretty Good.";
-                } else if (this.score > 200000) {this.stateText.text += "\n Great Job.";
-                } 
-            this.stateText.text += "\n Keep playing until the IAU says Pluto is a planet!";
-            
-            //the "Tap to restart" handler
-            this.fireButton.onDown.addOnce(this.restartGame, this);
-            //game.input.onTap.addOnce(this.restartGame, this);
+            this.endGame();   
         }
     },
 
-    restartGame: function() {
+    // player has lost everything
+    endGame: function() {
+        // hide the shield
+        this.shield.visible = false;
 
+        // play scream
+        this.wilhelmSfx.play();
+
+        this.player.kill();
+        this.enemyBullets.callAll('kill');
+
+        this.stateText.text = "";
+
+        // save your current score to the score server
+        Povin.saveHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score);
+
+        // retrieve high scores from server
+        this.retrieveHighScores();
+
+        // !! move to highscore state
+        // show the high score hud
+        this.showHighScores();
+
+        //if (Povin.compareHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score)) {
+        //    this.stateText.text += "New High Score!";
+        //} 
+
+        this.stateText.text += "\n A message from your commander:"
+
+        if (this.score <=0) {this.stateText.text +=                 "\n Pluto ate your lunch.";
+            } else if (this.score < 10000) {this.stateText.text +=  "\n Nice Try.";
+            } else if (this.score < 100000) {this.stateText.text += "\n Not Bad.";
+            } else if (this.score < 200000) {this.stateText.text += "\n Pretty Good.";
+            } else if (this.score > 200000) {this.stateText.text += "\n Great Job.";
+            } 
+        this.stateText.text += "\n Keep playing until the IAU says Pluto is a planet!";
+
+        //the "Tap to restart" handler
+        this.fireButton.onDown.addOnce(this.countDown, this);
+        //game.input.onTap.addOnce(this.restartGame, this);
+
+    },
+
+    countDown: function() {
+
+        // hide the highscores panel
+        this.hideHighScores();
+        // don't start till restarting is complete
+        Povin.restarting = true;
+        Povin.firstRun = false;
+
+        // clear all the aliens from the screen
+        this.aliens.removeAll(true);
+
+        this.getReadySfx.play();
+     
+        // animate some cool text up the screen
+        var txtReadyT = "Get Ready Captian!";
+        this.txtReady = game.add.text(game.world.centerX, game.world.centerY, txtReadyT, { font: '24px HappyKiller', fill: '#dc7b00' });
+        this.txtReady.anchor.setTo(0.5, 0.5);
+        Povin.place(this.txtReady,0.5, 0.75);
+        this.txtReady.alpha = 0;
+        // add some delays to give the player a chance to get ready
+        this.txtReadyTween1 = game.add.tween(this.txtReady).to({alpha: 0.1}, 100, Phaser.Easing.Linear.None);    
+        this.txtReadyTween2 = game.add.tween(this.txtReady).to({ alpha: 1 }, 0, Phaser.Easing.Linear.None);
+        this.txtReadyTween3 = game.add.tween(this.txtReady).to({ y: 100, alpha: 0 }, 1000, Phaser.Easing.Linear.None);
+        this.txtReadyTween1.chain(this.txtReadyTween2);
+        this.txtReadyTween2.chain(this.txtReadyTween3);
+        this.txtReadyTween1.start();
+        this.txtReadyTween3.onComplete.addOnce(function(){this.restartGame();}, this);
+
+    },
+
+    restartGame: function() {     
         // zero out scores
         this.score = 0;
         this.totalAlienEscape = 0;
         this.totalPerfectLevel = 0;
 
+        // finished the restarting countdown, ready to play
+        Povin.restarting = false;
         this.restart();
     },
 
@@ -962,16 +1009,12 @@ PlutoGame.prototype = {
         // resets the life count
         this.lives.callAll('revive');
         // And brings the aliens back from the dead :)
+        this.aliensTween.stop();
         this.aliens.removeAll();
         this.createAliens();
 
         //revives the player
         this.player.revive();
-
-        //hides the text
-        //this.stateText.visible = false;
-
-        this.hideHighScores();
 
         this.showScores();
     }, 
