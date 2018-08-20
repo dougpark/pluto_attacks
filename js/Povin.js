@@ -15,6 +15,7 @@ var Povin = {
   showIntro: 1,
   restarting: false,
   firstRun: true,
+  gameOn: true,
 
   highScore: function() {
     hsGameMode = 0;

@@ -426,8 +426,10 @@ PlutoGame.prototype = {
 
     // move the aliens down after each pass
     descend: function (me) {
-        this.aliens.y += 10;
-        //console.log('descend');
+        if (Povin.gameOn == true) {
+            this.aliens.y += 10;
+            //console.log('descend');
+        }
     },
 
 // **************************************************************************************
@@ -444,6 +446,11 @@ PlutoGame.prototype = {
 
         // no upates while in coundown to restart mode
         if (Povin.restarting == true) {
+            return;
+        }
+
+        // no update if game over
+        if (Povin.gameOn == false) {
             return;
         }
 
@@ -827,6 +834,9 @@ PlutoGame.prototype = {
 
     // player has lost everything
     endGame: function() {
+        // end the game
+        Povin.gameOn = false;
+
         // hide the shield
         this.shield.visible = false;
 
@@ -906,6 +916,7 @@ PlutoGame.prototype = {
 
         // finished the restarting countdown, ready to play
         Povin.restarting = false;
+        Povin.gameOn = true;
         this.restart();
     },
 
