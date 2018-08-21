@@ -190,8 +190,8 @@ Preloader.prototype = {
         game.load.audio('wilhelmSfx', 'assets/audio/wilhelm.mp3'); // player dies
         game.load.audio('playerDiesSfx', 'assets/audio/TECH WEAPON Gun Shot Phaser Down 03.wav'); // player dies
 
-        //game.load.audio('alienSfx', 'assets/audio/lazer_wall_off.mp3'); // enemy escapes
-        game.load.audio('alienSfx', 'assets/audio/ELECTRIC Power Down 02.wav'); // enemy escapes
+        game.load.audio('alienSfx', 'assets/audio/lazer_wall_off.mp3'); // enemy escapes
+        //game.load.audio('alienSfx', 'assets/audio/ELECTRIC Power Down 02.wav'); // enemy escapes
         game.load.audio('alienPowerSfx', 'assets/audio/ELECTRIC Power Up 02.wav'); // enemy powers up to attack
 
         game.load.audio('shieldSfx', 'assets/audio/TECH_CHARGER_Power_Up_06.wav'); // player shields on

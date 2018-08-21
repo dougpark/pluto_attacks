@@ -141,6 +141,7 @@ MainMenu.prototype = {
         var factsTween = game.add.tween(this.factsText.scale).to({ x: 1.05, y: 1.05 }, 2000, Phaser.Easing.Linear.None, true);
         factsTween.yoyo(true, 0);
         factsTween.repeat(-1);
+        factsTween.onRepeat.add(this.factsTextClick, this);
 
        
         // Popup Game level menu
@@ -233,6 +234,11 @@ MainMenu.prototype = {
     update: function() {
         //  Scroll the background
         this.starfield.tilePosition.y += 2;
+
+        if (game.time.now > Povin.plutoFactsTime) {
+            Povin.plutoFactsTime = game.time.now + 8000;
+            this.factsTextClick(); // show next pluto fact
+        }
     },
 
     render: function() {
@@ -275,8 +281,16 @@ MainMenu.prototype = {
 
     // Show another fact on click
     factsTextClick: function () {
-        var r = game.rnd.between(0,this.plutoFacts.facts.length-1);
-        this.factsText.text = this.plutoFacts.facts[r];
+        //var r = game.rnd.between(0,this.plutoFacts.facts.length-1);
+        Povin.plutoFacts ++;
+        if (Povin.plutoFacts > this.plutoFacts.facts.length-1) {
+            Povin.plutoFacts = 0;
+        }
+        var fTween = game.add.tween(this.factsText).to( { alpha: .5 }, 100, Phaser.Easing.Linear.None, true, 250, 0, false);
+        fTween.onComplete.add(function(){
+            this.factsText.text = this.plutoFacts.facts[Povin.plutoFacts];
+            game.add.tween(this.factsText).to( { alpha: 1 }, 0, Phaser.Easing.Linear.None, true, 250, 0, false);
+        }, this);
     },
 
     // Action when click on the Options button

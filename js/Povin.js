@@ -16,6 +16,8 @@ var Povin = {
   restarting: false,
   firstRun: true,
   gameOn: true,
+  plutoFacts: 0,
+  plutoFactsTime: 0,
 
   highScore: function() {
     hsGameMode = 0;
