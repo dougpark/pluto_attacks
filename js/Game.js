@@ -133,7 +133,10 @@ PlutoGame.prototype = {
         
         //  The score
         this.scoreString = 'Score ';
-        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '16px HappyKiller', fill: '#dc7b00' });
+        this.scoreText = game.add.text(0,0, this.scoreString + "\n" +this.level + ':' + this.score, { font: '18px HappyKiller', fill: '#182d3b' }); //, backgroundColor: 'rgba(128,128,0,0.25)'
+        this.scoreText.lineSpacing = -10;
+        this.scoreText.addColor('#dc7b00', 0);
+        this.scoreText.addColor('#182d3b', 6);
         Povin.place(this.scoreText,0.2075,0.03);
 
         //  Perfect Levels
