@@ -29,12 +29,26 @@
     <body>
         <main id="game"></main>   
         <script src="lib/phaser.2.6.2.min.js" type="text/javascript"></script> 
-        <script src="js/Povin.js"></script>  
+        <script >
+            //src="js/Povin.js">
+        </script>  
      
 
         <script>
             // Phaser current version test environment
             // Progress bars - health bar example
+
+            /* iPhone Screen Resolutions 
+ 
+                    iPhone 4,4s         320x480 
+                    iPhone 5,5s,5c,SE   320x568 
+                    iPhone 6,6s,7,8     375x667 
+                    iPhone 6+,6s+,7+,8+ 414x736 excluding titlebar (414x716 or 736x394) 
+                    iPhone X            375x812 
+ 
+                    MacBookPro 13       1440x900 
+ 
+            */ 
 
             var getWidth = function() {
                 var width = window.innerWidth
@@ -52,7 +66,7 @@
                 return height;
             }
 
-            var game = new Phaser.Game(getWidth(), getHeight(), Phaser.AUTO, 'test');
+            var game = new Phaser.Game(736, 414, Phaser.AUTO, 'test');
 
             var BasicGame = function(game) {};
 
@@ -70,11 +84,11 @@
                     
 
                     this.physics.startSystem(Phaser.Physics.ARCADE);
-                    //this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-                    this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+                    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                    //this.scale.scaleMode = Phaser.ScaleManager.EXACT_FIT; //RESIZE;
                     
                     
-                    this.scale.setMinMax(400, 300, 800, 600);
+                    this.scale.setMinMax(736, 414, 736,414);
                     this.scale.pageAlignHorizontally = true;
                     this.scale.pageAlignVertically = true;
                     
@@ -86,8 +100,8 @@
 
                     
                     game.scale.setResizeCallback(function() {
-                        var width = this.getWidth();
-                        var height = this.getHeight();
+                        var width = this.game.width; //this.getWidth();
+                        var height = this.game.height; //this.getHeight();
                         //console.log('size: ' + width + ', ' + height);
                         this.game.camera.setSize(width, height);
                         this.game.renderer.resize(width, height);
@@ -109,44 +123,20 @@
                     this.bar = this.add.bitmapData(256, 32);
                     
                     this.barSprite = game.add.sprite(0,0, this.bar);
-                    Povin.place(this.barSprite,.5,.5,(-this.bar.width * 0.5),0);
+                    //Povin.place(this.barSprite,.5,.5,(-this.bar.width * 0.5),0);
+                    this.placeAt(5,6,this.barSprite);
 
                     game.add.tween(this).to({barProgress: 0}, 3000, null, true, 0, Infinity);
-               
+                    
                     this.one();
+                    this.two();
 
                     this.fill = "#FF0000";
 
                     
                }, 
 
-               one: function () {
-                    //  Top Center
-                    this.tString = 'top center ';
-                    this.tText = game.add.text(0,0, this.tString, { font: '16px arial', fill: '#0099ff', align: 'center' });
-                    this.tText.anchor.setTo(0.5, 0.5);
-                    Povin.place(this.tText,0.5,0.1);
-
-                    //  Bottom Center
-                    this.tString2 = 'bottom center ';
-                    this.tText2 = game.add.text(0,0, this.tString2, { font: '16px arial', fill: '#0099ff', align: 'center' });
-                    this.tText2.anchor.setTo(0.5, 0.5);
-                    Povin.place(this.tText2,0.5,0.9);
-
-                    //  Left Center
-                    this.tString3 = 'left center ';
-                    this.tText3 = game.add.text(0,0, this.tString3, { font: '16px arial', fill: '#0099ff', align: 'center' });
-                    this.tText3.anchor.setTo(0.5, 0.5);
-                    Povin.place(this.tText3,0.1,0.5);
-
-                    //  right Center
-                    this.tString4 = 'right center ';
-                    this.tText4 = game.add.text(0,0, this.tString4, { font: '16px arial', fill: '#0099ff', align: 'center' });
-                    this.tText4.anchor.setTo(0.5, 0.5);
-                    Povin.place(this.tText4,0.9,0.5);
-                    
-
-               },
+ 
 
                checkResize: function() {
 
@@ -154,12 +144,15 @@
                     Povin.resized = false;
 
                     // place items here to adjust for resize
-                    Povin.place(this.barSprite,.5,.5,(-this.bar.width * 0.5),0);
 
-                    Povin.place(this.tText,0.5,0.1);
-                    Povin.place(this.tText2,0.5,0.9);
-                    Povin.place(this.tText3,0.1,0.5);
-                    Povin.place(this.tText4,0.9,0.5);
+                    // redraw bar graph
+                    //Povin.place(this.barSprite,.5,.5,(-this.bar.width * 0.5),0);
+                    this.placeAt(5,6,this.barSprite);
+
+                    // redraw grid lines
+                    this.show();        
+                    // redraw text
+                    this.two();
 
                 }
 
@@ -176,7 +169,7 @@
 
                     this.graphics.lineStyle(0);
                     this.graphics.beginFill("0xfff", 1);
-                    this.graphics.drawCircle(this.game.world.centerX, this.game.world.centerY, 100);
+                    this.graphics.drawCircle(this.placeAtX(6), this.placeAtY(6), this.scaleAt(100));
                     this.graphics.endFill();
 
                     this.graphics.lineStyle(20, 0x0000FF, 1);
@@ -205,6 +198,11 @@
                     
                     // important - without this line, the context will never be updated on the GPU when using webGL
                     this.bar.dirty = true;
+
+                    this.show();
+                    this.two();
+
+                   
                 },
                 render: function()
                 {
@@ -216,9 +214,254 @@
                     //Povin.debugSprite(this.barSprite);  
                     //Povin.debugText('barProgress= ' + this.barProgress); 
                     //Povin.debugText("Phaser " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', 'arial');
-                    //Povin.debugText("width= "+this.game.width + " height= " + this.game.height);
-                }
+                    Povin.debugText("width= "+this.game.width + " height= " + this.game.height,120);
+                },
+
+                //mostly for planning and debugging this will
+                //create a visual representation of the grid
+                show: function(a = 1) {
+                    this.w = this.game.width;
+                    this.h = this.game.height;
+                    this.cols = 11;
+                    this.rows = 11;
+                    this.cw = this.w / this.cols;
+                    //ch cell height is the scene height divided the number of rows
+                    this.ch = this.h / this.rows;
+
+                    this.graphics.lineStyle(1, 0x00FF00, 1);
+                    for (var i = 0; i < this.w; i += this.cw) {
+                        this.graphics.moveTo(i, 0);
+                        this.graphics.lineTo(i, this.h);
+                    }
+                    for (var i = 0; i < this.h; i += this.ch) {
+                        this.graphics.moveTo(0, i);
+                        this.graphics.lineTo(this.w, i);
+                    }
+                    //this.showNumbers();
+                },
+
+                showNumbers: function(a = 1) {
+                    var n = 0;
+                    for (var i = 1; i <= this.rows; i++) {
+                        for (var j = 1; j <= this.cols; j++) {
+                            var numText = this.game.add.text(0, 0, n,{ font: '16px arial', fill: '#0099ff', align: 'center' });
+                            numText.anchor.setTo(0.5, 0.5);
+                            this.placeAt(j, i, numText);
+                            n++;
+                        }
+                    }
+                },
+
+                scaleAt: function(n) {
+                    //scale n based on original-scale and current display scale
+                    
+                    n = n * (this.game.width / 400);
+
+                    return n;
+
+                },
+
+                placeAt: function(xx, yy, obj) {
+                    //calculate the center of the cell
+                    //by adding half of the height and width
+                    //to the x and y of the coordinates
+                    xx--; yy--; // start index at 1
+                    var x2 = this.cw * xx + this.cw / 2;
+                    var y2 = this.ch * yy + this.ch / 2;
+                    obj.x = x2;
+                    obj.y = y2;
+                },
+
+                placeAtX: function(xx) {
+                    xx--;  // start index at 1
+                    var x2 = this.cw * xx + this.cw / 2;
+                    return x2;
+
+                },
+
+                placeAtY: function(yy) {
+                    yy--; // start index at 1
+                    var y2 = this.ch * yy + this.ch / 2;
+                    return y2;
+
+                },
+
+                one: function () {
+                    //  Top Center
+                    this.tString = 'top center ';
+                    this.tText = game.add.text(0,0, this.tString, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText.anchor.setTo(0.5, 0.5);
+                    
+
+                    //  Bottom Center
+                    this.tString2 = 'bottom center ';
+                    this.tText2 = game.add.text(0,0, this.tString2, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText2.anchor.setTo(0.5, 0.5);
+                    
+
+                    //  Left Center
+                    this.tString3 = 'left center ';
+                    this.tText3 = game.add.text(0,0, this.tString3, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText3.anchor.setTo(0.5, 0.5);
+                    
+
+                    //  right Center
+                    this.tString4 = 'right center ';
+                    this.tText4 = game.add.text(0,0, this.tString4, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText4.anchor.setTo(0.5, 0.5);
+                   
+                    
+
+               },
+
+               // called during update and resize
+               two: function() {
+                   //Povin.place(this.tText,0.5,0.1);
+                   this.placeAt(6,1,this.tText);
+
+                   //Povin.place(this.tText2,0.5,0.9);
+                   this.placeAt(6,11,this.tText2);
+
+                   //Povin.place(this.tText3,0.1,0.5);
+                   this.placeAt(1,6,this.tText3);
+
+                   //Povin.place(this.tText4,0.9,0.5);
+                   this.placeAt(11,6,this.tText4);
+
+
+               },
             };
+
+            
+            // ************************************************************************************** 
+            // Povin 
+            // ************************************************************************************** 
+            "use strict";  
+            
+            // Global Object 
+            var Povin = { 
+            
+                // Povin Properties 
+                game: null, // must initialize in game init method: Povin.game = game; 
+                gameLevel: 1, 
+                gameMode: 1, 
+                bgMusic: null, 
+                musicEnabled: 0, 
+                showIntro: 1, 
+                resized: false, 
+                //debugTextY: 115, 
+            
+                // Povin Methods 
+                highScore: function() { 
+                hsGameMode = 0; 
+                hsGameLevel =0; 
+                hsScore =0; 
+                hsName =''; 
+                
+                }, 
+            
+                log: function() { 
+                    console.log("Povin object created"); 
+                }, 
+            
+                debug: function() { 
+            
+                    game.debug.inputInfo(32, 32); 
+                }, 
+            
+                debugSprite: function(sprite,y) { 
+            
+                    game.debug.spriteInfo(sprite, 32, y, "#00ff00"); 
+                }, 
+            
+                debugFps: function(y) { 
+            
+                    game.debug.text('FPS ' + game.time.fps || '--', 32, y, "#00ff00"); 
+                    
+                }, 
+            
+                debugText: function(text,y) { 
+            
+                    game.debug.text(text || '--',32, y, "#00ff00"); 
+                    
+                }, 
+            
+                // Scaling Functions 
+                getScaleToGameW: function(obj) 
+                {   
+                    console.log(obj.width/game.width); 
+                }, 
+                scaleToGameW: function(obj,percent) 
+                { 
+                    obj.width=game.width*percent; 
+                    obj.scale.y=obj.scale.x; 
+                }, 
+                place: function(obj,xPercent, yPercent, Xoffset=0, Yoffset=0) { 
+                    this.fromTop(obj,yPercent, Yoffset); 
+                    this.fromLeft(obj,xPercent, Xoffset);    
+                }, 
+                fromTop:function(obj,percent,offset=0) 
+                { 
+                    obj.y = game.height * percent; 
+                    obj.y += offset; 
+                }, 
+                fromLeft: function(obj, percent, offset = 0) { 
+                    obj.x = game.width * percent; 
+                    obj.x += offset; 
+                }, 
+            
+                center: function(obj) { 
+                    obj.x = game.width / 2; 
+                    obj.y = game.height / 2; 
+                }, 
+                centerH: function(obj) { 
+                    obj.x = game.width / 2; 
+                }, 
+                centerV: function(obj) { 
+                    obj.y = game.height / 2; 
+                }, 
+                centerGroup: function(obj) { 
+                    obj.x = game.width / 2 - obj.width / 2; 
+                    obj.y = game.height / 2 - obj.height / 2; 
+                }, 
+                centerGroupV: function(obj) { 
+                    obj.y = game.height / 2 - obj.height / 2; 
+                }, 
+                centerGroupH: function(obj) { 
+                    obj.x = game.width / 2 - obj.width / 2; 
+                }, 
+                alignToBottom: function(obj, offset = 0) { 
+                    obj.y = game.height - obj.height / 2; 
+                    obj.y+= offset; 
+                }, 
+                fromBottom: function(obj, percent, offset=0) { 
+                    obj.y = game.height - (game.height * percent); 
+                    obj.y -= offset; 
+                }, 
+                
+                fromRight: function(obj, percent, offset = 0) { 
+                    obj.x = game.width - (game.width * percent); 
+                    obj.x -= offset; 
+                    //obj.x -= obj.width / 2; 
+                }, 
+                
+                fromCenterH: function(obj, percent) { 
+                    obj.x = game.width / 2 - (game.width * percent); 
+                    obj.x -= obj.width / 2; 
+                }, 
+                fromCenterV: function(obj, percent) { 
+                    obj.x = game.width / 2 - (game.width * percent); 
+                    obj.x -= obj.width / 2; 
+                }, 
+            
+            }; // End of Povin 
+            
+            // Global Variables 
+            var test = 1; 
+            
+            // Call a method on the global object Povin 
+            Povin.log();
+
 
             game.state.add('Boot', BasicGame.Boot);
             game.state.start('Boot');
