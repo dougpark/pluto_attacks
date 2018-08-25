@@ -857,6 +857,9 @@ PlutoGame.prototype = {
         // retrieve high scores from server
         this.retrieveHighScores();
 
+        // retrieve my rank
+        this.retrieveMyRank(this.score);
+
         // !! move to highscore state
         // show the high score hud
         this.showHighScores();
@@ -1033,6 +1036,40 @@ PlutoGame.prototype = {
         this.showScores();
     }, 
 
+    // !! move to highscore state
+    // retrieve high scores from the score server    
+    retrieveMyRank: function(myScore) {
+        Povin.rank = -1;
+        self = this;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                //console.log("retriveHighScores= " + this.responseText);
+                self.processMyRank(this.responseText);
+            }
+        };
+        
+        xmlhttp.open("GET", "getmyrank.php?q=" + myScore, true);
+        xmlhttp.send();
+
+    },
+
+    // !! move to highscore state
+    // process the high scores from the score server
+    processMyRank: function(highScores) {
+        
+        if (highScores != 'null') {
+            var scores = JSON.parse(highScores);
+            //console.log('my rank = ' + highScores);
+            Povin.rank = Number(scores[0].Rank)+1;
+            //console.log('Calc rank = ' + Povin.rank);
+        } else {
+            Povin.rank = 1;
+            //console.log('Calc rank1 = ' + Povin.rank);
+            
+        }
+        
+    },
     
     // !! move to highscore state
     // retrieve high scores from the score server    
@@ -1069,7 +1106,7 @@ PlutoGame.prototype = {
         }
 
         // add Your scores to end of the list
-        this.scoresText_rav.text += "n" + "\t" ;
+        this.scoresText_rav.text += Povin.rank + "\t" ;
         this.scoresText_rav.text += util.addCommas(this.score) + "\t";
         this.scoresText_rav.text += this.totalPerfectLevel + "\t";
         this.scoresText_rav.text += this.totalAlienEscape + "\t";

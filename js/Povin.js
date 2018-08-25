@@ -18,6 +18,7 @@ var Povin = {
   gameOn: true,
   plutoFacts: 0,
   plutoFactsTime: 0,
+  rank: 0,                  // store rank from scoreserver
 
   highScore: function() {
     hsGameMode = 0;

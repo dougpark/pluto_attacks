@@ -30,7 +30,7 @@ Boot.prototype = {
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
     
-    this.scale.setMinMax(400, 300, 1200, 900);
+    //this.scale.setMinMax(400, 300, 1200, 900);
     this.scale.pageAlignHorizontally = true;
     this.scale.pageAlignVertically = true;
 

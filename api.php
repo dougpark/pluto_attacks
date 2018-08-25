@@ -95,6 +95,62 @@ class api
     }
     
     /**
+	 * Get game score rank 
+	 *
+	 * @param none 
+	 * @return result set
+	 */
+    function Rankings($params)
+	{
+        $s = '';
+        $query = "SELECT Score, UserName, FIND_IN_SET( score, (  "   
+        . " SELECT GROUP_CONCAT(DISTINCT score "
+        . " ORDER BY score DESC ) "
+        . ' FROM highscore where GameLevel > 0 and type = "prod") '
+        . " ) AS Rank "
+        . " FROM highscore "
+        . ' where GameLevel > 0 and type = "prod" ' . $s
+        . " ORDER BY Score DESC ";
+
+        //. "WHERE name =  'Boo'";
+
+        $result = $this->db->query($query);
+        
+        return $result; 
+    }
+
+    /**
+	 * Get game score my rank 
+	 *
+	 * @param none 
+	 * @return result set
+	 */
+    function gameScoreMyRank($params)
+	{
+
+        $s = ' and Score > ' . $params;
+        //$s = '';
+        $query = "SELECT Score, UserName, FIND_IN_SET( score, (  "   
+        . " SELECT GROUP_CONCAT(DISTINCT score "
+        . " ORDER BY score DESC ) "
+        . ' FROM highscore where GameLevel > 0 and type = "prod") '
+        . " ) AS Rank "
+        . " FROM highscore "
+        . ' where GameLevel > 0 and type = "prod" ' . $s
+        . " ORDER BY Score LIMIT 1 ";
+
+        $result = $this->db->query($query);
+
+        while ($row = $result->fetch_assoc())
+        {   
+            $list[] = $row;
+        }
+        return $list;
+        
+        //return $result; 
+    }
+
+    /**
 	 * Get game high score 
 	 *
 	 * @param none 

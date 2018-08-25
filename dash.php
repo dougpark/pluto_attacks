@@ -27,6 +27,10 @@ $api = new api();
 
 // call the database access api and pass array of params
 
+//showTable('Game My Rank', $api->gameScoreMyRank(30000));
+
+//showTable('Rankings', $api->Rankings(0));
+
 showTable('Total Players Today', $api->playersToday(0));
 
 showTable('Total Games Played Today', $api->gamesPlayedToday(0));
