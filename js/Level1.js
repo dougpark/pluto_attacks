@@ -1,5 +1,5 @@
 /**************************************************************************************
-* Game State
+* Game Level 1 State
 * @author Doug Park, Povingames.com
 * @email doug@povingames.com
 * @version v1.0
@@ -8,14 +8,14 @@
 **************************************************************************************/
 "use strict";
 
-var PlutoGame = {};
+var Level1 = {};
 
-PlutoGame = function (game) {
+Level1 = function (game) {
     // state level properties go here
 
 };
 
-PlutoGame.prototype = {
+Level1.prototype = {
 
     init: function (gameMode, trainingLevel) {
         if (gameMode === undefined) { gameMode = 1; }

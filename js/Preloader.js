@@ -76,7 +76,7 @@ Preloader.prototype = {
         game.state.add('MainMenu', MainMenu);
         game.state.add('Options', Options);
         game.state.add('Credits', Credits);
-        game.state.add('PlutoGame', PlutoGame);
+        game.state.add('Level1', Level1);
         //game.state.add("GameOver",GameOver);
     },
     
@@ -86,7 +86,7 @@ Preloader.prototype = {
         game.load.script('MainMenu',  "js/MainMenu.js");
         game.load.script('Options',   "js/Options.js");
         game.load.script('Credits',   "js/Credits.js");
-        game.load.script('PlutoGame', "js/Game.js");
+        game.load.script('Level1',    "js/Level1.js");
         game.load.script('Util',      "js/Util.js");
 
         //game.load.script('style',   'lib/style.js');
