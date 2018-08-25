@@ -7,14 +7,12 @@
 **************************************************************************************/
 "use strict";
 
-var MainMenu = {};
-
-MainMenu = function (game) {
+BasicGame.MainMenu = function (game) {
     // state level properties go here
 
 };
 
-MainMenu.prototype = {
+BasicGame.MainMenu.prototype = {
 
     init: function() {
     },

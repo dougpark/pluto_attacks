@@ -7,14 +7,12 @@
 **************************************************************************************/
 "use strict";
 
-var Options = {};
-
-Options = function (game) {
+BasicGame.Options = function (game) {
     // state level properties go here
 
 };
 
-Options.prototype = {
+BasicGame.Options.prototype = {
 
     init: function() {
     },

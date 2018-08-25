@@ -8,14 +8,12 @@
 **************************************************************************************/
 "use strict";
 
-var Level1 = {};
-
-Level1 = function (game) {
+BasicGame.Level1 = function (game) {
     // state level properties go here
 
 };
 
-Level1.prototype = {
+BasicGame.Level1.prototype = {
 
     init: function (gameMode, trainingLevel) {
         if (gameMode === undefined) { gameMode = 1; }

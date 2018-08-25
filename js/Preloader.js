@@ -7,14 +7,12 @@
 **************************************************************************************/
 "use strict";
 
-var Preloader = {};
-
-Preloader = function (game) {
+BasicGame.Preloader = function (game) {
     // state level properties go here
 
 };
 
-Preloader.prototype = { 
+BasicGame.Preloader.prototype = { 
 
     init: function () {
         
@@ -73,10 +71,10 @@ Preloader.prototype = {
     },
 
     addGameStates: function () {
-        game.state.add('MainMenu', MainMenu);
-        game.state.add('Options', Options);
-        game.state.add('Credits', Credits);
-        game.state.add('Level1', Level1);
+        game.state.add('MainMenu', BasicGame.MainMenu);
+        game.state.add('Options', BasicGame.Options);
+        game.state.add('Credits', BasicGame.Credits);
+        game.state.add('Level1', BasicGame.Level1);
         //game.state.add("GameOver",GameOver);
     },
     

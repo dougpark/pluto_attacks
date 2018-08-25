@@ -7,14 +7,12 @@
 **************************************************************************************/
 "use strict";
 
-var Credits = {};
-
-Credits = function (game) {
+BasicGame.Credits = function (game) {
     // state level properties go here
 
 };
 
-Credits.prototype = {
+BasicGame.Credits.prototype = {
 
     init: function() {
     },

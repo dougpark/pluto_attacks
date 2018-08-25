@@ -13,16 +13,21 @@ var winH = Math.max(window.innerHeight, document.documentElement.clientHeight);
 winW = 800;
 winH = 600;
 
-var game = new Phaser.Game(winW, winH, Phaser.AUTO, 'PlutoAttacks');
+var game = new Phaser.Game(winW, winH, Phaser.AUTO, 'game2');
 
-var Boot = {};
+var BasicGame = {
+    // Game global vars go here
 
-Boot = function (game) {
+};
+
+//var BasicGame.Boot = {};
+
+BasicGame.Boot = function (game) {
     // state level properties go here
 
 };
   
-Boot.prototype = {
+BasicGame.Boot.prototype = {
 
   init: function() {
 
@@ -58,13 +63,13 @@ Boot.prototype = {
   },
 
   create: function () {
-    game.state.add('Preloader', Preloader);
+    game.state.add('Preloader', BasicGame.Preloader);
     game.state.start('Preloader');
   }
 
 };
 
-game.state.add('Boot', Boot);
+game.state.add('Boot', BasicGame.Boot);
 game.state.start('Boot');
 
 
