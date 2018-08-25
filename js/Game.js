@@ -854,11 +854,8 @@ PlutoGame.prototype = {
         // save your current score to the score server
         Povin.saveHighScore(Povin.gameMode, Povin.gameLevel, this.level, this.totalPerfectLevel, this.totalAlienEscape, this.score);
 
-        // retrieve high scores from server
-        this.retrieveHighScores();
-
-        // retrieve my rank
-        this.retrieveMyRank(this.score);
+         // retrieve my rank
+         this.retrieveMyRank(this.score);
 
         // !! move to highscore state
         // show the high score hud
@@ -884,6 +881,7 @@ PlutoGame.prototype = {
 
     },
 
+    // a qick countdown until the next level starts
     countDown: function() {
 
         // hide the highscores panel
@@ -898,7 +896,7 @@ PlutoGame.prototype = {
         this.getReadySfx.play();
      
         // animate some cool text up the screen
-        var txtReadyT = "Get Ready Captian!";
+        var txtReadyT = "Ready Player One!";
         this.txtReady = game.add.text(game.world.centerX, game.world.centerY, txtReadyT, { font: '24px HappyKiller', fill: '#dc7b00' });
         this.txtReady.anchor.setTo(0.5, 0.5);
         Povin.place(this.txtReady,0.5, 0.75);
@@ -1068,6 +1066,10 @@ PlutoGame.prototype = {
             //console.log('Calc rank1 = ' + Povin.rank);
             
         }
+
+        // retrieve high scores from server
+        this.retrieveHighScores();
+
         
     },
     
