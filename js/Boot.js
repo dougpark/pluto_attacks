@@ -13,7 +13,7 @@ var winH = Math.max(window.innerHeight, document.documentElement.clientHeight);
 winW = 800;
 winH = 600;
 
-var game = new Phaser.Game(winW, winH, Phaser.AUTO, 'game2');
+var game = new Phaser.Game(winW, winH, Phaser.AUTO, 'game');
 
 var BasicGame = {
     // Game global vars go here
@@ -88,7 +88,7 @@ BasicGame.Boot.prototype = {
   },
 
   create: function () {
-
+    
     game.state.add('CheckOrientation', BasicGame.CheckOrientation);
     game.state.add('Preloader', BasicGame.Preloader);
     this.state.start('CheckOrientation');
@@ -120,6 +120,8 @@ BasicGame.Boot.prototype = {
     document.getElementById('orientation').style.display = 'none';
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
     game.paused = false;
+    console.log('scaleFactor= ' + Phaser.ScaleManager.scaleFactor);
+    console.log('bounds= ' + Phaser.ScaleManager.bounds);
 		//this.scale.setScreenSize(true);
 
 	}
