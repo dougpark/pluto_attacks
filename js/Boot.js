@@ -22,8 +22,6 @@ var BasicGame = {
 
 };
 
-//var BasicGame.Boot = {};
-
 BasicGame.Boot = function (game) {
     // state level properties go here
 
@@ -32,6 +30,9 @@ BasicGame.Boot = function (game) {
 BasicGame.Boot.prototype = {
 
   init: function() {
+
+    // initialize the Povin object
+    Povin.game = game;
 
     this.physics.startSystem(Phaser.Physics.ARCADE);
     this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
