@@ -188,9 +188,9 @@ BasicGame.Level1.prototype = {
         this.menuButton = game.input.keyboard.addKey(Phaser.Keyboard.M);
 
         // HUD
-        this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background')
-        this.background.anchor.setTo(0.5, 0.5);
-        this.background.scale.setTo(.50, .50);
+        // this.background = game.add.sprite(game.world.centerX, game.world.centerY, 'background')
+        // this.background.anchor.setTo(0.5, 0.5);
+        // this.background.scale.setTo(.50, .50);
 
         // Home button to return to the main menu
         this.buttonHome = game.add.button(0, 0, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);

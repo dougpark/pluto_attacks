@@ -119,7 +119,7 @@ BasicGame.Preloader.prototype = {
     loadImages: function () {
         // MainMenu Images
         game.load.image('title', 'assets/buttons/title.png');
-        game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
+        //game.load.image('levelSelect', 'assets/buttons/levelMenu.png');
         game.load.image('factsHover', 'assets/buttons/factsHover.png');
         game.load.spritesheet('buttonNormal', 'assets/buttons/button_normal2.png', 227, 100);
         game.load.spritesheet('buttonFun', 'assets/buttons/button_fun2.png', 227, 100);
@@ -133,8 +133,8 @@ BasicGame.Preloader.prototype = {
         game.load.image('options', 'assets/buttons/options.png');
         game.load.spritesheet('buttonCredits', 'assets/buttons/button_credits.png', 227, 50);
         //game.load.spritesheet('buttonMusic', 'assets/buttons/button_music2.png', 100, 100);
-        game.load.spritesheet('buttonMusicOn', 'assets/buttons/button_music_on.png?v=1', 227, 50);
-        game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png?v=1', 227, 50);
+        game.load.spritesheet('buttonMusicOn', 'assets/buttons/button_music_on.png', 227, 50);
+        game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png', 227, 50);
         game.load.image('options_title', 'assets/buttons/panel_options.png');
 
         // Game Levels
