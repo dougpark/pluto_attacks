@@ -25,7 +25,7 @@ BasicGame.Options.prototype = {
         this.imagePluto = game.add.sprite(0,0, 'pluto');
         this.imagePluto.anchor.setTo(0.7, 0.5);
         this.imagePluto.scale.setTo(.5, .5);
-        Povin.place(this.imagePluto, .3, .2);
+        Povin.place(this.imagePluto, .3, .2) ;
 
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
 
@@ -41,10 +41,10 @@ BasicGame.Options.prototype = {
         //this.title.scale.setTo(1.2, .80);
         //Povin.place(this.title, .5, .10);
 
-        this.options_title = game.add.sprite(0,0, 'options_title');
+        /* this.options_title = game.add.sprite(0,0, 'options_title');
         this.options_title.anchor.setTo(0.5, 0.5)
         this.options_title.scale.setTo(1, .75);
-        Povin.place(this.options_title, 0.5, 0.55);
+        Povin.place(this.options_title, 0.5, 0.55); */
 
         // Music Button
         this.buttonMusic = game.add.button(0,0, 'buttonMusicOn', this.actionOnClickMusic, this, 2, 1, 0);
@@ -65,9 +65,9 @@ BasicGame.Options.prototype = {
   
         // Back Button
         this.buttonBack = game.add.button(0,0, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
-        this.buttonBack.anchor.setTo(0.5, 0.5);
+        this.buttonBack.anchor.setTo(0, 0.5);
         this.buttonBack.scale.setTo(.5,.5);
-        Povin.place(this.buttonBack, 0.1, 0.10);
+        Povin.place(this.buttonBack, 0, 0.10);
         this.buttonBack.events.onInputDown.add(this.onInputDownBack, this);
         this.buttonBack.events.onInputUp.add(this.onInputUpBack, this);
 
@@ -215,7 +215,8 @@ BasicGame.Options.prototype = {
 
     // button Credits
     actionOnClickCredits: function () {
-      this.showCredits();
+        this.creditsState();
+      //this.showCredits();
     },
 
     onInputDownCredits: function(target) {
@@ -290,5 +291,9 @@ BasicGame.Options.prototype = {
 
     nextState: function () {
         this.state.start('MainMenu', true, false);
+    },
+
+    creditsState: function () {
+        this.state.start('Credits', true, false);
     }
 };

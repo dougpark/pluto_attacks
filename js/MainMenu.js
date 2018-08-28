@@ -248,6 +248,7 @@ BasicGame.MainMenu.prototype = {
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
         */
     },
+    
 
     nextState: function () {
         this.state.start('Level1', true, false, Povin.gameMode, Povin.gameLevel);
