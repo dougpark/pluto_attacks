@@ -74,6 +74,7 @@ BasicGame.Preloader.prototype = {
         game.state.add('MainMenu', BasicGame.MainMenu);
         game.state.add('Options', BasicGame.Options);
         game.state.add('Credits', BasicGame.Credits);
+        game.state.add('HighScores', BasicGame.HighScores);
         game.state.add('Level1', BasicGame.Level1);
         //game.state.add("GameOver",GameOver);
     },
