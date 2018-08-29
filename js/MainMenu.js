@@ -127,6 +127,7 @@ BasicGame.MainMenu.prototype = {
         Povin.place(this.panelFacts, 0.5, 0.85);
         this.panelGameMode.add(this.panelFacts); */
 
+        // randomly pick a fact to display
         var r = game.rnd.between(0,this.plutoFacts.facts.length-1);
         this.factsString = this.plutoFacts.facts[r];
         this.factsText = game.add.text(0,0, this.factsString, { font: '24px Arial', fill: '#dc7b00', wordWrap: true, wordWrapWidth: game.width*.8, align: 'center' });
@@ -142,7 +143,7 @@ BasicGame.MainMenu.prototype = {
         factsTween.onRepeat.add(this.factsTextClick, this);
 
        
-        // Popup Game level menu
+        // Popup Select Game level menu
         this.panelGameLevel = this.add.group();
         this.panelGameLevel.alpha = 0;
         this.panelGameLevel.visible = false;
@@ -188,10 +189,10 @@ BasicGame.MainMenu.prototype = {
         this.panelGameLevel.add(this.buttonGameLevel_27);
         this.buttonGameLevel_27.gameLevel = 27;
 
-        //game.add.tween(this.buttonGameLevel_1.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 0, false).yoyo(true);
-        //game.add.tween(this.buttonGameLevel_9.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 50, false).yoyo(true);
-        //game.add.tween(this.buttonGameLevel_18.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 100, false).yoyo(true);
-        //game.add.tween(this.buttonGameLevel_27.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 150, false).yoyo(true);
+        // game.add.tween(this.buttonGameLevel_1.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 0, false).yoyo(true);
+        // game.add.tween(this.buttonGameLevel_9.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 50, false).yoyo(true);
+        // game.add.tween(this.buttonGameLevel_18.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 100, false).yoyo(true);
+        // game.add.tween(this.buttonGameLevel_27.scale).to( {x: .95, y: .95}, 500, Phaser.Easing.Back.InOut, true, 150, false).yoyo(true);
         
         // Popup Intro Screen
         this.panelIntro = this.add.group();
@@ -233,23 +234,23 @@ BasicGame.MainMenu.prototype = {
         //  Scroll the background
         this.starfield.tilePosition.y += 2;
 
+        // show the next pluto fact every 8 seconds
         if (game.time.now > Povin.plutoFactsTime) {
             Povin.plutoFactsTime = game.time.now + 8000;
             this.factsTextClick(); // show next pluto fact
         }
     },
 
-    render: function() {
-        /* var debug = this.game.debug;
+    render2: function() {
+        var debug = this.game.debug;
         debug.text('height ' + game.world.height,10,120);
         debug.text('gameLevel '+ Povin.gameLevel,10,140);
         debug.text('Povin '+ Povin,10,160);
 
         debug.text("Phasers " + Phaser.VERSION + " " + ['AUTO', 'CANVAS', 'WEBGL', 'HEADLESS', 'WEBGL_MULTI'][this.game.renderType], 10, 540, 'white', debug.font);
-        */
+        
     },
     
-
     nextState: function () {
         this.state.start('Level1', true, false, Povin.gameMode, Povin.gameLevel);
     },

@@ -52,11 +52,11 @@ BasicGame.Credits.prototype = {
         this.panelCredits.alpha = 1;
 
         // Nice blank panel
-        this.panelCredits_title = game.add.sprite(0, 0, 'score_panel');
-        this.panelCredits_title.anchor.setTo(0.5, 0.5);
-        this.panelCredits_title.scale.setTo(1.75, 2.2);
-        Povin.place(this.panelCredits_title, 0.5, 0.6);
-        this.panelCredits.add(this.panelCredits_title);
+        this.panelCredits_panel = game.add.sprite(0, 0, 'score_panel');
+        this.panelCredits_panel.anchor.setTo(0.5, 0.5);
+        this.panelCredits_panel.scale.setTo(1.75, 2.2);
+        Povin.place(this.panelCredits_panel, 0.5, 0.6);
+        this.panelCredits.add(this.panelCredits_panel);
 
         //  Credits Title
         this.creditsTitle = game.add.text(0, 0, 'Credits', { font: '24px arial', fill: '#dc7b00' });
@@ -127,6 +127,6 @@ BasicGame.Credits.prototype = {
     },
 
     nextState: function () {
-        this.state.start('MainMenu', true, false);
+        this.state.start('Options', true, false);
     }
 };
