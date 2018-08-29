@@ -34,18 +34,27 @@ BasicGame.HighScores.prototype = {
         this.imageGameMode_title.scale.setTo(1.25, .80);
         Povin.place(this.imageGameMode_title, .5, .1);
 
-        // Back Button to exit state
-        this.buttonBack = game.add.button(0, 0, 'buttonBack', this.actionOnClickBack, this, 2, 1, 0);
-        this.buttonBack.anchor.setTo(0, 0.5);
-        this.buttonBack.scale.setTo(.5, .5);
-        Povin.place(this.buttonBack, 0, 0.10);
-        this.buttonBack.events.onInputDown.add(this.onInputDownBack, this);
-        this.buttonBack.events.onInputUp.add(this.onInputUpBack, this);
+        // Home button to return to the main menu
+        this.buttonHome = game.add.button(0, 0, 'buttonHome', Povin.actionOnClickHome, this, 2, 1, 0);
+        this.buttonHome.anchor.setTo(0.5, 0.5);
+        this.buttonHome.scale.setTo(.8, .8);
+        Povin.place(this.buttonHome, 0.05, 0.13);
+        this.buttonHome.events.onInputDown.add(Povin.onInputDownHome, this);
+        this.buttonHome.events.onInputUp.add(Povin.onInputUpHome, this);
+
+        // Speaker button to start/stop the background music
+        this.buttonSpeaker = game.add.button(0, 0, 'buttonSpeaker', Povin.actionOnClickSpeaker, this, 2, 1, 0);
+        this.buttonSpeaker.anchor.setTo(0.5, 0.5);
+        this.buttonSpeaker.scale.setTo(.6, .6);
+        Povin.place(this.buttonSpeaker, 0.97, 0.1);
+        this.buttonSpeaker.events.onInputDown.add(Povin.onInputDownSpeaker, this);
+        this.buttonSpeaker.events.onInputUp.add(Povin.onInputUpSpeaker, this);
+        Povin.setSpeakerTexture(this.buttonSpeaker);
 
         // Spacebar to exit state
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         this.fireButton.onDown.addOnce(this.actionOnClickBack, this);
-        game.input.onTap.addOnce(this.actionOnClickBack, this);
+        //game.input.onTap.addOnce(this.actionOnClickBack, this);
 
         // Popup Scores Screen
         this.panelScores = this.add.group();
@@ -195,7 +204,6 @@ BasicGame.HighScores.prototype = {
 
     },
 
-    // !! move to highscores state
     // Pop up the Scores panel
     showHighScores: function () {
         game.add.tween(this.panelScores).to({ alpha: 0.95 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
@@ -204,7 +212,6 @@ BasicGame.HighScores.prototype = {
         //this.panelScores.visible = true;
     },
 
-    // !! move to highscore state
     // Pop up the Scores panel
     hideHighScores: function () {
         game.add.tween(this.panelScores).to({ alpha: 0 }, 100, Phaser.Easing.Linear.None, true, 250, 0, false);
@@ -213,7 +220,6 @@ BasicGame.HighScores.prototype = {
         //this.panelScores.visible = false;
     },
 
-    // !! move to highscore state
     // retrieve high scores from the score server    
     retrieveMyRank: function (myScore) {
         Povin.rank = -1;

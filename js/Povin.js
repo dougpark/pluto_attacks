@@ -169,6 +169,58 @@ var Povin = {
 
   },
 
+    // Action when click on the home button
+    actionOnClickHome: function () {
+        this.state.start('MainMenu');
+    },
+
+    onInputDownHome: function (target) {
+        game.add.tween(target.scale).to({
+            x: 0.6,
+            y: 0.6
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    onInputUpHome: function (target) {
+        game.add.tween(target.scale).to({
+            x: .8,
+            y: .8
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    // Action when click on the speaker button
+    actionOnClickSpeaker: function (target) {
+        Povin.musicToggle();
+        Povin.setSpeakerTexture(target);
+
+    },
+
+    setSpeakerTexture(target) {
+        if (Povin.musicStatus() == true) {
+            target.loadTexture('buttonSpeaker');
+
+        } else {
+            target.loadTexture('buttonSpeakerOff');
+        }
+
+    },
+
+    onInputDownSpeaker: function (target) {
+
+        game.add.tween(target.scale).to({
+            x: 0.4,
+            y: 0.4
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    onInputUpSpeaker: function (target) {
+        game.add.tween(target.scale).to({
+            x: .6,
+            y: .6
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+
   
   // Scaling Functions
   getScaleToGameW: function(obj)

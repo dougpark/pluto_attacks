@@ -95,6 +95,23 @@ BasicGame.MainMenu.prototype = {
         this.buttonOptions.events.onInputUp.add(this.onInputUpOptions, this);
         this.panelGameMode.add(this.buttonOptions);
 
+        // Home button to return to the main menu
+        this.buttonHome = game.add.button(0, 0, 'buttonHome', Povin.actionOnClickHome, this, 2, 1, 0);
+        this.buttonHome.anchor.setTo(0.5, 0.5);
+        this.buttonHome.scale.setTo(.8, .8);
+        Povin.place(this.buttonHome, 0.05, 0.13);
+        this.buttonHome.events.onInputDown.add(Povin.onInputDownHome, this);
+        this.buttonHome.events.onInputUp.add(Povin.onInputUpHome, this);
+
+        // Speaker button to start/stop the background music
+        this.buttonSpeaker = game.add.button(0, 0, 'buttonSpeaker', Povin.actionOnClickSpeaker, this, 2, 1, 0);
+        this.buttonSpeaker.anchor.setTo(0.5, 0.5);
+        this.buttonSpeaker.scale.setTo(.6, .6);
+        Povin.place(this.buttonSpeaker, 0.97, 0.1);
+        this.buttonSpeaker.events.onInputDown.add(Povin.onInputDownSpeaker, this);
+        this.buttonSpeaker.events.onInputUp.add(Povin.onInputUpSpeaker, this);
+        Povin.setSpeakerTexture(this.buttonSpeaker);
+
         // Pluto Facts
 
         // Facts Hover image Left

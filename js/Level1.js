@@ -179,21 +179,21 @@ BasicGame.Level1.prototype = {
         // this.background.scale.setTo(.50, .50);
 
         // Home button to return to the main menu
-        this.buttonHome = game.add.button(0, 0, 'buttonHome', this.actionOnClickHome, this, 2, 1, 0);
+        this.buttonHome = game.add.button(0, 0, 'buttonHome', Povin.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
         this.buttonHome.scale.setTo(.8, .8);
-        Povin.place(this.buttonHome, 0.05, 0.08);
-        this.buttonHome.events.onInputDown.add(this.onInputDownHome, this);
-        this.buttonHome.events.onInputUp.add(this.onInputUpHome, this);
+        Povin.place(this.buttonHome, 0.05, 0.13);
+        this.buttonHome.events.onInputDown.add(Povin.onInputDownHome, this);
+        this.buttonHome.events.onInputUp.add(Povin.onInputUpHome, this);
 
         // Speaker button to start/stop the background music
-        this.buttonSpeaker = game.add.button(0, 0, 'buttonSpeaker', this.actionOnClickSpeaker, this, 2, 1, 0);
+        this.buttonSpeaker = game.add.button(0, 0, 'buttonSpeaker', Povin.actionOnClickSpeaker, this, 2, 1, 0);
         this.buttonSpeaker.anchor.setTo(0.5, 0.5);
         this.buttonSpeaker.scale.setTo(.6, .6);
-        Povin.place(this.buttonSpeaker, 0.97, 0.05);
-        this.buttonSpeaker.events.onInputDown.add(this.onInputDownSpeaker, this);
-        this.buttonSpeaker.events.onInputUp.add(this.onInputUpSpeaker, this);
-        this.setSpeakerTexture(this.buttonSpeaker);
+        Povin.place(this.buttonSpeaker, 0.97, 0.1);
+        this.buttonSpeaker.events.onInputDown.add(Povin.onInputDownSpeaker, this);
+        this.buttonSpeaker.events.onInputUp.add(Povin.onInputUpSpeaker, this);
+        Povin.setSpeakerTexture(this.buttonSpeaker);
 
         // Game Speed
         this.gameSpeedText = game.add.text(0, 0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });
@@ -226,57 +226,6 @@ BasicGame.Level1.prototype = {
 
         
     }, // end create
-
-    // Action when click on the home button
-    actionOnClickHome: function () {
-        this.state.start('MainMenu');
-    },
-
-    onInputDownHome: function (target) {
-        game.add.tween(target.scale).to({
-            x: 0.6,
-            y: 0.6
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
-
-    onInputUpHome: function (target) {
-        game.add.tween(target.scale).to({
-            x: .8,
-            y: .8
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
-
-    // Action when click on the speaker button
-    actionOnClickSpeaker: function (target) {
-        Povin.musicToggle();
-        this.setSpeakerTexture(target);
-
-    },
-
-    setSpeakerTexture(target) {
-        if (Povin.musicStatus() == true) {
-            target.loadTexture('buttonSpeaker');
-
-        } else {
-            target.loadTexture('buttonSpeakerOff');
-        }
-
-    },
-
-    onInputDownSpeaker: function (target) {
-       
-        game.add.tween(target.scale).to({
-            x: 0.4,
-            y: 0.4
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
-
-    onInputUpSpeaker: function (target) {
-        game.add.tween(target.scale).to({
-            x: .6,
-            y: .6
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
 
     // button Continue
     actionOnClickContinue: function () {
@@ -393,7 +342,7 @@ BasicGame.Level1.prototype = {
 
         // Press M to return to main menu
         if (this.menuButton.isDown) {
-            this.actionOnClickHome();
+            Povin.actionOnClickHome();
         }
 
         // FPS
