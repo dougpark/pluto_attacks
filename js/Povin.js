@@ -18,6 +18,10 @@ var Povin = {
   gameOn: true,
   plutoFacts: 0,
   plutoFactsTime: 0,
+  level: 1,
+  totalPerfectLevel: 0,
+  totalAlienEscape: 0,
+  score: 0,
   rank: 0,                  // store rank from scoreserver
 
   highScore: function() {

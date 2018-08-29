@@ -252,7 +252,7 @@ BasicGame.MainMenu.prototype = {
     },
     
     nextState: function () {
-        this.state.start('Level1', true, false, Povin.gameMode, Povin.gameLevel);
+        this.state.start('Level1', true, false);
     },
 
     // Pop up the Intro Text panel

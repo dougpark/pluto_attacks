@@ -47,46 +47,59 @@ BasicGame.HighScores.prototype = {
         this.fireButton.onDown.addOnce(this.actionOnClickBack, this);
         game.input.onTap.addOnce(this.actionOnClickBack, this);
 
-        // Popup Credits Screen
-        this.panelCredits = this.add.group();
-        this.panelCredits.alpha = 1;
+        // Popup Scores Screen
+        this.panelScores = this.add.group();
+        this.panelScores.alpha = 0;
+        //this.panelScores.visible = false;
 
-        // Nice blank panel
-        this.panelCredits_panel = game.add.sprite(0, 0, 'score_panel');
-        this.panelCredits_panel.anchor.setTo(0.5, 0.5);
-        this.panelCredits_panel.scale.setTo(1.75, 2.2);
-        Povin.place(this.panelCredits_panel, 0.5, 0.6);
-        this.panelCredits.add(this.panelCredits_panel);
+        this.panelScores_title = game.add.sprite(0, 0, 'score_panel');
+        this.panelScores_title.anchor.setTo(0.5, 0.5);
+        this.panelScores_title.scale.setTo(1.75, 2.0);
+        Povin.place(this.panelScores_title, 0.5, 0.55);
+        this.panelScores.add(this.panelScores_title);
 
-        //  Credits Title
-        this.creditsTitle = game.add.text(0, 0, 'Credits', { font: '24px arial', fill: '#dc7b00' });
-        this.creditsTitle.anchor.setTo(0.5, 0.5);
-        this.panelCredits.add(this.creditsTitle);
-        Povin.place(this.creditsTitle, 0.5, 0.27);
+        //  High Scores Title
+        this.scoresTitle = game.add.text(0, 0, 'High Scores', { font: '24px arial', fill: '#0099ff' });
+        this.scoresTitle.anchor.setTo(0.5, 0.5);
+        this.panelScores.add(this.scoresTitle);
+        Povin.place(this.scoresTitle, 0.5, 0.25);
 
-        // Credits Text
-        this.creditsTxt = "" +
-            "Based on: phaser.io - invaders example\n" +
-            "Images: NASA.gov\n" +
-            "Pluto Facts: NASA.gov\n" +
-            "Artwork: thegameassetsmine.com - Space Game UI\n" +
-            "Spaceship: market.envato.com - Spaceships by neogeo37\n" +
-            "Music: incompetech.com - Dangerous by Kevin MacLeod\n" +
-            "Font: dafont.com - Happy-Killer.font\n" +
-            "Sound Effects: GameBurp.com\n" +
-            "Scream: wilhelmscream.net - Wilhelm Scream\n";
+        //  Rank Text
+        this.scoresText_ra = game.add.text(0, 0, 'Rank\tScore\tPerfect\tEscaped\tPlayer', { font: '20px arial', fill: '#dc7b00', tabs: [80, 100, 100, 100, 100] });
+        this.panelScores.add(this.scoresText_ra);
+        Povin.place(this.scoresText_ra, 0.20, 0.29);
 
-        this.creditsText = game.add.text(0, 0, this.creditsTxt, { font: '16px arial', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });
-        Povin.place(this.creditsText, 0.2, 0.35);
-        this.panelCredits.add(this.creditsText);
+        //  Rank Value
+        this.scoresText_rav = game.add.text(0, 0, '1st', { font: '20px arial', fill: '#0099ff', align: 'left', tabs: [80, 120, 100, 80, 100] });
+        //this.scoresText_rav.anchor.setTo(0.5, 0);
+        this.panelScores.add(this.scoresText_rav);
+        Povin.place(this.scoresText_rav, 0.20, 0.34);
 
-        // Cookies Text
-        this.cookiesTxt = "This site uses cookies and saves score data on Povingames.com, " +
-            "play at your own risk."
-        this.cookiesText = game.add.text(0, 0, this.cookiesTxt, { font: '12px arial', fill: '#dc7b00', boundsAlignH: "center", boundsAlignV: "middle" });
-        Povin.place(this.cookiesText, 0.2, 0.90);
-        this.panelCredits.add(this.cookiesText);
+        //  Scores Text
+        this.stateText = game.add.text(0, 0, '', { font: '20px arial', fill: '#0099ff' });
+        this.stateText.anchor.setTo(0.5, 0.5);
+        Povin.place(this.stateText, 0.5, 0.69);
+        this.stateText.align = 'center';
+        this.stateText.visible = true;
+        this.panelScores.add(this.stateText);
 
+        //  Tap to play again Text
+        //this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#dc7b00' }); 
+        //this.scoresText_pa.anchor.setTo(0.5, 0.5);
+        //this.panelScores.add(this.scoresText_pa);
+        //Povin.place(this.scoresText_pa, 0.5, 0.85);
+
+        // Continue Button
+        this.buttonContinue = game.add.button(0, 0, 'buttonContinue', this.actionOnClickContinue, this, 2, 1, 0);
+        this.buttonContinue.anchor.setTo(0.5, 0.5);
+        this.buttonContinue.scale.setTo(.75, .75);
+        Povin.place(this.buttonContinue, 0.5, 0.85);
+        this.panelScores.add(this.buttonContinue);
+        this.buttonContinue.inputEnabled = false;
+        this.buttonContinue.events.onInputDown.add(this.onInputDownContinue, this);
+        this.buttonContinue.events.onInputUp.add(this.onInputUpContinue, this);
+
+        this.endGame();
 
     },
 
@@ -95,6 +108,25 @@ BasicGame.HighScores.prototype = {
         //  Scroll the background
         this.starfield.tilePosition.y += 2;
 
+    },
+
+    // button Continue
+    actionOnClickContinue: function () {
+        this.nextState();
+    },
+
+    onInputDownContinue: function (target) {
+        game.add.tween(target.scale).to({
+            x: 0.4,
+            y: 0.4
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    onInputUpContinue: function (target) {
+        game.add.tween(target.scale).to({
+            x: .5,
+            y: .5
+        }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
     // button Back
@@ -127,6 +159,137 @@ BasicGame.HighScores.prototype = {
     },
 
     nextState: function () {
-        this.state.start('Options', true, false);
-    }
+        this.state.start('Level1', true, false);
+    },
+
+    endGame: function () {
+        this.stateText.text = "";
+
+        // save your current score to the score server
+        Povin.saveHighScore(Povin.gameMode, Povin.gameLevel, Povin.level, Povin.totalPerfectLevel, Povin.totalAlienEscape, Povin.score);
+
+        // retrieve my rank from the score server
+        this.retrieveMyRank(Povin.score);
+
+        // show the high score hud
+        this.showHighScores();
+
+        this.stateText.text += "\n A message from your commander:"
+
+        if (this.score <= 0) {
+            this.stateText.text += "\n Pluto ate your lunch.";
+        } else if (this.score < 10000) {
+            this.stateText.text += "\n Nice Try.";
+        } else if (this.score < 100000) {
+            this.stateText.text += "\n Not Bad.";
+        } else if (this.score < 200000) {
+            this.stateText.text += "\n Pretty Good.";
+        } else if (this.score > 200000) {
+            this.stateText.text += "\n Great Job.";
+        }
+        this.stateText.text += "\n Keep playing until the IAU says Pluto is a planet!";
+
+        //the "Tap to restart" handler
+        this.fireButton.onDown.addOnce(this.nextState, this);
+        //game.input.onTap.addOnce(this.restartGame, this);
+
+    },
+
+    // !! move to highscores state
+    // Pop up the Scores panel
+    showHighScores: function () {
+        game.add.tween(this.panelScores).to({ alpha: 0.95 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        game.add.tween(this.starfield).to({ alpha: 0.25 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        this.buttonContinue.inputEnabled = true;
+        //this.panelScores.visible = true;
+    },
+
+    // !! move to highscore state
+    // Pop up the Scores panel
+    hideHighScores: function () {
+        game.add.tween(this.panelScores).to({ alpha: 0 }, 100, Phaser.Easing.Linear.None, true, 250, 0, false);
+        game.add.tween(this.starfield).to({ alpha: .3 }, 250, Phaser.Easing.Linear.None, true, 250, 0, false);
+        this.buttonContinue.inputEnabled = false;
+        //this.panelScores.visible = false;
+    },
+
+    // !! move to highscore state
+    // retrieve high scores from the score server    
+    retrieveMyRank: function (myScore) {
+        Povin.rank = -1;
+        self = this;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //console.log("retriveHighScores= " + this.responseText);
+                self.processMyRank(this.responseText);
+            }
+        };
+
+        xmlhttp.open("GET", "getmyrank.php?q=" + myScore, true);
+        xmlhttp.send();
+
+    },
+
+    // !! move to highscore state
+    // process the high scores from the score server
+    processMyRank: function (highScores) {
+
+        if (highScores != 'null') {
+            var scores = JSON.parse(highScores);
+            //console.log('my rank = ' + highScores);
+            Povin.rank = Number(scores[0].Rank) + 1;
+            //console.log('Calc rank = ' + Povin.rank);
+        } else {
+            Povin.rank = 1;
+            //console.log('Calc rank1 = ' + Povin.rank);
+
+        }
+
+        // retrieve high scores from server
+        this.retrieveHighScores();
+
+
+    },
+
+    // !! move to highscore state
+    // retrieve high scores from the score server    
+    retrieveHighScores: function () {
+        self = this;
+        var xmlhttp = new XMLHttpRequest();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState == 4 && this.status == 200) {
+                //console.log("retriveHighScores= " + this.responseText);
+                self.processHighScores(this.responseText);
+            }
+        };
+        xmlhttp.open("GET", "gethighscore.php", true);
+        xmlhttp.send();
+
+    },
+
+    // !! move to highscore state
+    // process the high scores from the score server
+    processHighScores: function (highScores) {
+
+        this.scoresText_rav.text = "";
+        var scores = JSON.parse(highScores);
+
+        var i, j;
+        for (i = 0; i <= 4; i++) {
+            j = i + 1;
+            this.scoresText_rav.text += j + '\t';
+            this.scoresText_rav.text += util.addCommas(scores[i].Score) + "\t";
+            this.scoresText_rav.text += scores[i].PerfectLevels + "\t";
+            this.scoresText_rav.text += scores[i].AliensEscaped + "\t";
+            this.scoresText_rav.text += "Player " + j + "\n";
+        }
+
+        // add Your scores to end of the list
+        this.scoresText_rav.text += Povin.rank + "\t";
+        this.scoresText_rav.text += util.addCommas(Povin.score) + "\t";
+        this.scoresText_rav.text += Povin.totalPerfectLevel + "\t";
+        this.scoresText_rav.text += Povin.totalAlienEscape + "\t";
+        this.scoresText_rav.text += "You";
+    },
 };
