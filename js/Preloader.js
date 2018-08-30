@@ -133,6 +133,7 @@ BasicGame.Preloader.prototype = {
         // Options Images
         game.load.image('options', 'assets/buttons/options.png');
         game.load.spritesheet('buttonCredits', 'assets/buttons/button_credits.png', 227, 50);
+        game.load.spritesheet('buttonHighScores', 'assets/buttons/button_highscores.png', 227, 50);
         //game.load.spritesheet('buttonMusic', 'assets/buttons/button_music2.png', 100, 100);
         game.load.spritesheet('buttonMusicOn', 'assets/buttons/button_music_on.png', 227, 50);
         game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png', 227, 50);

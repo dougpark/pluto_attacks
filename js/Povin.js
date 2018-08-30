@@ -19,6 +19,7 @@ var Povin = {
   plutoFacts: 0,
   plutoFactsTime: 0,
   level: 1,
+  HSNextState: 'Level1',
   totalPerfectLevel: 0,
   totalAlienEscape: 0,
   score: 0,
@@ -170,8 +171,8 @@ var Povin = {
   },
 
     // Action when click on the home button
-    actionOnClickHome: function () {
-        this.state.start('MainMenu');
+    actionOnClickHome: function (target) {
+        this.state.start(target.nextState);
     },
 
     onInputDownHome: function (target) {

@@ -37,6 +37,7 @@ BasicGame.HighScores.prototype = {
         // Home button to return to the main menu
         this.buttonHome = game.add.button(0, 0, 'buttonHome', Povin.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
+        this.buttonHome.nextState = 'MainMenu';
         this.buttonHome.scale.setTo(.8, .8);
         Povin.place(this.buttonHome, 0.05, 0.13);
         this.buttonHome.events.onInputDown.add(Povin.onInputDownHome, this);
@@ -85,12 +86,12 @@ BasicGame.HighScores.prototype = {
         Povin.place(this.scoresText_rav, 0.20, 0.34);
 
         //  Scores Text
-        this.stateText = game.add.text(0, 0, '', { font: '20px arial', fill: '#0099ff' });
-        this.stateText.anchor.setTo(0.5, 0.5);
-        Povin.place(this.stateText, 0.5, 0.69);
-        this.stateText.align = 'center';
-        this.stateText.visible = true;
-        this.panelScores.add(this.stateText);
+        this.scoreMessage = game.add.text(0, 0, '', { font: '20px arial', fill: '#0099ff' });
+        this.scoreMessage.anchor.setTo(0.5, 0.5);
+        Povin.place(this.scoreMessage, 0.5, 0.69);
+        this.scoreMessage.align = 'center';
+        this.scoreMessage.visible = true;
+        this.panelScores.add(this.scoreMessage);
 
         //  Tap to play again Text
         //this.scoresText_pa = game.add.text(0,0, 'Tap/Space To Play Again', { font: '20px arial', fill: '#dc7b00' }); 
@@ -168,11 +169,11 @@ BasicGame.HighScores.prototype = {
     },
 
     nextState: function () {
-        this.state.start('Level1', true, false);
+        this.state.start(Povin.HSNextState, true, false);
     },
 
     endGame: function () {
-        this.stateText.text = "";
+        this.scoreMessage.text = "";
 
         // save your current score to the score server
         Povin.saveHighScore(Povin.gameMode, Povin.gameLevel, Povin.level, Povin.totalPerfectLevel, Povin.totalAlienEscape, Povin.score);
@@ -183,20 +184,20 @@ BasicGame.HighScores.prototype = {
         // show the high score hud
         this.showHighScores();
 
-        this.stateText.text += "\n A message from your commander:"
+        this.scoreMessage.text += "\n A message from your commander:"
 
-        if (this.score <= 0) {
-            this.stateText.text += "\n Pluto ate your lunch.";
-        } else if (this.score < 10000) {
-            this.stateText.text += "\n Nice Try.";
-        } else if (this.score < 100000) {
-            this.stateText.text += "\n Not Bad.";
-        } else if (this.score < 200000) {
-            this.stateText.text += "\n Pretty Good.";
-        } else if (this.score > 200000) {
-            this.stateText.text += "\n Great Job.";
+        if (Povin.score <= 0) {
+            this.scoreMessage.text += "\n Pluto ate your lunch.";
+        } else if (Povin.score < 10000) {
+            this.scoreMessage.text += "\n Nice Try.";
+        } else if (Povin.score < 100000) {
+            this.scoreMessage.text += "\n Not Bad.";
+        } else if (Povin.score < 200000) {
+            this.scoreMessage.text += "\n Pretty Good.";
+        } else if (Povin.score > 200000) {
+            this.scoreMessage.text += "\n Great Job.";
         }
-        this.stateText.text += "\n Keep playing until the IAU says Pluto is a planet!";
+        this.scoreMessage.text += "\n Keep playing until the IAU says Pluto is a planet!";
 
         //the "Tap to restart" handler
         this.fireButton.onDown.addOnce(this.nextState, this);
@@ -237,7 +238,6 @@ BasicGame.HighScores.prototype = {
 
     },
 
-    // !! move to highscore state
     // process the high scores from the score server
     processMyRank: function (highScores) {
 
@@ -258,7 +258,6 @@ BasicGame.HighScores.prototype = {
 
     },
 
-    // !! move to highscore state
     // retrieve high scores from the score server    
     retrieveHighScores: function () {
         self = this;
@@ -274,7 +273,6 @@ BasicGame.HighScores.prototype = {
 
     },
 
-    // !! move to highscore state
     // process the high scores from the score server
     processHighScores: function (highScores) {
 

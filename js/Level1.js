@@ -181,6 +181,7 @@ BasicGame.Level1.prototype = {
         // Home button to return to the main menu
         this.buttonHome = game.add.button(0, 0, 'buttonHome', Povin.actionOnClickHome, this, 2, 1, 0);
         this.buttonHome.anchor.setTo(0.5, 0.5);
+        this.buttonHome.nextState = 'MainMenu';
         this.buttonHome.scale.setTo(.8, .8);
         Povin.place(this.buttonHome, 0.05, 0.13);
         this.buttonHome.events.onInputDown.add(Povin.onInputDownHome, this);
@@ -862,6 +863,7 @@ BasicGame.Level1.prototype = {
 
     // Start HighScores State
     startHighScores: function () {
+        Povin.HSNextState = 'Level1';
         Povin.gameLevel = this.level;
         Povin.level = this.level;
         Povin.totalPerfectLevel = this.totalPerfectLevel;
