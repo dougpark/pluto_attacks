@@ -47,6 +47,9 @@ BasicGame.Preloader.prototype = {
         //game.add.existing(this.intro);
         this.load.setPreloadSprite(this.pluto2);
 
+        //this.load.atlas('arcade', 'lib/virtualjoystick/skins/arcade-joystick.png', 'lib/virtualjoystick/skins/arcade-joystick.json');
+        this.load.atlas('generic', 'lib/virtualjoystick/skins/generic-joystick.png', 'lib/virtualjoystick/skins/generic-joystick.json');
+
         //this.loadScripts();
         this.loadImages();
         this.loadAudio();

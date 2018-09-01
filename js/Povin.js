@@ -24,6 +24,8 @@ var Povin = {
   totalAlienEscape: 0,
   score: 0,
   rank: 0,                  // store rank from scoreserver
+  useJoystick: false,
+  optionJoystick: false,
 
   highScore: function() {
     hsGameMode = 0;
@@ -238,6 +240,25 @@ var Povin = {
       this.fromLeft(obj,xPercent);
       
   },
+    placeY: function (percent, offset = 0) {
+        var y = game.height * percent;
+        y += offset;
+        return y;
+    },
+    placeX: function (percent, offset = 0) {
+       var x = game.width * percent;
+        x += offset;
+        return x;
+    },
+    fromTop: function (obj, percent, offset = 0) {
+        obj.y = game.height * percent;
+        obj.y += offset;
+    },
+    fromLeft: function (obj, percent, offset = 0) {
+        obj.x = game.width * percent;
+        obj.x += offset;
+    },
+
   center: function(obj) {
       obj.x = game.width / 2;
       obj.y = game.height / 2;
@@ -266,11 +287,7 @@ var Povin = {
       obj.y = game.height - (game.height * percent);
       obj.y -= offset;
   },
-  fromTop:function(obj,percent,offet=0)
-  {
-      obj.y=game.height*percent;
-      obj.y+=percent;
-  },
+  
   fromTop2: function(percent)
   {
       return game.height*percent;

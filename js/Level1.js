@@ -19,6 +19,20 @@ BasicGame.Level1.prototype = {
         this.gameMode = Povin.gameMode;
         this.level = Povin.gameLevel;
         Povin.firstRun = true;
+
+        // Joystick
+        if (game.device.desktop === true) {
+            Povin.useJoystick = false; // desktop 
+        } else {
+            // future for mobile full screen
+            //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
+            // iphonse 8splus 736x414 or 1472 x 828
+            if (Povin.optionJoystick === true){ // check user options
+                Povin.useJoystick = true; // mobile
+            } else { 
+                Povin.useJoystick = false;
+            }
+        }
     },
 
     // **************************************************************************************
@@ -33,6 +47,10 @@ BasicGame.Level1.prototype = {
         this.alienEscape = 0;
         this.totalPerfectLevel = 0;
         this.totalAlienEscape = 0;
+
+        
+
+        this.createJoystick();
 
         //  The scrolling starfield background
         this.starfield = game.add.tileSprite(0, 0, this.world.width, this.world.height, 'starfield');
@@ -228,6 +246,31 @@ BasicGame.Level1.prototype = {
         
     }, // end create
 
+    createJoystick: function() {
+
+        // create Joystick
+        
+        // Joystick
+        this.pad = this.game.plugins.add(Phaser.VirtualJoystick);
+
+        // Joystick
+        this.stick1 = this.pad.addStick(Povin.placeX(0.15), Povin.placeY(.89), 100, 'generic');
+        this.stick1.deadZone = 0;
+        this.stick1.scale = 0.6;
+        this.stick1.alignBottomLeft(20);
+
+        // Joystick button
+        this.buttonA = this.pad.addButton(Povin.placeX(.9), Povin.placeY(.9), 'generic', 'button1-up', 'button1-down');
+        this.buttonA.scale = 0.7;
+        //this.buttonA.onDown.add(this.pressButtonA, this);
+
+        if (!Povin.useJoystick) {
+            this.stick1.visible = 0;
+            this.buttonA.visible = 0;
+        }
+
+    },
+
     // button Continue
     actionOnClickContinue: function () {
         this.countDown();
@@ -385,6 +428,8 @@ BasicGame.Level1.prototype = {
                 this.shield.y = this.player.y;
             }
 
+            
+
 
             // Rules change once the player has energy
             if (this.player.energy > 0) {
@@ -453,17 +498,42 @@ BasicGame.Level1.prototype = {
                     game.input.pointer1.x < touchRight4) { this.player.body.velocity.x = this.setvel;}
                 */
 
-                // Just put the player where ever they touch
-                // If they touch in the bottom half of the screen
-                if (game.input.pointer1.y > game.world.centerY) {
-                    this.player.x = game.input.pointer1.x;
-                    if (game.input.pointer1.y < game.world.centerY) {
-                        this.player.y = game.world.centerY;
-                    } else {
-                        this.player.y = game.input.pointer1.y - 40;
+
+                // if using Joystick
+                if (Povin.useJoystick) {
+
+                    // Joystick
+                    var maxSpeed = 500;
+
+                    if (this.player.alive) {
+                        if (this.stick1.isDown) {
+                            //this.physics.arcade.velocityFromRotation(this.stick1.rotation, this.stick1.force * maxSpeed, this.player.body.velocity);
+                            this.player.body.velocity.x = this.stick1.forceX * maxSpeed;
+                            // var mul = 1;
+                            // if (this.stick1.forceX < 0) { mul = -1;}
+                            // this.player.body.velocity.x = mul * maxSpeed;
+                        }
+                        else {
+                            //this.player.body.velocity.set(0);
+                            this.player.body.velocity.x = 0;
+                        }
+                    }
+                } else { // not using Joystick
+            
+
+                    // Just put the player where ever they touch
+                    // If they touch in the bottom half of the screen
+                    if (game.input.pointer1.y > game.world.centerY) {
+                        this.player.x = game.input.pointer1.x;
+                        if (game.input.pointer1.y < game.world.centerY) {
+                            this.player.y = game.world.centerY;
+                        } else {
+                            this.player.y = game.input.pointer1.y - 40;
+                        }
                     }
                 }
             }
+            
 
             // Fire
             //if (this.fireButton.isDown) {
@@ -494,7 +564,7 @@ BasicGame.Level1.prototype = {
             game.physics.arcade.overlap(this.bullets, this.aliens, this.playerHitsEnemy, null, this);
             game.physics.arcade.overlap(this.enemyBullets, this.player, this.enemyHitsPlayer, null, this);
             game.physics.arcade.overlap(this.bullets, this.enemyBullets, this.bulletHitsBullet, null, this);
-        }
+        } // end player is alive
 
         // End of the level (all the enemies are killed)
         if (this.aliens.countLiving() == 0 && this.levelTimer == 0) {
@@ -725,6 +795,16 @@ BasicGame.Level1.prototype = {
 
         this.player.kill();
         this.enemyBullets.callAll('kill');
+
+        // Remove Virtual Joystick
+        if (Povin.useJoystick) {
+            this.stick1.visible = 0;
+            this.buttonA.visible = 0;
+            //this.stick1.destroy(); 
+            //this.buttonA.destroy();
+        }
+       
+        
 
         // Start the HighScores State
         this.startHighScores();
