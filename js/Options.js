@@ -88,7 +88,7 @@ BasicGame.Options.prototype = {
         this.checkboxJoystick.events.onInputDown.add(this.onInputDownCheckbox, this);
         this.checkboxJoystick.events.onInputUp.add(this.onInputUpCheckbox, this);
         //  Checkbox text
-        this.checkboxJoystickText = game.add.text(0, 0, 'Use on screen Joystick', { font: '20px Arial', fill: '#dc7b00' }); 
+        this.checkboxJoystickText = game.add.text(0, 0, 'Mobile on screen Joystick', { font: '20px Arial', fill: '#dc7b00' }); 
         this.checkboxJoystickText.x = this.checkboxJoystick.x + 30;
         this.checkboxJoystickText.y = this.checkboxJoystick.y - 10;
         this.setcheckboxJoystickTexture(this.checkboxJoystick); // set initial state
