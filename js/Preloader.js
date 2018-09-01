@@ -140,6 +140,7 @@ BasicGame.Preloader.prototype = {
         //game.load.spritesheet('buttonMusic', 'assets/buttons/button_music2.png', 100, 100);
         game.load.spritesheet('buttonMusicOn', 'assets/buttons/button_music_on.png', 227, 50);
         game.load.spritesheet('buttonMusicOff', 'assets/buttons/button_music_off.png', 227, 50);
+        game.load.spritesheet('buttonCheckbox', 'assets/buttons/crosshair135.png', 128, 128);
         game.load.image('options_title', 'assets/buttons/panel_options.png');
 
         // Game Levels

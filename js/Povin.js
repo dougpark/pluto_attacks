@@ -25,7 +25,8 @@ var Povin = {
   score: 0,
   rank: 0,                  // store rank from scoreserver
   useJoystick: false,
-  optionJoystick: false,
+  checkboxJoystick: false,
+  checkboxStatus: false,
 
   highScore: function() {
     hsGameMode = 0;

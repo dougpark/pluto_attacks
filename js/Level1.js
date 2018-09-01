@@ -27,7 +27,7 @@ BasicGame.Level1.prototype = {
             // future for mobile full screen
             //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
             // iphonse 8splus 736x414 or 1472 x 828
-            if (Povin.optionJoystick === true){ // check user options
+            if (Povin.checkboxJoystick === true){ // check user options
                 Povin.useJoystick = true; // mobile
             } else { 
                 Povin.useJoystick = false;
