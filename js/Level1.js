@@ -27,7 +27,7 @@ BasicGame.Level1.prototype = {
             // future for mobile full screen
             //game.scale.scaleMode = Phaser.ScaleManager.RESIZE;
             // iphonse 8splus 736x414 or 1472 x 828
-            if (Povin.checkboxJoystick === true){ // check user options
+            if (options.joystick.checked === true){ // check user options
                 Povin.useJoystick = true; // mobile
             } else { 
                 Povin.useJoystick = false;
@@ -298,7 +298,7 @@ BasicGame.Level1.prototype = {
         var txtAlienTween = game.add.tween(txtAlien).to({ x: Povin.fromLeft2(0.20), y: Povin.fromTop2(.05), alpha: .5 }, 2000, Phaser.Easing.Exponential.In, true);
         txtAlienTween.onComplete.add(function () { txtAlien.destroy(); }, this);
 
-        this.alienSfx.play();
+        if (options.playSFX.checked) {this.alienSfx.play();}
 
         this.score -= 999;
         this.alienEscape += 1;
@@ -437,7 +437,7 @@ BasicGame.Level1.prototype = {
 
                 // play shield sfx when shield becomes available
                 if (this.shield.visible == false) {
-                    this.shieldSfx.play();
+                    if (options.playSFX.checked) {this.shieldSfx.play();}
                 }
 
                 // show the shields
@@ -454,7 +454,7 @@ BasicGame.Level1.prototype = {
 
                 // play shield sfx when shield goes down
                 if (this.shield.visible == true) {
-                    this.shieldDownSfx.play();
+                    if (options.playSFX.checked) {this.shieldDownSfx.play();}
                 }
 
                 this.shield.visible = false;
@@ -587,7 +587,7 @@ BasicGame.Level1.prototype = {
             if (this.alienEscape == 0) {
                 this.totalPerfectLevel += 1;
 
-                this.perfectSfx.play();
+                if (options.playSFX.checked) {this.perfectSfx.play();}
 
                 var txtPerfectT = "Perfect Level";
                 var txtPerfect = game.add.text(game.world.centerX, game.world.height, txtPerfectT, { font: '36px HappyKiller', fill: '#30acfc', boundsAlignH: 'center' });
@@ -632,7 +632,7 @@ BasicGame.Level1.prototype = {
         enemyBullet.kill();
 
         //  And create an explosion :)
-        this.swordSfx.play();
+        if (options.playSFX.checked) {this.swordSfx.play();}
         var explosion = this.bullet_explosions.getFirstExists(false);
         explosion.reset(enemyBullet.body.x, enemyBullet.body.y);
         explosion.play('bullet_kaboom', 30, false, true);
@@ -672,7 +672,7 @@ BasicGame.Level1.prototype = {
             alien.lives = 1;
             alien.kill(); // kill the alien when player has no energy
             //  And create an explosion :)
-            this.explosionSfx.play();
+            if (options.playSFX.checked) {this.explosionSfx.play();}
             var explosion = this.explosions.getFirstExists(false);
             explosion.reset(alien.body.x, alien.body.y);
             explosion.play('kaboom', 30, false, true);
@@ -690,7 +690,7 @@ BasicGame.Level1.prototype = {
                     game.physics.arcade.moveToXY(alien, game.rnd.integerInRange(0, game.width), game.height, 300);
                     alien.lives = 5;
                     alien.atacking = true;
-                    this.alienPowerSfx.play();
+                    if (options.playSFX.checked) { this.alienPowerSfx.play(); } 
                 } else {
                     alien.lives -= 1;
                 }
@@ -702,7 +702,7 @@ BasicGame.Level1.prototype = {
                         game.physics.arcade.moveToXY(alien, game.rnd.integerInRange(0 + 100, game.width - 100), game.height, 300);
                         alien.lives = 2;
                         alien.atacking = true;
-                        this.alienPowerSfx.play();
+                        if (options.playSFX.checked) {this.alienPowerSfx.play();}
                     } else {
                         alien.lives -= 1;
                     }
@@ -713,7 +713,7 @@ BasicGame.Level1.prototype = {
                         //  And create an explosion :)
 
 
-                        this.explosionSfx.play();
+                        if (options.playSFX.checked) {this.explosionSfx.play();}
                         var explosion = this.explosions.getFirstExists(false);
                         explosion.reset(alien.body.x, alien.body.y);
                         explosion.play('kaboom', 30, false, true);
@@ -722,7 +722,7 @@ BasicGame.Level1.prototype = {
                     } else {    // alien absorbs the energy and breaks rank
                         game.physics.arcade.moveToObject(alien, this.player, 300);
                         alien.atacking = true;
-                        this.alienPowerSfx.play();
+                        if (options.playSFX.checked) {this.alienPowerSfx.play();}
                         alien.lives = 0;
                     }
                 }
@@ -752,7 +752,7 @@ BasicGame.Level1.prototype = {
             }
 
             // play cool explosion sound effect 
-            this.ship_explosionSfx.play();
+            if (options.playSFX.checked) {this.ship_explosionSfx.play();}
 
             //  And create an animated explosion :)
             var explosion = this.ship_explosions.getFirstExists(false);
@@ -770,7 +770,7 @@ BasicGame.Level1.prototype = {
 
             // play shieldhitsfx of shield getting hit
             //  And create an explosion :)
-            this.shieldHitSfx.play();
+            if (options.playSFX.checked) {this.shieldHitSfx.play();}
             var explosion = this.bullet_explosions.getFirstExists(false);
             explosion.reset(bullet.body.x, bullet.body.y);
             explosion.play('bullet_kaboom', 30, false, true);
@@ -791,7 +791,7 @@ BasicGame.Level1.prototype = {
         this.shield.visible = false;
 
         // play scream
-        this.wilhelmSfx.play();
+        if (options.playSFX.checked) {this.wilhelmSfx.play();}
 
         this.player.kill();
         this.enemyBullets.callAll('kill');
@@ -820,7 +820,7 @@ BasicGame.Level1.prototype = {
         // clear all the aliens from the screen
         this.aliens.removeAll(true);
 
-        this.getReadySfx.play();
+        if (options.playSFX.checked) {this.getReadySfx.play();}
 
         // animate some cool text up the screen
         var txtReadyT = "Ready Player One!";
@@ -904,7 +904,7 @@ BasicGame.Level1.prototype = {
             //  To avoid them being allowed to fire too fast we set a time limit
             if ((game.time.now > this.bulletTime) || (now)) {
                 // play bullet sound effects
-                this.blasterSfx.play();
+                if (options.playSFX.checked) {this.blasterSfx.play();}
 
                 //  Grab the first bullet we can from the pool
                 this.bullet = this.bullets.getFirstExists(false);
