@@ -165,6 +165,12 @@ var Povin = {
     };
   },
 
+  musicStop: function() {
+      Povin.bgMusic.stop();
+      Povin.musicEnabled = 0;
+
+  },
+
   musicStatus: function() {
 
     return Povin.bgMusic.isPlaying;
@@ -518,7 +524,12 @@ class Checkbox {
 
         // This should be done once a checkbox is selected
 
+        console.log(target);
         options.save(); // save options to local storage
+
+        if (!options.playMusic.checked) {
+            Povin.musicStop();
+        }
     }
 
     setTexture (target) {

@@ -82,12 +82,16 @@ BasicGame.Options.prototype = {
         this.buttonSpeaker.events.onInputDown.add(Povin.onInputDownSpeaker, this);
         this.buttonSpeaker.events.onInputUp.add(Povin.onInputUpSpeaker, this);
         Povin.setSpeakerTexture(this.buttonSpeaker);
+        if (!options.playMusic.checked) {
+            this.buttonSpeaker.alpha = 0;
+            this.buttonSpeaker.inputEnabled = false;
+        }
 
         // list of available game options
-        options.playSFX = new Checkbox('playSFX',Povin.placeX(.25), Povin.placeY(.4), 'Play SFX',options.playSFX.checked);       
-        options.playMusic = new Checkbox('playMusic',Povin.placeX(.25), Povin.placeY(.5), 'Play Music',options.playMusic.checked);       
-        options.playVoice = new Checkbox('playVoice',Povin.placeX(.25), Povin.placeY(.6), 'Play Voice',options.playVoice.checked);       
-        options.joystick = new Checkbox('joystick', Povin.placeX(.25), Povin.placeY(.7), 'Mobile use on screen joystick', options.joystick.checked);
+        options.playSFX = new Checkbox('playSFX',Povin.placeX(.25), Povin.placeY(.4), 'Enable SFX',options.playSFX.checked);       
+        options.playMusic = new Checkbox('playMusic',Povin.placeX(.25), Povin.placeY(.5), 'Enable Music',options.playMusic.checked);       
+        options.playVoice = new Checkbox('playVoice',Povin.placeX(.25), Povin.placeY(.6), 'Enable Voice',options.playVoice.checked);       
+        options.joystick = new Checkbox('joystick', Povin.placeX(.25), Povin.placeY(.7), 'Enable on screen joystick for mobile', options.joystick.checked);
 
     },
 
@@ -182,7 +186,16 @@ BasicGame.Options.prototype = {
     update: function() {
 
       //  Scroll the background
-      this.starfield.tilePosition.y += 2;   
+      this.starfield.tilePosition.y += 2; 
+      
+        if (!options.playMusic.checked) {
+            this.buttonSpeaker.alpha = 0;
+            this.buttonSpeaker.inputEnabled = false;
+        } else {
+            this.buttonSpeaker.alpha = 1;
+            this.buttonSpeaker.inputEnabled = true;
+
+        }
 
     },
 

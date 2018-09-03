@@ -51,6 +51,10 @@ BasicGame.Credits.prototype = {
         this.buttonSpeaker.events.onInputDown.add(Povin.onInputDownSpeaker, this);
         this.buttonSpeaker.events.onInputUp.add(Povin.onInputUpSpeaker, this);
         Povin.setSpeakerTexture(this.buttonSpeaker);
+        if (!options.playMusic.checked) {
+            this.buttonSpeaker.alpha = 0;
+            this.buttonSpeaker.inputEnabled = false;
+        }
 
         // Spacebar to exit state
         this.fireButton = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);

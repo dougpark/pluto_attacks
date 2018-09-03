@@ -213,6 +213,10 @@ BasicGame.Level1.prototype = {
         this.buttonSpeaker.events.onInputDown.add(Povin.onInputDownSpeaker, this);
         this.buttonSpeaker.events.onInputUp.add(Povin.onInputUpSpeaker, this);
         Povin.setSpeakerTexture(this.buttonSpeaker);
+        if (!options.playMusic.checked) {
+            this.buttonSpeaker.alpha = 0;
+            this.buttonSpeaker.inputEnabled = false;
+        }
 
         // Game Speed
         this.gameSpeedText = game.add.text(0, 0, this.gameSpeedTxt, { font: '20px HappyKiller', fill: '#0099ff', boundsAlignH: "center", boundsAlignV: "middle" });
