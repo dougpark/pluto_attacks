@@ -15,6 +15,9 @@ BasicGame.Options = function (game) {
 BasicGame.Options.prototype = {
 
     init: function() {
+
+       
+        
     },
 
     create: function () {
@@ -80,63 +83,19 @@ BasicGame.Options.prototype = {
         this.buttonSpeaker.events.onInputUp.add(Povin.onInputUpSpeaker, this);
         Povin.setSpeakerTexture(this.buttonSpeaker);
 
-        // checkbox indicator
-        this.checkboxJoystick = game.add.button(0, 0, 'buttonCheckbox', this.actionOnClickCheckbox, this);
-        this.checkboxJoystick.anchor.setTo(0.5, 0.5);
-        this.checkboxJoystick.scale.setTo(.3, .3);
-        Povin.place(this.checkboxJoystick, 0.05, 0.5);
-        this.checkboxJoystick.events.onInputDown.add(this.onInputDownCheckbox, this);
-        this.checkboxJoystick.events.onInputUp.add(this.onInputUpCheckbox, this);
-        //  Checkbox text
-        this.checkboxJoystickText = game.add.text(0, 0, 'Mobile on screen Joystick', { font: '20px Arial', fill: '#dc7b00' }); 
-        this.checkboxJoystickText.x = this.checkboxJoystick.x + 30;
-        this.checkboxJoystickText.y = this.checkboxJoystick.y - 10;
-        this.setcheckboxJoystickTexture(this.checkboxJoystick); // set initial state
-
+        // list of available game options
+        options.joystick = new Checkbox(Povin.placeX(.05), Povin.placeY(.5), 'Mobile use on screen joystick', options.joystick.checked); 
+        options.playSFX = new Checkbox(Povin.placeX(.05), Povin.placeY(.6), 'Play SFX',options.playSFX.checked);       
+        options.playMusic = new Checkbox(Povin.placeX(.05), Povin.placeY(.7), 'Play Music',options.playMusic.checked);       
+        options.playVoice = new Checkbox(Povin.placeX(.7), Povin.placeY(.8), 'Play Voice',options.playVoice.checked);       
         
-    },
-
-    // Action when click on the checkbox button
-    actionOnClickCheckbox: function (target) {
-
-        if (Povin.checkboxJoystick == true) {
-            Povin.checkboxJoystick = false; 
-        } else {
-            Povin.checkboxJoystick = true;  
-        }
-        this.setcheckboxJoystickTexture(target);    
-    },
-
-    setcheckboxJoystickTexture: function (target) {
-
-        if (Povin.checkboxJoystick == true) {
-            this.checkboxJoystick.frame = 1;
-        } else {
-            this.checkboxJoystick.frame = 0;
-        }
-    },
-
-    onInputDownCheckbox: function (target) {
-        game.add.tween(target.scale).to({
-            x: 0.2,
-            y: 0.2
-        }, 100, Phaser.Easing.Cubic.Out, true);
-    },
-
-    onInputUpCheckbox: function (target) {
-        game.add.tween(target.scale).to({
-            x: .3,
-            y: .3
-        }, 100, Phaser.Easing.Cubic.Out, true);
     },
 
     // Action when click on the music button
     actionOnClickMusic: function (target) {
 
-        Povin.musicToggle();
-
+        Povin.musicToggle() ;
         this.setMusicTexture(target);
-
         Povin.setSpeakerTexture(this.buttonSpeaker);
     },
 
@@ -144,7 +103,6 @@ BasicGame.Options.prototype = {
 
         if (Povin.musicStatus() == true) {
             target.loadTexture('buttonMusicOn');
-
         } else {
             target.loadTexture('buttonMusicOff');
         }  
@@ -251,3 +209,5 @@ BasicGame.Options.prototype = {
         this.state.start('HighScores', true, false);
     }
 };
+
+

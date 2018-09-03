@@ -428,9 +428,6 @@ BasicGame.Level1.prototype = {
                 this.shield.y = this.player.y;
             }
 
-            
-
-
             // Rules change once the player has energy
             if (this.player.energy > 0) {
                 this.player.fire += 1;

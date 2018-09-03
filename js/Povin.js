@@ -25,8 +25,6 @@ var Povin = {
   score: 0,
   rank: 0,                  // store rank from scoreserver
   useJoystick: false,
-  checkboxJoystick: false,
-  checkboxStatus: false,
 
   highScore: function() {
     hsGameMode = 0;
@@ -360,3 +358,108 @@ Util.prototype = {
 
 var util = new Util();
 
+// Options Menu
+var Options = {
+    
+};
+Options = function(){
+
+    this.joystick = new Object;
+    this.playSFX = new Object;
+    this.playMusic = new Object;
+    this.playVoice = new Object;
+};
+
+Options.prototype = {
+
+    load: function() {
+        // load all options from local storage
+        this.joystick.checked = false;
+        this.playSFX.checked = true;
+        this.playMusic.checked = true;
+        this.playVoice.checked = false;
+
+        console.log('load');
+        console.log('Joystick ' + this.joystick.checked);
+        console.log('PlaySFX ' + this.playSFX.checked)
+        console.log('PlayMusic ' + this.playMusic.checked)
+
+    },
+    
+    // save all options to local storage
+    save: function() {
+
+        console.log('save');
+        console.log('joystick.checked= '+ this.joystick.checked);
+        console.log('playSFX.checked= ' + this.playSFX.checked);
+        console.log('playMusic.checked= ' + this.playMusic.checked);
+        
+    },
+
+};
+
+// Create options object and load values from local storage
+var options = new Options();
+options.load();
+
+// UI Checkbox for options screen
+function Checkbox(x, y, text, checked) {
+
+    // checkbox indicator
+    this.checked = checked;
+    this.checkbox = game.add.button(0, 0, 'buttonCheckbox', this.actionOnClick, this);
+
+    //  Checkbox text
+    this.checkboxText = game.add.text(0, 0, text, { font: '26px Arial', fill: '#dc7b00' });
+    this.checkbox.anchor.setTo(0.5, 0.5);
+    this.checkbox.scale.setTo(.3, .3);
+    this.checkbox.x = x;
+    this.checkbox.y = y;
+    //Povin.place(this.checkbox, x, y);
+
+    this.checkbox.events.onInputDown.add(this.onInputDown, this);
+    this.checkbox.events.onInputUp.add(this.onInputUp, this);
+
+    this.checkboxText.x = this.checkbox.x + 30;
+    this.checkboxText.y = this.checkbox.y - 10;
+    this.setTexture(this.checkbox); // set initial state
+};
+
+Checkbox.prototype = {
+
+    // Action when click on the checkbox button
+    actionOnClick: function (target) {
+
+        if (this.checked == true) {
+            this.checked = false;
+        } else {
+            this.checked = true;
+        }
+        this.setTexture(target);
+
+        options.save();
+    },
+
+    setTexture: function (target) {
+
+        if (this.checked == true) {
+            target.frame = 1;
+        } else {
+            target.frame = 0;
+        }
+    },
+
+    onInputDown: function (target) {
+        game.add.tween(target.scale).to({
+            x: target.scale.x*.8,
+            y: target.scale.y*.8
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    },
+
+    onInputUp: function (target) {
+        game.add.tween(target.scale).to({
+            x: target.scale.x*1.25,
+            y: target.scale.y*1.25
+        }, 100, Phaser.Easing.Cubic.Out, true);
+    }
+};
