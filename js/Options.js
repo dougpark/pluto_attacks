@@ -39,7 +39,7 @@ BasicGame.Options.prototype = {
         this.imageGameMode_title.anchor.setTo(0.5, 0.5);
         this.imageGameMode_title.scale.setTo(1.25, .80);
         Povin.place(this.imageGameMode_title, .5, .1);
-        
+     /*    
         // Music Button
         this.buttonMusic = game.add.button(0,0, 'buttonMusicOn', this.actionOnClickMusic, this, 2, 1, 0);
         this.buttonMusic.anchor.setTo(0.5, 0.5);
@@ -48,12 +48,12 @@ BasicGame.Options.prototype = {
         this.buttonMusic.events.onInputDown.add(this.onInputDownMusic, this);
         this.buttonMusic.events.onInputUp.add(this.onInputUpMusic, this);
         //this.buttonMusic.frame = Povin.musicEnabled; 
-
+ */
         // High Scores Button
         this.buttonHighScores = game.add.button(0, 0, 'buttonHighScores', this.actionOnClickHighScores, this, 2, 1, 0);
         this.buttonHighScores.anchor.setTo(0.5, 0.5);
         this.buttonHighScores.scale.setTo(1, 1);
-        Povin.place(this.buttonHighScores, 0.5, 0.6);
+        Povin.place(this.buttonHighScores, 0.2, 0.9);
         this.buttonHighScores.events.onInputDown.add(this.onInputDownHighScores, this);
         this.buttonHighScores.events.onInputUp.add(this.onInputUpHighScores, this);
 
@@ -61,7 +61,7 @@ BasicGame.Options.prototype = {
         this.buttonCredits = game.add.button(0, 0, 'buttonCredits', this.actionOnClickCredits, this, 2, 1, 0);
         this.buttonCredits.anchor.setTo(0.5, 0.5);
         this.buttonCredits.scale.setTo(1, 1);
-        Povin.place(this.buttonCredits, 0.5, 0.8);
+        Povin.place(this.buttonCredits, 0.8, 0.9);
         this.buttonCredits.events.onInputDown.add(this.onInputDownCredits, this);
         this.buttonCredits.events.onInputUp.add(this.onInputUpCredits, this);
   
@@ -84,11 +84,11 @@ BasicGame.Options.prototype = {
         Povin.setSpeakerTexture(this.buttonSpeaker);
 
         // list of available game options
-        options.joystick = new Checkbox(Povin.placeX(.05), Povin.placeY(.5), 'Mobile use on screen joystick', options.joystick.checked); 
-        options.playSFX = new Checkbox(Povin.placeX(.05), Povin.placeY(.6), 'Play SFX',options.playSFX.checked);       
-        options.playMusic = new Checkbox(Povin.placeX(.05), Povin.placeY(.7), 'Play Music',options.playMusic.checked);       
-        options.playVoice = new Checkbox(Povin.placeX(.7), Povin.placeY(.8), 'Play Voice',options.playVoice.checked);       
-        
+        options.playSFX = new Checkbox('playSFX',Povin.placeX(.25), Povin.placeY(.4), 'Play SFX',options.playSFX.checked);       
+        options.playMusic = new Checkbox('playMusic',Povin.placeX(.25), Povin.placeY(.5), 'Play Music',options.playMusic.checked);       
+        options.playVoice = new Checkbox('playVoice',Povin.placeX(.25), Povin.placeY(.6), 'Play Voice',options.playVoice.checked);       
+        options.joystick = new Checkbox('joystick', Povin.placeX(.25), Povin.placeY(.7), 'Mobile use on screen joystick', options.joystick.checked);
+
     },
 
     // Action when click on the music button

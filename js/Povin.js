@@ -319,25 +319,20 @@ var Povin = {
 
 
 /**************************************************************************************
-* Util Object
+* Util Class
 * @author Doug Park
 * @version v1.0
-* @desc Utility object 
-* @date 2018-07-022
+* @desc Utility Class 
+* @date 2018-07-22
 **************************************************************************************/
-
-var Util = {};
-
-Util = function () {
+class Util {
     // object level properties go here
+    constructor() {
 
-};
-  
-Util.prototype = {
+    }
 
-  // add commas to number string
-  addCommas: function(nStr)
-  {
+    // add commas to number string
+    addCommas(nStr) {
       nStr += '';
       var x = nStr.split('.');
       var x1 = x[0];
@@ -347,88 +342,172 @@ Util.prototype = {
           x1 = x1.replace(rgx, '$1' + ',' + '$2');
       }
       return x1 + x2;
-  } , 
+    } 
 
-  // Utility code to get a URL parameter
-  getURLParameter: function(name) {
-    return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
-  }
+    // Utility code to get a URL parameter
+    getURLParameter(name) {
+        return decodeURIComponent((new RegExp('[?|&]' + name + '=' + '([^&;]+?)(&|#|;|$)').exec(location.search) || [null, ''])[1].replace(/\+/g, '%20')) || null;
+    }
 
-}
+} // end Util
 
 var util = new Util();
 
-// Options Menu
-var Options = {
-    
-};
-Options = function(){
+/**************************************************************************************
+* Options Class
+* @author Doug Park
+* @version v1.0
+* @desc Keep track of user selected options
+* @date 2018-09-02
+**************************************************************************************/
+class Options {
 
-    this.joystick = new Object;
-    this.playSFX = new Object;
-    this.playMusic = new Object;
-    this.playVoice = new Object;
-};
+    constructor() {
+        this.list = []; // store all options objects
+        this.joystick = new Object;
+        this.playSFX = new Object;
+        this.playMusic = new Object;
+        this.playVoice = new Object;
+        this.setDefaults();
+        this.load();
+    }
 
-Options.prototype = {
-
-    load: function() {
-        // load all options from local storage
+    setDefaults() {
         this.joystick.checked = false;
         this.playSFX.checked = true;
         this.playMusic.checked = true;
         this.playVoice.checked = false;
+    }
 
-        console.log('load');
-        console.log('Joystick ' + this.joystick.checked);
-        console.log('PlaySFX ' + this.playSFX.checked)
-        console.log('PlayMusic ' + this.playMusic.checked)
+    getProperties() {
+   
+        var key;
+        var value;
 
-    },
+        /* Don't delete  
+        // return string
+        var s = ''; // string 
+        for (var i = 0; i < this.list.length; i++) {
+            s += this.list[i].key + ':' + this.list[i].checked + ','; // string of key value pairs
+        }
+        */
+
+        /*  Dont' delete     
+        // return array with key value pairs
+        var arr = []; // array to contain just the key value pairs
+        for (var i = 0; i < this.list.length; i++) {
+            key = this.list[i].key; // get the key from the list array
+            value = this.list[i].checked; // get the checked value fro list array
+            arr.push({ key: key, checked: value }); // create arrray of key, value paires
+        }
+        */
+
+        // return object with key value properties
+        var brr = new Object; // obj to contain just the key value pairs
+        for (var i = 0; i < this.list.length; i++) {
+            key = this.list[i].key; // get the key from the list array
+            value = this.list[i].checked; // get the checked value fro list array
+            brr[key]=value;// create properties in object of key, value pairs    
+        }
+        //console.log(s);
+        //console.log(arr);
+        //console.log(brr);
+        return brr;
+
+    }
+
+    toJSON(obj) { // create a JSON string based on the properties in the object
+        return JSON.stringify(obj);
+    }
+
+    toObj(json) {
+        return JSON.parse(json); // create an object with prooperties from JSON string
+    }
+
+    setProperties(object) { // pass in the obj created from the JSON string
+        /* Don't delete
+        // set object.checked to value from obj created from JSON string
+        // safe for older browsers ECMA5
+        for (var property in object) { // loop through all properties in object
+            if (object.hasOwnProperty(property)) { // make sure property is not from parent object
+                console.log(property+":"+object[property]); // log the property and the value
+                this[property].checked = object[property]; // set obj.checked to value
+            }
+        }
+         */
+
+        // set object.checked to value from obj created from JSON string
+        // uses ES2017 features
+        Object.keys(object).forEach(property => { // loop through all properties in object
+            //console.log(`${property}:${object[property]}`) // log the property and the value
+            this[property].checked = object[property]; // set obj.checked to value
+        }
+        
+        );
+    }
+
+    // load all options from local storage
+    load() {
+        if (localStorage.getItem("PlutoAttacksOptions") !== null) {
+            var j= localStorage.getItem("PlutoAttacksOptions");
+            var o = this.toObj(j); // make obj created from JSON string
+            this.setProperties(o); // set properties from obj created from JSON string
+        } else {
+            this.save(); // save defaults
+        }
+    }
     
     // save all options to local storage
-    save: function() {
+    save() {
+        var obj = this.getProperties(); // get obj from properties list
+        var j = this.toJSON(obj); // make JSON string from obj
+        // save json string to local storage
+        localStorage.setItem("PlutoAttacksOptions", j);   
+    }
 
-        console.log('save');
-        console.log('joystick.checked= '+ this.joystick.checked);
-        console.log('playSFX.checked= ' + this.playSFX.checked);
-        console.log('playMusic.checked= ' + this.playMusic.checked);
-        
-    },
-
-};
+} // end Options
 
 // Create options object and load values from local storage
 var options = new Options();
-options.load();
+
+/**************************************************************************************
+* Checkbox Class
+* @author Doug Park
+* @version v1.0
+* @desc Display a checkbox and text on the screen
+* @date 2018-09-02
+**************************************************************************************/
 
 // UI Checkbox for options screen
-function Checkbox(x, y, text, checked) {
+class Checkbox {
+    constructor(key,x, y, text, checked) {
 
-    // checkbox indicator
-    this.checked = checked;
-    this.checkbox = game.add.button(0, 0, 'buttonCheckbox', this.actionOnClick, this);
+        // save all checkbox instances in an array
+        options.list.push(this);
 
-    //  Checkbox text
-    this.checkboxText = game.add.text(0, 0, text, { font: '26px Arial', fill: '#dc7b00' });
-    this.checkbox.anchor.setTo(0.5, 0.5);
-    this.checkbox.scale.setTo(.3, .3);
-    this.checkbox.x = x;
-    this.checkbox.y = y;
-    //Povin.place(this.checkbox, x, y);
+        // checkbox indicator
+        this.checked = checked;
+        this.key = key;
+        this.checkbox = game.add.button(0, 0, 'buttonCheckbox', this.actionOnClick, this);
 
-    this.checkbox.events.onInputDown.add(this.onInputDown, this);
-    this.checkbox.events.onInputUp.add(this.onInputUp, this);
+        //  Checkbox text
+        this.checkboxText = game.add.text(0, 0, text, { font: '26px Arial', fill: '#dc7b00' });
+        this.checkbox.anchor.setTo(0.5, 0.5);
+        this.checkbox.scale.setTo(.3, .3);
+        this.checkbox.x = x;
+        this.checkbox.y = y;
+        //Povin.place(this.checkbox, x, y);
 
-    this.checkboxText.x = this.checkbox.x + 30;
-    this.checkboxText.y = this.checkbox.y - 10;
-    this.setTexture(this.checkbox); // set initial state
-};
+        this.checkbox.events.onInputDown.add(this.onInputDown, this);
+        this.checkbox.events.onInputUp.add(this.onInputUp, this);
 
-Checkbox.prototype = {
+        this.checkboxText.x = this.checkbox.x + 30;
+        this.checkboxText.y = this.checkbox.y - 10;
+        this.setTexture(this.checkbox); // set initial state
+    }
 
     // Action when click on the checkbox button
-    actionOnClick: function (target) {
+    actionOnClick (target) {
 
         if (this.checked == true) {
             this.checked = false;
@@ -437,29 +516,31 @@ Checkbox.prototype = {
         }
         this.setTexture(target);
 
-        options.save();
-    },
+        // This should be done once a checkbox is selected
 
-    setTexture: function (target) {
+        options.save(); // save options to local storage
+    }
+
+    setTexture (target) {
 
         if (this.checked == true) {
             target.frame = 1;
         } else {
             target.frame = 0;
         }
-    },
+    }
 
-    onInputDown: function (target) {
+    onInputDown (target) {
         game.add.tween(target.scale).to({
             x: target.scale.x*.8,
             y: target.scale.y*.8
         }, 100, Phaser.Easing.Cubic.Out, true);
-    },
+    }
 
-    onInputUp: function (target) {
+    onInputUp (target) {
         game.add.tween(target.scale).to({
             x: target.scale.x*1.25,
             y: target.scale.y*1.25
         }, 100, Phaser.Easing.Cubic.Out, true);
     }
-};
+}; // end Checkbox
