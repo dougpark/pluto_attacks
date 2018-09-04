@@ -108,7 +108,7 @@
                     this.physics.startSystem(Phaser.Physics.ARCADE);
                     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
                     //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
-                    //this.scale.setMinMax(800, 600, 800,600);
+                    //this.scale.setMinMax(800, 600, 1200,900);
                     this.scale.pageAlignHorizontally = true;
                     this.scale.pageAlignVertically = true;
                 },
@@ -225,7 +225,7 @@
 
                     this.graphics.lineStyle(0);
                     this.graphics.beginFill("0xfff", 1);
-                    this.graphics.drawCircle(this.placeX(6), this.placeY(6), this.scaleAt(100));
+                    this.graphics.drawCircle(Povin.placeX(.5), Povin.placeY(.5), this.scaleAt(50));
                     this.graphics.endFill();
 
                     this.graphics.lineStyle(20, 0x0000FF, 1);
@@ -260,9 +260,9 @@
 
                     // move along a circle
                     angleRadians = Phaser.Math.degToRad(this._angle);
-                    var _centerx = this.placeX(6);
-                    var _centery = this.placeY(6);
-                    var _radius = this.placeX(2); // scale the radius
+                    var _centerx = Povin.placeX(.5);
+                    var _centery = Povin.placeY(.5);
+                    var _radius = Povin.placeX(.1); // scale the radius
                     var _squarex = Math.cos(angleRadians) * _radius + _centerx;
                     var _squarey = Math.sin(angleRadians) * _radius + _centery;
                     this._angle += 1; // speed of rotation
@@ -411,17 +411,17 @@
 
                // called during update and resize
                two: function() {
-                   //Povin.place(this.tText,0.5,0.1);
-                   this.place(this.tText, 6,1);
+                   Povin.place(this.tText,0.5,0.1);
+                   //this.place(this.tText, 6,1);
 
-                   //Povin.place(this.tText2,0.5,0.9);
-                   this.place(this.tText2, 6,11);
+                   Povin.place(this.tText2,0.5,0.9);
+                //    this.place(this.tText2, 6,11);
 
-                   //Povin.place(this.tText3,0.1,0.5);
-                   this.place(this.tText3,1,6);
+                   Povin.place(this.tText3,0.1,0.5);
+                //    this.place(this.tText3,1,6);
 
-                   //Povin.place(this.tText4,0.9,0.5);
-                   this.place(this.tText4, 11,6);
+                   Povin.place(this.tText4,0.9,0.5);
+                //    this.place(this.tText4, 11,6);
 
 
                },
@@ -495,6 +495,16 @@
                     this.fromTop(obj,yPercent, Yoffset); 
                     this.fromLeft(obj,xPercent, Xoffset);    
                 }, 
+                 placeY: function (percent, offset = 0) {
+                    var y = game.height * percent;
+                    y += offset;
+                    return y;
+                },
+                placeX: function (percent, offset = 0) {
+                    var x = game.width * percent;
+                    x += offset;
+                    return x;
+                },
                 fromTop:function(obj,percent,offset=0) 
                 { 
                     obj.y = game.height * percent; 
