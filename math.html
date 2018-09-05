@@ -560,11 +560,12 @@
                     //console.log(this.myArr[option.id + '12*12'].right);
                 },
 
+                // check if key has been answered correctly and in fast time
                 gotIt: function (key) {
 
                     key = option.id + key;
                     console.log('gotIt='+key + this.myArr[key])
-                    if (this.myArr[key].right && this.myArr[key].time <= 2) {
+                    if (this.myArr[key].right && this.myArr[key].time <= option.buzzer) {
                         return true; // right and fast - GotIt!
                     } else {
                         return false; // still needs to study this one
