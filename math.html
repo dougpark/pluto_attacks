@@ -1,0 +1,898 @@
+<!doctype html>
+<html lang="en">
+    <head>
+
+        <meta charset="UTF-8" />
+        <title>Povin Math</title>
+        <link rel="icon" type="image/png" href="/images/povingames-icon-512.png" /> 
+        <link rel="apple-touch-icon" href="/images/povingames-icon-512.png" /> 
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+        <meta name="viewport" content="initial-scale=1 maximum-scale=1 user-scalable=0" />
+        <style>
+            html {margin: 0px; padding: 0px}
+            body {margin: 0px; padding: 0px}
+            @font-face {
+                font-family: HappyKiller;
+                src: url('HappyKiller.ttf') format('truetype');
+            }
+            body {
+                margin: 0px;
+                padding: 0px;
+                font-family: 'HappyKiller', 'arial', 'sans-serif';
+                font-size: 14px;
+                background-color: #000000;
+                color: #0099ff;
+            }
+            
+            div.game {
+                width:100%;
+                max-width:100%;
+                height:100%;
+                max-height:100%;
+
+                position: absolute;
+                top:0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                margin: auto;
+                
+            }
+        </style>
+        <link rel="stylesheet" href="css/stylesheet.css" type="text/css" charset="utf-8" />
+    </head>
+    <body>
+        <div id="game"></div>   
+        <div id="orientation"></div>
+
+        <script src="lib/phaser.2.6.2.min.js" type="text/javascript"></script> 
+        <script >
+            //src="js/Povin.js">
+        </script>  
+     
+
+        <script>
+
+            var getWidth = function () {
+                    var width = window.innerWidth
+                        || document.documentElement.clientWidth
+                        || document.body.clientWidth;
+                    //width = width * window.devicePixelRatio;
+                    if (width > 450) {width= 450}
+                    return width;
+                }
+
+                var getHeight = function () {
+                    var height = window.innerHeight
+                        || document.documentElement.clientHeight
+                        || document.body.clientHeight;
+                    //height = height * window.devicePixelRatio;
+                    if (height > 850) {height =850}
+                    return height;
+                }
+
+            // user defined options
+            var option = {};
+            
+                option.buzzer = 2000;
+                option.id = 'player1' + '.';
+                option.level = 2; // x 
+                option.max = 10; // y
+
+            var game = new Phaser.Game(getWidth(), getHeight(), Phaser.AUTO, 'game');
+
+            var BasicGame = function(game) {};
+
+            BasicGame.Boot = function (game) {
+                // nothing here
+                this.SFXStatus = true;
+
+                // user defined options - add user screen
+                
+                
+            };
+
+            BasicGame.Boot.prototype = 
+            {
+                init: function() {
+                    // initialize the Povin object
+                    Povin.game = game;
+
+                    this.physics.startSystem(Phaser.Physics.ARCADE);
+                    this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                    //this.scale.setMinMax(320, 480, 450,850);
+                    this.scale.pageAlignHorizontally = true;
+                    this.scale.pageAlignVertically = true;
+
+                    /* game.scale.setResizeCallback(function () {
+                        this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                        console.log('resizecallback');
+                        var width = this.game.scale.width; //this.getWidth();
+                        var height = this.game.scale.height; //this.getHeight();
+                        //console.log('size: ' + width + ', ' + height);
+                        this.game.camera.setSize(width, height);
+                        this.game.renderer.resize(width, height);
+                        this.game.scale.setMaximum();
+                        this.game.scale.refresh();
+                        Povin.resized = true;
+                    }); */
+                },
+
+                preload: function() {
+                    game.time.advancedTiming = true;
+
+                    game.load.spritesheet('invader', 'assets/images/invader32x32x4.png', 32, 32);
+                    game.load.spritesheet('buttonAnswer', 'assets/buttons/crosshair135.png', 128, 128);
+                    game.load.spritesheet('buttonGo', 'assets/buttons/button_go.png', 227, 50);
+                    game.load.spritesheet('buttonHome', 'assets/buttons/button_home1a.png', 100, 100);
+                    game.load.spritesheet('buttonSpeaker', 'assets/buttons/button_speaker2.png');
+                    game.load.spritesheet('buttonSpeakerOff', 'assets/buttons/button_speaker2_off.png');
+                
+                    game.load.audio('perfectSfx', 'assets/audio/SUCCESS_PICKUP_Collect_Chime_01.wav'); 
+                    game.load.audio('wrongSfx', 'assets/audio/TECH CHARGER Power Down 05.wav'); 
+                    game.load.audio('lateSfx', 'assets/audio/ELECTRIC Power Down 02.wav'); 
+                    
+                },
+
+                create: function() 
+                {
+                    this._angle = 1;
+
+                    this.questCurr = 0;
+                    this.questTotal = 0;
+                    this.questRight = 0;
+                    this.questCum = 0;
+
+                    this.wasd = {
+                        w: game.input.keyboard.addKey(Phaser.Keyboard.W),
+                        s: game.input.keyboard.addKey(Phaser.Keyboard.S),
+                        a: game.input.keyboard.addKey(Phaser.Keyboard.A),
+                        d: game.input.keyboard.addKey(Phaser.Keyboard.D),
+                        sp: game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR)
+                    };
+                    this.wasd.a.onDown.add(this.actionOnClick1, this)
+                    this.wasd.s.onDown.add(this.actionOnClick2, this)
+                    this.wasd.d.onDown.add(this.actionOnClick3, this)
+                    this.wasd.sp.onDown.add(this.actionOnClickGo, this)
+
+                    this.graphics = game.add.graphics(0, 0);
+
+                    // audio
+                    this.perfectSfx = game.add.audio('perfectSfx');
+                    this.wrongSfx = game.add.audio('wrongSfx');
+                    this.lateSfx = game.add.audio('lateSfx');
+
+                    // Speaker button to start/stop the background music
+                    this.buttonSpeaker = game.add.button(0, 0, 'buttonSpeaker', this.actionOnClickSpeaker, this, 2, 1, 0);
+                    this.buttonSpeaker.anchor.setTo(0.5, 0.5);
+                    this.buttonSpeaker.scale.setTo(.6, .6);
+                    Povin.place(this.buttonSpeaker, 0.92, 0.072);
+                    this.buttonSpeaker.events.onInputDown.add(this.onInputDownSpeaker, this);
+                    this.buttonSpeaker.events.onInputUp.add(this.onInputUpSpeaker, this);
+
+                    // Home button to return to the main menu
+                    this.buttonHome = game.add.button(0, 0, 'buttonHome', Povin.actionOnClickHome, this, 2, 1, 0);
+                    this.buttonHome.anchor.setTo(0.5, 0.5);
+                    this.buttonHome.nextState = 'MainMenu';
+                    this.buttonHome.scale.setTo(.8, .8);
+                    Povin.place(this.buttonHome, 0.12, 0.10);
+                    this.buttonHome.events.onInputDown.add(Povin.onInputDownHome, this);
+                    this.buttonHome.events.onInputUp.add(Povin.onInputUpHome, this);
+                    
+                    //  invader
+                    this.invader = game.add.sprite(0, 0, 'invader');
+                    this.invader.anchor.setTo(0.5, 0.5);
+                    //this.invader.scale.setTo(.3, .3);
+                    //Povin.place(this.invader, 0.2, 0.6);
+                    Povin.place(this.invader, .2, .9);
+                    game.physics.enable(this.invader, Phaser.Physics.ARCADE);
+                    this.invader.body.collideWorldBounds = true;
+                    this.invader.animations.add('fly', [0, 1, 2, 3], 20, true);
+                    this.invader.play('fly');
+
+                     this.invaderTween = game.add.tween(this.invader).to({ x: Povin.placeX(.8), y: Povin.placeY(.9) },
+                      option.buzzer, Phaser.Easing.Quadratic.InOut, true, 0, 1000, true);
+
+                    this.invader2 = game.add.sprite(Povin.placeX(.5), Povin.placeY(.15), 'invader');
+                    this.invader2.anchor.setTo(0.5, 0.5);
+                    this.invader2.animations.add('fly', [0, 1, 2, 3], 20, true);
+                    this.invader2.play('fly');
+
+                    //this.one();
+
+                    // One Button
+                    this.button1 = game.add.button(0, 0, 'buttonAnswer', this.actionOnClick1, this, 1, 0, 0);
+                    this.button1.anchor.setTo(0.5, 0.5);
+                    this.button1.scale.setTo(.5, .5);
+                    Povin.place(this.button1, 0.3, 0.67);
+                    this.button1.inputEnabled = true;
+                    this.button1.events.onInputDown.add(this.onInputDown, this);
+                    this.button1.events.onInputUp.add(this.onInputUp, this);
+               
+                    // Two Button
+                    this.button2 = game.add.button(0, 0, 'buttonAnswer', this.actionOnClick2, this, 1, 0, 0);
+                    this.button2.anchor.setTo(0.5, 0.5);
+                    this.button2.scale.setTo(.5, .5);
+                    Povin.place(this.button2, 0.5, 0.67);
+                    this.button2.inputEnabled = true;
+                    this.button2.events.onInputDown.add(this.onInputDown, this);
+                    this.button2.events.onInputUp.add(this.onInputUp, this);
+
+                    // Three Button
+                    this.button3 = game.add.button(0, 0, 'buttonAnswer', this.actionOnClick3, this, 1, 0, 0);
+                    this.button3.anchor.setTo(0.5, 0.5);
+                    this.button3.scale.setTo(.5, .5);
+                    Povin.place(this.button3, 0.7, 0.67);
+                    this.button3.inputEnabled = true;
+                    this.button3.events.onInputDown.add(this.onInputDown, this);
+                    this.button3.events.onInputUp.add(this.onInputUp, this);
+                    
+                    // Disable until Go
+                    this.button1.inputEnabled = false;
+                    this.button2.inputEnabled = false;
+                    this.button3.inputEnabled = false;
+
+                    // Go Button
+                    this.buttonGo = game.add.button(0, 0, 'buttonGo', this.actionOnClickGo, this, 2, 2, 2);
+                    this.buttonGo.anchor.setTo(0.5, 0.5);
+                    this.buttonGo.scale.setTo(1, 1);
+                    Povin.place(this.buttonGo, 0.5, 0.80);
+                    this.buttonGo.inputEnabled = true;
+                    this.buttonGo.events.onInputDown.add(this.onInputDown, this);
+                    this.buttonGo.events.onInputUp.add(this.onInputUp, this);
+                    
+                    //  Title Text
+                    this.tString = 'Povin Math';
+                    this.tText = game.add.text(0, 0, this.tString, { font: '42px arial', fill: '#0099ff', align: 'center' });
+                    this.tText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.tText, 0.5, 0.07);
+
+                    //  Question Text
+                    this.qString = '';
+                    this.qText = game.add.text(0, 0, this.qString, { font: '40px arial', fill: '#dc7b00', align: 'center' });
+                    this.qText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.qText, 0.5, 0.45);
+                    //  Question Result Text
+                    this.qRString = '';
+                    this.qRText = game.add.text(0, 0, this.qRString, { font: '40px arial', fill: '#0099ff', align: 'center' });
+                    this.qRText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.qRText, 0.5, 0.50);
+
+
+                    //  Answer 1 Text
+                    this.a1String = '';
+                    this.a1Text = game.add.text(0, 0, this.a1String, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.a1Text.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.a1Text, 0.3, 0.6);
+
+                    //  Answer 2 Text
+                    this.a2String = '';
+                    this.a2Text = game.add.text(0, 0, this.a2String, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.a2Text.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.a2Text, 0.5, 0.6);
+
+                    //  Answer 3 Text
+                    this.a3String = '';
+                    this.a3Text = game.add.text(0, 0, this.a3String, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.a3Text.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.a3Text, 0.7, 0.6);
+
+                    // Question Count Heading
+                    this.cString = 'Level';
+                    this.cText = game.add.text(0, 0, this.cString, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.cText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.cText, 0.2, 0.24);
+                    // Question Count 
+                    this.c2String = option.level;
+                    this.c2Text = game.add.text(0, 0, this.c2String, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.c2Text.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.c2Text, 0.2, 0.3);
+
+                    // Right Count Heading
+                    this.rString = 'Right';
+                    this.rText = game.add.text(0, 0, this.rString, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.rText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.rText, 0.8, 0.24);
+                    // Right Count 
+                    this.r2String = '0';
+                    this.r2Text = game.add.text(0, 0, this.r2String, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.r2Text.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.r2Text, 0.8, 0.3);
+
+                    // Timer Heading
+                    this.tHString = 'Time';
+                    this.tHText = game.add.text(0, 0, this.tHString, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.tHText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.tHText, 0.5, 0.24);
+
+                    // Timer Text
+                    this.timerString = '0';
+                    this.timerText = game.add.text(0, 0, this.timerString, { font: '36px arial', fill: '#dc7b00', align: 'center' });
+                    this.timerText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.timerText, 0.5, 0.3);
+
+                    // setup questions
+                    this.initQuestion();
+
+                    // Global Properties
+                    
+                    this.trigger = true;
+                    this.myArr = {};
+                    
+                    
+               }, // end create
+               
+               
+
+                update: function() {
+                    if (this.timer) {
+                        this.timerText.text = (game.time.now - this.startTime)/1000;
+                        //late
+                        var diff = (game.time.now - this.startTime);
+                        
+                        if ((this.trigger) && ( diff >= option.buzzer)) {
+                            this.trigger = false;
+                            this.slow = true;
+                            if (this.SFXStatus) { this.lateSfx.play(); }
+                        }
+                        
+                        // to slow, time out
+                        if (diff > option.buzzer*2) {
+                            this.trigger = false;
+                            this.slow = true;
+                            if (this.SFXStatus) { this.lateSfx.play(); }
+                            this.checkAnswer(0);
+                        }
+
+                    }
+                  
+                    this.graphics.clear();
+                    this.graphics.lineStyle(5, 0x0099FF, 1);
+                    this.graphics.drawRect(0, 0, game.width, game.height);
+
+                    //this.moveCircle();
+                }, // end update
+
+                moveCircle: function() {
+                    // move along a circle
+                    angleRadians = Phaser.Math.degToRad(this._angle);
+                    var _centerx = Povin.placeX(.5);
+                    var _centery = Povin.placeY(.5);
+                    var _radius = Povin.placeX(.1); // scale the radius
+                    var _squarex = Math.cos(angleRadians) * _radius + _centerx;
+                    var _squarey = Math.sin(angleRadians) * _radius + _centery;
+                    this._angle += 1; // speed of rotation
+                    //this.graphics.lineStyle(0);
+                    //this.graphics.beginFill("0xff0000", 1);
+                    var _diameter = Povin.placeX(.1); // scale the diameter
+                    //this.graphics.drawCircle(_squarex, _squarey, _diameter );
+                    this.graphics.endFill();
+                    this.invader2.x = _squarex;
+                    this.invader2.y = _squarey;
+                },
+
+                initQuestion: function () {
+
+                    this.questTotal = 12; // how many questions this round
+                    this.x = option.level; // get first x value
+                    this.y = option.max+1; // get first y value
+                    this.a = 0;
+                },
+
+                nextQuestion: function () {
+
+                    // determine next x and y values
+                    this.y--;
+                    if (this.y<0) {this.y=option.max}
+                    this.makeKey(); // make next key
+                    var count = 0;
+
+                    try {
+                        while (this.gotIt(this.key)) { // loop till not got it
+                            this.y--;
+                            if (this.y < 0) {this.y=option.max}
+                            this.makeKey();
+
+                            count ++;
+                            if (count>option.max) {
+                                this.roundComplete = true;
+                                break
+                            } // got it all
+                        }
+                    } catch(err) {} // ignore error, they don't got it yet 
+
+                    if (this.roundComplete) {
+                        console.log('Round Complete');
+                    }
+                    
+
+                    // display question
+                    this.qText.text = this.key;
+
+                    
+                    // display answers in random order
+                    var random = game.rnd.integerInRange(1, 3);
+                    
+                    switch (random) {
+                        case 1:
+                            //code block
+                            this.answerButton = 1;
+                            this.b1Text = this.a
+                            this.b2Text = this.w1
+                            this.b3Text = this.w2
+                            break;
+                        case 2:
+                            //code block
+                            this.answerButton = 2;
+                            this.b1Text = this.w1
+                            this.b2Text = this.a
+                            this.b3Text = this.w2
+                            break;
+                        case 3:
+                            //code block
+                            this.answerButton = 3;
+                            this.b1Text = this.w2
+                            this.b2Text = this.w1
+                            this.b3Text = this.a
+                            break;
+                        
+                        default:
+                            //code block
+                            break;
+                    }
+
+
+                },
+
+                makeKey: function () {
+                    // make this a user option
+                    var questionType = 'Multiplication';
+
+                    switch (questionType) {
+                        case 'Multiplication':
+                            //code block
+                            this.a = this.x * this.y;
+                            this.key = this.x + '*' + this.y;
+                            this.w1 = (this.x - 1) * this.y;
+                            this.w2 = this.x * (this.y + 1);
+                            if (this.y == 0 && this.x == 0) {
+                                this.w1 = 1;
+                                this.w2 = -1;
+                            } else {
+                                if (this.y == 0) {
+                                    this.w1 = 1;
+                                    this.w2 = this.x;
+                                } else {
+                                    if (this.x == 0) {
+                                        this.w1 = 1;
+                                        this.w2 = this.y;
+                                    }
+                                }
+                            }
+                            break;
+                        case 'Division':
+                            //code block
+                            this.a = this.x / this.y;
+                            break;
+                        case 'Addition':
+                            //code block
+                            this.a = this.x + this.y;
+                            break;
+                        case 'Subtraction':
+                            //code block
+                            this.a = this.x - this.y;
+                            break;
+                        default:
+                            //code block
+                            break;
+                    }
+
+                },
+
+
+                go: function() {
+                    this.button1.frame = 0;
+                    this.button2.frame = 0;
+                    this.button3.frame = 0;
+                    this.button1.inputEnabled = true;
+                    this.button2.inputEnabled = true;
+                    this.button3.inputEnabled = true;
+                    this.buttonGo.inputEnabled = false;
+                    this.qRText.text = '';
+                    this.trigger = true;
+                    this.slow = false;
+
+                    this.questCurr++;
+                    this.nextQuestion();
+                    this.updateText();
+                    
+                    this.startTime = game.time.now;
+                    this.timer = true;
+
+                },
+
+                checkAnswer: function(answerButton) {
+                    // stop the timer
+                    this.timer = false;
+
+                    // disable answer buttons
+                    this.button1.inputEnabled = false;
+                    this.button2.inputEnabled = false;
+                    this.button3.inputEnabled = false;
+                    this.buttonGo.inputEnabled = true;
+                    var right = false;
+                    // check if correct button pressed
+                    if (this.answerButton == answerButton) {
+                        this.questRight++;
+                        if (this.slow) {
+                            this.qRText.text = "Slow but Correct!";
+                         } else {
+                             this.qRText.text = "Correct!";
+                        }
+                        right = true;
+                        if(this.SFXStatus) {this.perfectSfx.play();}
+                    } else {
+                        if (this.slow) {
+                            this.qRText.text = "Slow and Wrong!";
+                        } else {
+                            this.qRText.text = "Wrong!";
+                        }
+                        
+                        right = false;
+                        if(this.SFXStatus) {this.wrongSfx.play();}
+                    }
+                    // total cummulative questions so far
+                    this.questCum++;
+                    // update the text on the screen
+                    this.updateText(true);
+
+                    this.saveResults(right, this.key, this.timerText.text);
+
+                },
+
+                saveResults: function (right, key, timer) {
+                    key = option.id + key;
+                    // store time, avg, and count
+                    this.myArr[key] = { time: timer, right: right, count: 1, note: "hi" };
+                    console.log(this.myArr);
+                    //console.log(this.myArr[option.id + '12*12'].time);
+                    //console.log(this.myArr[option.id + '12*12'].right);
+                },
+
+                gotIt: function (key) {
+
+                    key = option.id + key;
+                    console.log('gotIt='+key + this.myArr[key])
+                    if (this.myArr[key].right && this.myArr[key].time <= 2) {
+                        return true; // right and fast - GotIt!
+                    } else {
+                        return false; // still needs to study this one
+                    }
+
+
+                },
+
+                // update the text on the screen
+                updateText: function (showAnswer) {
+
+                    // showAnswer
+                    if (showAnswer) {
+                        this.qText.text += '='+this.a;
+                    }
+                    // current question number
+                    //this.c2Text.text = this.questCurr + '/' + this.questTotal;
+
+                    // correct number of questions
+                    this.r2Text.text = this.questRight + '/' + this.questCum;
+
+                    // update button text to the correct ans and 2 non correct
+                    this.a1Text.text = this.b1Text;
+                    this.a2Text.text = this.b2Text;
+                    this.a3Text.text = this.b3Text;
+
+                },
+
+                // button One
+                actionOnClick1: function () {
+                    if (this.button1.inputEnabled) {
+                        this.button1.frame = 1;
+                        
+                        this.checkAnswer(1);
+                    }
+                    
+                },
+
+                // button Two
+                actionOnClick2: function () {
+                    if (this.button2.inputEnabled) {
+                        this.button2.frame = 1;
+                        
+                        this.checkAnswer(2);
+                    }
+
+                },
+
+                // button Three
+                actionOnClick3: function () {
+                    if (this.button3.inputEnabled) {
+                        this.button3.frame = 1;
+                        this.checkAnswer(3);
+                    }
+
+                },
+
+                // button Go
+                actionOnClickGo: function () {
+                    if (this.buttonGo.inputEnabled) {
+                        this.go();
+                    }
+
+                },
+
+                onInputDown: function (target) {
+                    target.sx = target.scale.x;
+                    target.sy = target.scale.y;
+                    game.add.tween(target.scale).to({
+                        x: target.sx*.8,
+                        y: target.sy*.8
+                    }, 100, Phaser.Easing.Cubic.Out, true);
+                },
+
+                onInputUp: function (target) {
+                    game.add.tween(target.scale).to({
+                        x: target.sx,
+                        y: target.sy
+                    }, 100, Phaser.Easing.Cubic.Out, true);
+                },
+
+                
+                 // Action when click on the speaker button
+                actionOnClickSpeaker: function (target) {
+                    this.SFXToggle();
+                    this.setSpeakerTexture(target);
+
+                },
+
+                SFXToggle: function () {
+                    if (this.SFXStatus == true) {
+                        this.SFXStatus = false;
+                    } else {
+                        this.SFXStatus = true;
+                    }
+                },
+
+                setSpeakerTexture(target) {
+                    if (this.SFXStatus == true) {
+                        target.loadTexture('buttonSpeaker');
+
+                    } else {
+                        target.loadTexture('buttonSpeakerOff');
+                    }
+
+                },
+
+                onInputDownSpeaker: function (target) {
+                    game.add.tween(target.scale).to({
+                        x: 0.4,
+                        y: 0.4
+                    }, 100, Phaser.Easing.Cubic.Out, true);
+                },
+
+                onInputUpSpeaker: function (target) {
+                    game.add.tween(target.scale).to({
+                        x: .6,
+                        y: .6
+                    }, 100, Phaser.Easing.Cubic.Out, true);
+                },
+
+               scaleAt: function(n) {
+                    //scale n based on original-scale and current display scale
+                    
+                    n = n * (this.game.width / 400);
+
+                    return n;
+
+                },
+
+
+
+                one: function () {
+                    //  Top Center
+                    this.tString = 'top center ';
+                    this.tText = game.add.text(0,0, this.tString, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.tText, 0.5, 0.1);
+                    
+
+                    //  Bottom Center
+                    this.tString2 = 'bottom center ';
+                    this.tText2 = game.add.text(0,0, this.tString2, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText2.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.tText2, 0.5, 0.9);
+                    
+
+                    //  Left Center
+                    this.tString3 = 'left center ';
+                    this.tText3 = game.add.text(0,0, this.tString3, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText3.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.tText3, 0.1, 0.5);
+                    
+
+                    //  right Center
+                    this.tString4 = 'right center ';
+                    this.tText4 = game.add.text(0,0, this.tString4, { font: '16px arial', fill: '#0099ff', align: 'center' });
+                    this.tText4.anchor.setTo(0.5, 0.5);
+                    Povin.place(this.tText4, 0.9, 0.5);
+                   
+                    
+
+               },
+
+            };
+
+            
+            // ************************************************************************************** 
+            // Povin 
+            // ************************************************************************************** 
+            "use strict";  
+            
+            // Global Object 
+            var Povin = { 
+            
+                // Povin Properties 
+                game: null, // must initialize in game init method: Povin.game = game; 
+                gameLevel: 1, 
+                gameMode: 1, 
+                bgMusic: null, 
+                musicEnabled: 0, 
+                showIntro: 1, 
+                resized: false, 
+                //debugTextY: 115, 
+            
+                // Povin Methods 
+                highScore: function() { 
+                hsGameMode = 0; 
+                hsGameLevel =0; 
+                hsScore =0; 
+                hsName =''; 
+                
+                }, 
+
+                 // Action when click on the home button
+                actionOnClickHome: function (target) {
+                    this.state.start(target.nextState);
+                },
+
+                onInputDownHome: function (target) {
+                    game.add.tween(target.scale).to({
+                        x: 0.6,
+                        y: 0.6
+                    }, 100, Phaser.Easing.Cubic.Out, true);
+                },
+
+                onInputUpHome: function (target) {
+                    game.add.tween(target.scale).to({
+                        x: .8,
+                        y: .8
+                    }, 100, Phaser.Easing.Cubic.Out, true);
+                },
+            
+                log: function() { 
+                    console.log("Povin object created"); 
+                }, 
+            
+                debug: function() { 
+            
+                    game.debug.inputInfo(32, 32); 
+                }, 
+            
+                debugSprite: function(sprite,y) { 
+            
+                    game.debug.sprite(sprite, 32, y, "#00ff00"); 
+                }, 
+            
+                debugFps: function(y) { 
+            
+                    game.debug.text('FPS ' + game.time.fps || '--', 32, y, "#00ff00"); 
+                    
+                }, 
+            
+                debugText: function(text,y) { 
+            
+                    game.debug.text(text || '--',32, y, "#00ff00"); 
+                    
+                }, 
+            
+                // Scaling Functions 
+                getScaleToGameW: function(obj) 
+                {   
+                    console.log(obj.width/game.width); 
+                }, 
+                scaleToGameW: function(obj,percent) 
+                { 
+                    obj.width=game.width*percent; 
+                    obj.scale.y=obj.scale.x; 
+                }, 
+                place: function(obj,xPercent, yPercent, Xoffset=0, Yoffset=0) { 
+                    this.fromTop(obj,yPercent, Yoffset); 
+                    this.fromLeft(obj,xPercent, Xoffset);    
+                }, 
+                 placeY: function (percent, offset = 0) {
+                    var y = game.height * percent;
+                    y += offset;
+                    return y;
+                },
+                placeX: function (percent, offset = 0) {
+                    var x = game.width * percent;
+                    x += offset;
+                    return x;
+                },
+                fromTop:function(obj,percent,offset=0) 
+                { 
+                    obj.y = game.height * percent; 
+                    obj.y += offset; 
+                }, 
+                fromLeft: function(obj, percent, offset = 0) { 
+                    obj.x = game.width * percent; 
+                    obj.x += offset; 
+                }, 
+            
+                center: function(obj) { 
+                    obj.x = game.width / 2; 
+                    obj.y = game.height / 2; 
+                }, 
+                centerH: function(obj) { 
+                    obj.x = game.width / 2; 
+                }, 
+                centerV: function(obj) { 
+                    obj.y = game.height / 2; 
+                }, 
+                centerGroup: function(obj) { 
+                    obj.x = game.width / 2 - obj.width / 2; 
+                    obj.y = game.height / 2 - obj.height / 2; 
+                }, 
+                centerGroupV: function(obj) { 
+                    obj.y = game.height / 2 - obj.height / 2; 
+                }, 
+                centerGroupH: function(obj) { 
+                    obj.x = game.width / 2 - obj.width / 2; 
+                }, 
+                alignToBottom: function(obj, offset = 0) { 
+                    obj.y = game.height - obj.height / 2; 
+                    obj.y+= offset; 
+                }, 
+                fromBottom: function(obj, percent, offset=0) { 
+                    obj.y = game.height - (game.height * percent); 
+                    obj.y -= offset; 
+                }, 
+                
+                fromRight: function(obj, percent, offset = 0) { 
+                    obj.x = game.width - (game.width * percent); 
+                    obj.x -= offset; 
+                    //obj.x -= obj.width / 2; 
+                }, 
+                
+                fromCenterH: function(obj, percent) { 
+                    obj.x = game.width / 2 - (game.width * percent); 
+                    obj.x -= obj.width / 2; 
+                }, 
+                fromCenterV: function(obj, percent) { 
+                    obj.x = game.width / 2 - (game.width * percent); 
+                    obj.x -= obj.width / 2; 
+                }, 
+            
+            }; // End of Povin 
+            
+            // Global Variables 
+            var test = 1; 
+            
+            // Call a method on the global object Povin 
+            Povin.log();
+
+
+            game.state.add('Boot', BasicGame.Boot);
+            game.state.start('Boot');
+        </script>
+</body>
+</html>

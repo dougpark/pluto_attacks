@@ -74,23 +74,25 @@
  
             */ 
 
-            var getWidth = function() {
-                var width = window.innerWidth
-                || document.documentElement.clientWidth
-                || document.body.clientWidth;
-                width = width * window.devicePixelRatio;
-                return width;
-            }
-            
-            var getHeight = function() {
-                var height = window.innerHeight
-                || document.documentElement.clientHeight
-                || document.body.clientHeight;
-                height = height * window.devicePixelRatio;
-                return height;
-            }
+            var getWidth = function () {
+                    var width = window.innerWidth
+                        || document.documentElement.clientWidth
+                        || document.body.clientWidth;
+                    //width = width * window.devicePixelRatio;
+                    if (width > 450) { width = 450 }
+                    return width;
+                }
+
+                var getHeight = function () {
+                    var height = window.innerHeight
+                        || document.documentElement.clientHeight
+                        || document.body.clientHeight;
+                    //height = height * window.devicePixelRatio;
+                    if (height > 850) { height = 850 }
+                    return height;
+                }
             // 736x414
-            var game = new Phaser.Game('100%', '100%', Phaser.AUTO, 'game');
+            var game = new Phaser.Game(getWidth(), getHeight(), Phaser.AUTO, 'game');
 
             var BasicGame = function(game) {};
 
@@ -107,6 +109,7 @@
 
                     this.physics.startSystem(Phaser.Physics.ARCADE);
                     this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+                    //this.scale.setMinMax(320, 480, 450, 850);
                     //this.scale.scaleMode = Phaser.ScaleManager.RESIZE;
                     //this.scale.setMinMax(800, 600, 1200,900);
                     this.scale.pageAlignHorizontally = true;
@@ -118,8 +121,8 @@
 
                     game.load.spritesheet('invader', 'assets/images/invader32x32x4.png', 32, 32);
 
-                    /*
-                    game.scale.setResizeCallback(function() {
+                    
+                   /*  game.scale.setResizeCallback(function() {
                         this.game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
                         console.log('resizecallback');
                         var width = this.game.width; //this.getWidth();
@@ -131,7 +134,7 @@
                         this.game.scale.refresh();
                         Povin.resized = true;
                     });
-                    */
+                     */
                     
                 },
 
