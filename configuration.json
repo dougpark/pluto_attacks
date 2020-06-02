@@ -1,7 +1,0 @@
-{
-    "host":"192.232.251.96:3306",
-    "user":"parkdn_pattacks",
-    "password":"pattacks",
-    "database":"parkdn_PlutoAttacks",
-    "type":"dev"
-  }
